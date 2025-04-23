@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1745423634 source:c:\users\pc\documents\topicos de programacion\saint-seiya\main.c
+	"header.h"
+
+1745423117 c:\users\pc\documents\topicos de programacion\saint-seiya\header.h
+	<stdio.h>
+	<stdlib.h>
+
