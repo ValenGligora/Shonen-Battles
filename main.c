@@ -165,6 +165,8 @@ int batalla(const char nombreArchivo,Personaje* per,int opcion){
     }
 
     //continuar
+
+//prueba0 de commit diego
 }
 
 
