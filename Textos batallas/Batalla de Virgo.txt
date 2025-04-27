@@ -1,0 +1,58 @@
+# META
+NÚMERO_CASA: 6  
+NOMBRE_ENEMIGO: Shaka de Virgo  
+
+# CONDICIONES  
+REQUIERE: Llave_del_Inframundo  
+DESBLOQUEA: Flor_de_Loto  
+
+#HISTORIA
+"Aioria, el noble guardián de Leo, había jurado lealtad a Atenea. El Gran Patriarca, temiendo su poder, lo hipnotizó para que atacara a cualquiera que intentara llegar a Virgo. Solo el sacrificio de Cassios, su leal aprendiz, logró romper el hechizo, revelando la verdad
+Ahora deberan enfrentarse al guardian de la casa de Virgo, Shaka"
+
+# DESCRIPCION  
+"Un silencio sobrenatural inunda la sexta casa. Shaka de Virgo medita en posición de loto, flotando sobre un estanque de pétalos dorados. Sus ojos cerrados ven más allá de lo físico. Ahora deberán enfrentarse al guardián de la casa de Virgo, Shaka, el hombre más cercano a los dioses."  
+
+# TEXTO DINÁMICO  
+[INICIO]  
+"Shaka abre los ojos lentamente: 'El sufrimiento es efímero. Les mostraré el verdadero paraíso'."  
+
+[COMBATE]  
+"El cosmos de Shaka distorsiona la realidad. Los pétalos de loto se transforman en cuchillas: '¡Tesoro del Cielo!'"  
+
+[VICTORIA]  
+"Shaka yace sobre los pétalos, sonriendo: 'Atenea... estaba en lo correcto sobre ustedes...'"  
+
+[DERROTA]  
+"Tu cuerpo cae al estanque. Los pétalos dorados se tiñen de rojo."  
+
+# STATS ENEMIGO  
+HP: 200  
+ATAQUE: 28  
+DEFENSA: 35  
+COSMOS: 300  
+DEBILIDAD: Iluminación  
+
+# TÉCNICAS_ENEMIGO  
+1. Nombre: "Tesoro del Cielo"  
+   Daño: Reduce_HP_a_1  
+   Efecto: Paraliza_2_Turnos  
+   Diálogo: "¡Conozcan el dolor de Buda!"  
+
+2. Nombre: "Om"  
+   Daño: 40  
+   Efecto: Silencia_Habilidades  
+   Diálogo: "¡El sonido primordial los juzgará!"  
+
+# EVENTOS_ESPECIALES  
+1. Trigger: "HP_menor_50"  
+   Diálogo: "Shaka suspira: 'Debo usar mi verdadero poder'"  
+   Efecto: Invoca_Rueda_del_Samsara  
+
+2. Trigger: "Ikki_en_equipo"  
+   Diálogo: "Ikki: '¡No caeré en tus ilusiones otra vez!'"  
+   Efecto: Anula_Tesoro_del_Cielo  
+
+3. Trigger: "Usa_Flor_de_Loto"  
+   Diálogo: "Los pétalos purifican el cosmos"  
+   Efecto: Reduce_DEF_enemigo_50%  

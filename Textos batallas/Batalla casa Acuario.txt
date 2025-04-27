@@ -1,0 +1,48 @@
+# META
+NÚMERO_CASA: 11
+NOMBRE_ENEMIGO: Camus de Acuario
+
+# DESCRIPCION
+"El aire se congela al entrar. Camus extiende sus manos hacia el cero absoluto.
+Ahora deberán enfrentarse al guardián de la casa de Acuario, Camus."
+
+# HISTORIA
+"Tras derrotar a Shura, un viento gélido los envuelve. Hyoga reconoce inmediatamente el cosmos de su maestro.
+Ahora deberán enfrentarse al guardián de la casa de Acuario, Camus."
+
+# TEXTO DINÁMICO
+[INICIO]
+"Camus no muestra emoción: 'Hyoga, demuestra lo aprendido'."
+[COMBATE]
+"¡Glaciares emergen del suelo!: '¡Ejecución de Aurora!'"
+[VICTORIA]
+"Camus asiente: 'Has superado al maestro...'"
+[DERROTA]
+"El hielo cubre tu cuerpo. Última visión: Hyoga gritando."
+
+# STATS ENEMIGO
+HP: 180
+ATAQUE: 38
+DEFENSA: 28
+COSMOS: 220
+DEBILIDAD: Calor
+
+# TÉCNICAS_ENEMIGO
+1. Nombre: "Polvo de Diamante"
+   Daño: 30
+   Efecto: Congela_1_Turno
+   Diálogo: "¡El frío purifica todo!"
+
+2. Nombre: "Ejecución de Aurora"
+   Daño: 65
+   Efecto: Congelación_Instantánea (HP<30%)
+   Diálogo: "¡Conozcan el fin de los tiempos!"
+
+# EVENTOS_ESPECIALES
+1. Trigger: "Hyoga_en_equipo"
+   Diálogo: "Hyoga: 'Maestro... no quiero pelear'"
+   Efecto: Reduce_DAÑO_25%
+
+2. Trigger: "Usa_Flecha_Sagitario"
+   Diálogo: "¡La flecha derrite el hielo!"
+   Efecto: Anula_Congelación

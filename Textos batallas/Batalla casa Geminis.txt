@@ -1,0 +1,55 @@
+# META
+NUMERO_CASA: 3
+NOMBRE_ENEMIGO: Saga de Géminis
+
+# CONDICIONES
+REQUIERE: Cuerno_de_Tauro
+DESBLOQUEA: Fragmento_de_Máscara
+
+#HISTORIA
+"El gigantesco Aldebarán bloqueaba el pasaje con su fuerza bruta. Tras un feroz combate donde demostraste tu valor, el Caballero de Tauro reconoció tu determinación. Antes de dejarte pasar, te entregó su Cuerno Dorado como símbolo de respeto.
+Ahora deberan enfrentarse al guardian de la casa de Geminis, Saga"
+
+# DESCRIPCION
+"El aire se distorsiona al entrar. Dos figuras idénticas emergen de las sombras, sus voces se mezclan en eco. Ahora deberán enfrentarse al guardián de la casa de Géminis, Saga"
+
+# TEXTO DINÁMICO
+[INICIO]
+"El espacio se distorsiona. Dos figuras idénticas aparecen: '¿Qué es real? ¿El dolor? ¿O solo nuestras ilusiones?'"
+[COMBATE]
+"¡Las paredes sangran! Escuchas gritos... pero son solo ilusiones."
+[VICTORIA]
+"Saga cae de rodillas: 'Atenea... perdónalos...' antes de desvanecerse."
+[DERROTA]
+"La risa de Saga resuena mientras la oscuridad te consume..."
+
+# STATS ENEMIGO
+HP: 180
+ATAQUE: 25
+DEFENSA: 15
+COSMOS: 200
+DEBILIDAD: Ilusión
+
+# TECNICAS_ENEMIGO
+1. Nombre: "Explosión Galáctica"
+   Daño: 45
+   Efecto: Reduce_Defensa_30%
+   Dialogo: "¡El cosmos mismo se rendirá ante mí!"
+
+2. Nombre: "Muro de Ilusiones"
+   Daño: 0
+   Efecto: Crea_2_Clones
+   Dialogo: "¿Puedes golpear lo que no existe?"
+
+# EVENTOS_ESPECIALES
+1. Trigger: "HP_menor_50"
+   Dialogo: "¡Tu determinación es... interesante!"
+   Efecto: Ataque_x1.5
+
+2. Trigger: "Usa_Cadena_Andrómeda"
+   Dialogo: "¡Las cadenas revelan la verdad!"
+   Efecto: Elimina_Clones
+
+3. Trigger: "Ikki_en_equipo"
+   Dialogo: "¡Fénix! ¿Vienes a arder otra vez?"
+   Efecto: Inmoviliza_2_Turnos
