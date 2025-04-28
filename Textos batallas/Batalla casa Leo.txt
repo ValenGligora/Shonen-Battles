@@ -1,0 +1,63 @@
+# META
+NÚMERO_CASA: 5
+NOMBRE_ENEMIGO: Aioria de Leo
+
+# CONDICIONES
+REQUIERE: Fragmento_de_Máscara
+DESBLOQUEA: Poder_del_Relámpago
+
+#HISTORIA
+"Entre risas macabras, mascara de muerte los arrastró al Inframundo. Shiryu sacrificó su vista para derrotarlo, dejando una advertencia: 'El hechizo de Leo solo se rompe con sangre'
+Ahora deberan enfrentarse al guardian de la casa de Leo, Aioria"
+
+# DESCRIPCION
+"Relámpagos iluminan la sala. Aioria, envuelto en energía eléctrica, clava su mirada en los intrusos.
+Ahora deberán enfrentarse al guardián de la casa de Leo, Aioria"
+
+# TEXTO DINÁMICO
+[INICIO]
+"Un caballero con armadura dorada aparece rodeado de energía eléctrica: 'Soy Aioria de Leo. Por orden del Gran Patriarca, debo evitar que avancen'."
+[COMBATE]
+"Rayos de energía cruzan el aire. Aioria ataca con furia: '¡No les permitiré llegar a la Casa de Virgo!'"
+[VICTORIA]
+"Aioria, ahora consciente, mira sus manos con remordimiento: '¿Qué he hecho...? Cassios...'"
+[DERROTA]
+"Un poderoso rayo te impacta, perdiendo la conciencia."
+
+# STATS ENEMIGO
+HP: 170
+ATAQUE: 32
+DEFENSA: 22
+COSMOS: 140
+DEBILIDAD: Sacrificio
+
+# TÉCNICAS_ENEMIGO
+1. Nombre: "Plasma Relámpago"
+   Daño: 38
+   Efecto: Paraliza_1_Turno
+   Diálogo: "¡Nadie resiste el poder de Leo!"
+
+2. Nombre: "Rugido de León"
+   Daño: 24
+   Efecto: Confunde_2_Turnos
+   Diálogo: "¡El sonido del León aturde hasta al más fuerte!"
+
+# EVENTOS_ESPECIALES
+1. Trigger: "HP_menor_30"
+   Diálogo: "Aioria duda por un momento: 'Algo no está bien...'"
+   Efecto: Defensa_-15%
+
+2. Trigger: "HP_jugador_menor_15"
+   Diálogo: "¡Cassios aparece! '¡Aioria, despierta! El Patriarca te engañó'"
+   Efecto: Sacrificio_de_Cassios (rompe_el_hechizo)
+
+3. Trigger: "Derrota_Aioria"
+   Diálogo: "Aioria cae de rodillas: 'Perdónenme... he fallado a mi verdadero juramento'"
+   Efecto: Acceso_a_Virgo
+
+
+
+# MECÁNICA_ÚNICA
+- Cuando el jugador está a punto de perder (HP < 15%), Cassios aparece para ayudar.
+- Su sacrificio rompe el hechizo de Aioria y permite continuar.
+- Si el jugador vence a Aioria sin llegar al punto crítico, igualmente se revela la verdad, pero sin la escena de Cassios.
