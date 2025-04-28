@@ -1,0 +1,26 @@
+# Formato: <nombre_tecnica> <ataque_tec> <cosmo_necesario>
+
+#Seiya (Pegaso)
+Meteoro_Pegaso 25.0 30
+Cometa_Pegaso 40.0 50
+Voluntad_Atenea 0.0 60
+
+#Shiryu (Dragón)
+Colera_Dragon 35.0 40
+Ultimo_Dragon 50.0 70
+Escudo_Libra 0.0 50
+
+#Hyoga (Cisne)
+Polvo_Diamante 20.0 25
+Ejecucion_Aurora 60.0 70
+Muro_Hielo 0.0 40
+
+#Shun (Andrómeda)
+Cadena_Nebular 15.0 20
+Tormenta_Nebular 40.0 45
+Defensa_Absoluta 0.0 60
+
+#Ikki (Fénix)
+Ilusion_Demoniaca 0.0 30
+Ave_Fenix 55.0 80
+Renacer 0.0 100
