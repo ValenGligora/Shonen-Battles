@@ -132,6 +132,7 @@ void historia_principal(Personaje *personajes){
 
     Capitulo capituloN;
     Personaje *auxPersonajes = personajes;
+    int opcion=0;
 
     while(fread(&capituloN, sizeof(Capitulo), 1, archivo) == 1){
         printf("\n****************************");
@@ -142,14 +143,14 @@ void historia_principal(Personaje *personajes){
             auxPersonajes++;
         }
         scanf("%d", &opcion);
+        auxPersonajes+-3;
 
-        int opcion=0;
         while(opcion>3 || opcion <=0){
             printf("Entrada no valida. Intentalo de nuevo.\n\n");
             getchar();
             scanf("%d", &opcion);
         }
-
+        
         batalla(capituloN.batalla,personajes,opcion);
     }
 
