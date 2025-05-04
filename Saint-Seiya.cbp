@@ -31,6 +31,28 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="ControlTurnos-Diego-desarrollando.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Textos batallas/Batalla Final.txt" />
+		<Unit filename="Textos batallas/Batalla casa Acuario.txt" />
+		<Unit filename="Textos batallas/Batalla casa Aries.txt" />
+		<Unit filename="Textos batallas/Batalla casa Cancer.txt" />
+		<Unit filename="Textos batallas/Batalla casa Capricornio.txt" />
+		<Unit filename="Textos batallas/Batalla casa Escorpio.txt" />
+		<Unit filename="Textos batallas/Batalla casa Geminis.txt" />
+		<Unit filename="Textos batallas/Batalla casa Leo.txt" />
+		<Unit filename="Textos batallas/Batalla casa Libra.txt" />
+		<Unit filename="Textos batallas/Batalla casa Piscis.txt" />
+		<Unit filename="Textos batallas/Batalla casa Sagitario.txt" />
+		<Unit filename="Textos batallas/Batalla casa Tauro.txt" />
+		<Unit filename="Textos batallas/Batalla de Virgo.txt" />
+		<Unit filename="Textos batallas/Habilidades personajes.txt" />
+		<Unit filename="Textos batallas/Resumen inicial.txt" />
+		<Unit filename="Textos batallas/STATS INICIALES.txt" />
+		<Unit filename="funciones.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="header.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
