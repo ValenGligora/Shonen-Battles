@@ -1,7 +1,6 @@
 #include "header.h"
-// -------------------------DESAROLLO FUNCIONES -----------------------//
-//--ARCHIVO PARTIDA--
-FILE *cargar_partida(int n, DatosPartida *datos, const char *nombreArchivo)
+
+FILE* cargar_partida(int n, DatosPartida *datos, const char *nombreArchivo)
 {
 	FILE *partida;
 	if (n == 1)
@@ -29,11 +28,13 @@ FILE *cargar_partida(int n, DatosPartida *datos, const char *nombreArchivo)
 	sino se crea el archivo y se los debe cargar con los datos iniciales de la partida*/
 }
 
-// guardar_partida(FILE* game); // Se podria preguntar si desa salir del juego o si desea seguir jugando.
-/*
-El archivo que contenga la historia principal, puede contener en cada linea un texto que narre lo que sucede/ va a suceder
-y el nombre del archivo de batalla al que se haga referencia
-*/
+void guardar_partida(const char *archivo, DatosPartida *save) {
+    FILE *f = fopen(archivo, "wb");
+    if (!f) 
+		return;
+    fwrite(save, sizeof(DatosPartida), 1, f);
+    fclose(f);
+}
 
 //--BATALLA--
 void InicializarPersonaje(Personaje *personaje, Personaje *p_guardado)
@@ -87,14 +88,12 @@ Personaje cargar_enemigo_n(int n, const char *archivo)
 	return enem;
 }
 
-int TurnosBatalla(Personaje *prota, Personaje *enemigo, int *resultado)
+int ejecutar_batalla(Personaje *prota, Personaje *enemigo)
 {
 	int opcion;
 	int opt_tec;
 	int opt_tec_enemigo;
 	int eleccionEnemigo;
-	int danio;
-	float valor_defensa;
 	// aca va la parte del menu
 
 	printf("Elija opcion: 1-atacar , 2-defenderse, 3-habilidad");
@@ -107,19 +106,16 @@ int TurnosBatalla(Personaje *prota, Personaje *enemigo, int *resultado)
 		EjecutarAccion(opcion, opt_tec, prota, enemigo, eleccionEnemigo);
 		if (enemigo->Vida <= 0)
 		{
-			*resultado = 1;
-			return 0;
+			return 1; // Ganó
 		}
 
 		EjecutarAccion(opcion, opt_tec, enemigo, prota, eleccionEnemigo);
 		if (prota->Vida <= 0)
 		{
-			*resultado = 0;
-			return 0;
+			return 0; // Perdió
 		}
 	}
-	*resultado = -1;
-	return 0;
+	return -1;  // Eligió escapar
 }
 int ValidarEleccion(int min, int max, int cantTec, int *opt_tec, Tecnica tecnicas[], float cosmo)
 {
@@ -139,6 +135,7 @@ int ValidarEleccion(int min, int max, int cantTec, int *opt_tec, Tecnica tecnica
 		if (n == 2)
 			*opt_tec = 0; // elijo la primer tecnica
 	}
+	return n;
 }
 int validarIntRango(int min, int max)
 {
@@ -187,6 +184,7 @@ void EjecutarAccion(int opt, int opt_tec, Personaje *emisor, Personaje *receptor
 		break;
 	case 2:
 		printf("\n%s est� a la defensiva", emisor->Nombre);
+
 		break;
 	case 3:
 
@@ -272,21 +270,27 @@ void jugar_historia(const char *archivo_historia, DatosPartida *save, const char
 		return;
 	}
 	int resultado_batalla = 0;
-	int opcion_Menu = 1;
+	int opcion_Menu = 1; // distinto de -1 para entrar
 	fseek(fHistoria, save->posicion_historia, SEEK_SET); // continuar desde última posición
 
 	char linea[100];
-	while (fgets(linea, sizeof(linea), fHistoria))
+	fgets(linea, sizeof(linea), fHistoria);
+	while (!feof(fHistoria) && opcion_Menu !=-1)
 	{
-		if (linea[0] == '|')
+		if (linea[0] == '|') // Cada que encuentra el delimitador entra en una batalla
 		{
 
-			// Encontramos delimitador, activar batalla
-			while (opcion_Menu != -1)
+			while (opcion_Menu != -1 && resultado_batalla != 1)
 			{
 				printf("\n>>> ¡Batalla %d! <<<\n", save->num_batalla + 1);
 				Personaje enemigo = cargar_enemigo_n(save->num_batalla, archivo_enemigos);
-				resultado_batalla = ejecutar_batalla(&save->pj_guardado, &enemigo);
+				resultado_batalla = ejecutar_batalla(&save->pj_guardado, &enemigo);	// 1 gana ; 0 pierde ; -1 decide escapar de la batalla
+				if(resultado_batalla != 1 ) 				// consultar si  desea intentarlo de nuevo o desea guardar la partida.
+				{
+					printf("Intentar de nuevo? 1 , Guardar partida y salir? -1"); //Se guarda hasta la ultima batalla ganada
+					scanf("%d",&opcion_Menu);
+				}
+
 			}
 
 			if (resultado_batalla == 1)
@@ -296,9 +300,10 @@ void jugar_historia(const char *archivo_historia, DatosPartida *save, const char
 				guardar_partida("save.dat", save);
 			}
 		}
-		else
+		else if (opcion_Menu!=-1 )
 		{
 			printf("%s", linea); // mostrar línea de historia
+			fgets(linea, sizeof(linea), fHistoria);
 		}
 	}
 

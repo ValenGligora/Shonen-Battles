@@ -60,10 +60,11 @@ void crear_archivo_historia();
 
 //--ARCHIVO PARTIDA--
 FILE *cargar_partida(int n, DatosPartida *datos, const char *nombreArchivo);
-// void guardar_proceso(FILE);                               // Puede ser una funci�n o algo autom�tico en el main (probablemente sea una funci�n)
+void guardar_partida(const char*, DatosPartida *save);
 
 //--JUEGO--
 // int menu_principal();                                     // Mostrar inicio: "iniciar juego", "salir", "continuar aventura"
+int menu_principal();
 void jugar_historia(const char *archivo_historia, DatosPartida *save, const char *archivo_enemigos);
 //--BATALLA--
 void batalla(FILE, Personaje);  // Se desarrolla cada batalla
@@ -72,7 +73,7 @@ void mostrar_estado(Personaje); // Mostrar vida, acciones disponibles, etc
 
 void InicializarPersonaje(Personaje *, Personaje *); // el siguiente parametro seria el nombre del archivo con los atributos del personaje
 void CargarEnemigo(int n, const char *archivo, Personaje enem);
-int TurnosBatalla(Personaje *prota, Personaje *enemigo, int *resultado);
+int ejecutar_batalla(Personaje *prota, Personaje *enemigo);
 
 int ValidarEleccion(int, int, int, int *, Tecnica tecnicas[], float cosmo);
 int validarIntRango(int, int);

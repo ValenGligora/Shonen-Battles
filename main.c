@@ -1,6 +1,4 @@
 #include "header.h"
-#include "funciones.c"
-
 int main()
 {
 
@@ -22,7 +20,6 @@ int main()
 
     // -------------------------INICIO DE MENU DE JUEGO -----------------------//
 
-    menu_principal();
     jugar_historia("Historia.txt", &datos, &personaje);
 
     // batalla(capituloN.batalla,personajes,opcion);
