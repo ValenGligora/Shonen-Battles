@@ -27,15 +27,17 @@ typedef struct
     float ataque_tec;
     int cosmo_necesario;
 
-} Tecnica; // estar�a interesante hacer un tda que reserve espacio seg�n la cantidad de habilidad que tenga el personaje, sino pongo como maximo 3 tecnicas
+} Tecnica;
 
 typedef struct
 {
-    char Nombre[20];
-    float Vida;
+    char nombre[20];
+    float vida;
+    float vidaMax;
     float ataque;
-    float Cosmo;
-    float Armadura;
+    float cosmo;
+    float cosmoMax;
+    float armadura;
     float defensa;
     Arma arma;
     Tecnica tecnicas[5];
@@ -59,7 +61,8 @@ void crear_archivo_historia();
 // void crear_archivo_Personajes_Principales();
 
 //--ARCHIVO PARTIDA--
-FILE *cargar_partida(int n, DatosPartida *datos, const char *nombreArchivo);
+void cargar_partida(int n, DatosPartida *datos, const char *nombreArchivo);
+
 void guardar_partida(const char*, DatosPartida *save);
 
 //--JUEGO--
@@ -71,11 +74,11 @@ void batalla(FILE, Personaje);  // Se desarrolla cada batalla
 int sigue_con_vida(Personaje);  // Consulta si sigue con vida
 void mostrar_estado(Personaje); // Mostrar vida, acciones disponibles, etc
 
-void InicializarPersonaje(Personaje *, Personaje *,int selec); // el siguiente parametro seria el nombre del archivo con los atributos del personaje
+void InicializarPersonaje(Personaje *personaje, Personaje *p_guardado,int selec);
 void CargarEnemigo(int n, const char *archivo, Personaje enem);
 int ejecutar_batalla(Personaje *prota, Personaje *enemigo);
 
-int ValidarEleccion(int, int, int, int *, Tecnica tecnicas[], float cosmo);
+int ValidarEleccion(int min, int max);
 int validarIntRango(int, int);
 int EleccionRandomEnemigo(Personaje *enemigo, int *opt_tec_enemigo);
 

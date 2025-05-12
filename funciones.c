@@ -7,39 +7,70 @@
 #define PAUSA_LINEA 200      // ms entre líneas
 #define PAUSA_PUNTUACION 100 // ms extra para .!?
 
-FILE* cargar_partida(int n, DatosPartida *datos, const char *nombreArchivo)
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+void mostrar_personajes_disponibles(const char* archivo) {
+    FILE* f = fopen(archivo, "rb");
+    if (f == NULL) {
+        puts("No se pudo abrir el archivo de personajes.");
+        return;
+    }
+
+    Personaje p;
+    int i = 1;
+    while (fread(&p, sizeof(Personaje), 1, f) == 1) {
+        printf("---- Personaje #%d ----\n", i++);
+        printf("Nombre: %s\n", p.nombre);
+        printf("Vida: %.1f / %.1f\n", p.vida, p.vidaMax);
+        printf("Cosmo: %.1f / %.1f\n", p.cosmo, p.cosmoMax);
+        printf("Ataque: %.1f\n", p.ataque);
+        printf("Armadura: %.1f | Defensa: %.1f\n", p.armadura, p.defensa);
+
+        // Mostrar arma
+        printf("Arma: %s (Daño: %.1f%%)\n", p.arma.nombre, p.arma.danio_porcentual);
+
+        // Mostrar técnicas
+        printf("Técnicas:\n");
+        for (int j = 0; j < p.cant_tec; j++) {
+            printf("  - %s | Daño: %.1f | Cosmo: %d\n",
+                   p.tecnicas[j].nombre,
+                   p.tecnicas[j].ataque_tec,
+                   p.tecnicas[j].cosmo_necesario);
+        }
+
+        // Mostrar inventario
+        printf("Inventario:\n");
+        for (int j = 0; j < 3; j++) {
+            if (p.invent[j].usos > 0) {
+                printf("  - %s (usos: %d)\n", p.invent[j].elemento, p.invent[j].usos);
+            }
+        }
+
+        printf("\n");
+    }
+
+    fclose(f);
+}
+
+
+void cargar_partida(int n, DatosPartida *datos, const char *nombreArchivo)
 {
     FILE *partida;
-    if (n == 1)
-    {
-        // Cargar partida (Opcion numero 1)
+
+    if (n == 1) {
         partida = fopen(nombreArchivo, "rb");
-        if (partida == NULL)
-        {
+        if (partida == NULL) {
             puts("No se pudo cargar la partida");
             exit(1);
         }
-        fread(datos, sizeof(DatosPartida), 1, partida); // Lee etiqueta de historia en la que quedó y todos los datos del personaje
+        fread(datos, sizeof(DatosPartida), 1, partida);
+        fclose(partida);
     }
-    else
-    {
-        // Nueva partida
-        partida = fopen(nombreArchivo, "wb");
-
-        datos->num_batalla=0;
-        datos->posicion_historia=0;
-
-        if (partida == NULL)
-        {
-            puts("No se pudo crear la partida");
-            exit(1);
-        }
-    }
-    fclose(partida);
-    return partida;
-    /* si se carga la partida hay que extraer la informacino y almacenarla en la memoria dinamica
-    sino se crea el archivo y se los debe cargar con los datos iniciales de la partida*/
 }
+
 
 void guardar_partida(const char *archivo, DatosPartida *save)
 {
@@ -51,6 +82,298 @@ void guardar_partida(const char *archivo, DatosPartida *save)
 }
 
 //--BATALLA--
+int validarIntRango(int min, int max)
+{
+    int num;
+    int error = 0;
+    do
+    {
+        if (error)
+            printf("\n Elija una opcion valida");
+		scanf("%d", &num);
+		error = 1;
+    }
+    while (num < min || num > max);
+    return num;
+}
+int ValidarEleccion(int min, int max) {
+    int opcion;
+    while (1) {
+        scanf("%d", &opcion);
+        if (opcion >= min && opcion <= max) {
+            return opcion;
+        }
+        printf("Opcion no valida. Intente nuevamente (%d-%d): ", min, max);
+    }
+}
+
+int InventarioVacio(Personaje *p) {
+    for (int i = 0; i < 3; i++) {
+        if (strlen(p->invent[i].elemento) > 0 && p->invent[i].usos > 0) {
+            return 0; // Hay objetos disponibles
+        }
+    }
+    printf("\n¡Inventario vacio!\n");
+    return 1;
+}
+void MostrarInventario(Personaje *p) {
+    printf("\nInventario:\n");
+    for (int i = 0; i < 3; i++) {
+        if (strlen(p->invent[i].elemento) > 0 && p->invent[i].usos > 0) {
+            printf("%d. %s (%d usos)\n", i+1, p->invent[i].elemento, p->invent[i].usos);
+        } else {
+            printf("%d. ---\n", i+1);
+        }
+    }
+}
+void UsarObjeto(Personaje *p, int obj_index) {
+    if (obj_index < 0 || obj_index >= 3) return;
+
+    printf("\n%s usa %s!\n", p->nombre, p->invent[obj_index].elemento);
+
+    // Efectos según tipo de objeto (debes implementar esta lógica)
+    if (strstr(p->invent[obj_index].elemento, "Cura") != NULL) {
+        p->vida += 50;
+        if (p->vida > p->vidaMax) p->vida = p->vidaMax;
+        printf("¡Restauradas 50 puntos de vida!\n");
+    }
+    else if (strstr(p->invent[obj_index].elemento, "Cosmo") != NULL) {
+        p->cosmo += 30;
+        if (p->cosmo > p->cosmoMax) p->cosmo = p->cosmoMax;
+        printf("¡Restaurados 30 puntos de cosmo!\n");
+    }
+
+    p->invent[obj_index].usos--;
+    if (p->invent[obj_index].usos <= 0) {
+        memset(p->invent[obj_index].elemento, 0, 30); // Eliminar objeto si no quedan usos
+    }
+}
+int IntentarHuir() {
+    return (rand() % 100) < 70; // 70% probabilidad
+}
+
+float CalcularAtaque(Personaje *p)
+{
+    float ataqueCalculado;
+
+    ataqueCalculado = p->ataque + p->ataque * p->arma.danio_porcentual;
+    return ataqueCalculado;
+}
+float CalcularDanioTecnica(Personaje *p, int num_tec) {
+    Tecnica *tec = &p->tecnicas[num_tec];
+
+    // Daño base con arma
+    float danio_base = p->ataque + (p->ataque * p->arma.danio_porcentual);
+
+    // Daño final modificado por la técnica (asumimos ataque_tec como multiplicador)
+    float danio_final = danio_base * tec->ataque_tec;
+
+    // Consumir cosmo
+    p->cosmo -= tec->cosmo_necesario;
+
+    return danio_final;
+}
+
+void recibeDanio(float danio, Personaje *p, int eleccion)
+{
+    float defensa;
+    if (eleccion == 2)
+        defensa = p->defensa;
+    else
+        defensa = 0;
+
+    float danioInfligido = danio - danio * p->armadura - danio * defensa;
+
+    p->vida -= danioInfligido;
+}
+
+void Defender(Personaje *p) {
+    // Aumentar la defensa temporalmente (se resetea al final del turno en ejecutar_batalla)
+    p->defensa = p->armadura * 1.5f;  // Aumento del 50% en la defensa
+
+    // También regenera un pequeño porcentaje de cosmo
+    float cosmoRegenerado = p->cosmoMax * 0.1f;  // 10% del cosmo máximo
+    p->cosmo += cosmoRegenerado;
+    if (p->cosmo > p->cosmoMax) {
+        p->cosmo = p->cosmoMax;
+    }
+
+    printf("%s adopta una postura defensiva! (+%.f defensa, +%.f cosmo)\n",
+           p->nombre, p->armadura * 0.5f, cosmoRegenerado);
+}
+
+void EjecutarAccion(int opt, int opt_tec, Personaje *emisor, Personaje *receptor, int eleccionOponente)
+{
+    float danio;
+    switch (opt)
+    {
+    case 1:
+        danio = CalcularAtaque(emisor);
+        recibeDanio(danio, receptor, eleccionOponente);
+        break;
+    case 2:
+        printf("\n%s est� a la defensiva", emisor->nombre);
+
+        break;
+    case 3:
+
+        danio = CalcularDanioTecnica(emisor,opt_tec);
+        recibeDanio(danio, receptor, eleccionOponente);
+        break;
+    }
+}
+void EjecutarAccionEnemiga(Personaje *enemigo, Personaje *prota, int accion, int opt_tec,int opt_oponente) {
+    switch(accion) {
+        case 1: // Ataque básico
+            printf("\n%s ataca con un golpe basico!\n", enemigo->nombre);
+            EjecutarAccion(accion,opt_tec,enemigo, prota, opt_oponente);
+            break;
+        case 2: // Defensa
+            printf("\n%s se defiende!\n", enemigo->nombre);
+            Defender(enemigo);
+            break;
+        case 3: // Técnica
+            printf("\n%s usa %s!\n", enemigo->nombre, enemigo->tecnicas[opt_tec].nombre);
+            float danio = CalcularDanioTecnica(enemigo, opt_tec);
+			recibeDanio(danio, prota, opt_oponente);
+            break;
+    }
+}
+int EleccionRandomEnemigo(Personaje *enemigo, int *opt_tec_enemigo)
+{
+    srand(time(NULL));
+    int numAccion = -1;
+
+    while (numAccion == -1)
+    {
+        numAccion = rand() % 3 + 1;
+
+        // if (numAccion == 2)
+        //  opt_tec = seleccionarTecnica(&tecnicas,cant_tec,cosmo);
+        // menu que muestre la tecnicas disponibles
+        // debe validar que alcance el cosmo para poder realizarla
+        // si el usuario se arreepiente de elegir esta opcion , el valor de n pasa a ser -1
+
+        // en este caso voy a elegir siempre la [0], pero lo debe hacer la funcion selecccionarTecnica();
+        if (numAccion == 2)
+            *opt_tec_enemigo = 0; // elijo la primer tecnica
+    }
+
+    return numAccion;
+}
+
+int ejecutar_batalla(Personaje *prota, Personaje *enemigo) {
+    int opcion, opt_tec, opt_obj, opt_tec_enemigo, eleccionEnemigo;
+
+    while (1) {
+		prota->defensa = 0;
+		enemigo->defensa = 0;
+        system("cls || clear");
+
+        // Mostrar estado de los combatientes
+        printf("============================================\n");
+        printf("| %-20s VS %-20s |\n", prota->nombre, enemigo->nombre);
+        printf("| Vida: %-4.0f/%-4.0f    Vida: %-4.0f/%-4.0f |\n",
+               prota->vida, prota->vidaMax, enemigo->vida, enemigo->vidaMax);
+        printf("| Cosmo: %-3.0f/%-3.0f   Cosmo: %-3.0f/%-3.0f |\n",
+               prota->cosmo, prota->cosmoMax, enemigo->cosmo, enemigo->cosmoMax);
+        printf("============================================\n\n");
+
+        // Menú de opciones
+        printf("1. Atacar con %s\n", prota->arma.nombre);
+        printf("2. Defenderse\n");
+        printf("3. Usar tecnica (%d disponibles)\n", prota->cant_tec);
+        printf("4. Usar objeto\n");
+        printf("5. Huir\n");
+        printf("\nElija opcion (1-5): ");
+
+        opcion = validarIntRango(1, 5);
+
+        // Turno del jugador
+        switch(opcion) {
+            case 1: // Ataque básico
+                printf("\n%s ataca con %s!\n", prota->nombre, prota->arma.nombre);
+                EjecutarAccion(1, 0, prota, enemigo, 0);
+                break;
+
+            case 2: // Defensa
+                printf("\n%s se prepara para defender!\n", prota->nombre);
+                EjecutarAccion(2, 0, prota, enemigo, 0);
+                break;
+
+            case 3: // Técnicas
+                if (prota->cant_tec == 0) {
+                    printf("\nNo tienes tecnicas disponibles!\n");
+                    system("pause");
+                    continue;
+                }
+
+                printf("\nTecnicas disponibles:\n");
+                for (int i = 0; i < prota->cant_tec; i++) {
+                    printf("%d. %s (%.1f ATQ, %d Cosmo)\n",
+                          i+1, prota->tecnicas[i].nombre,
+                          prota->tecnicas[i].ataque_tec,
+                          prota->tecnicas[i].cosmo_necesario);
+                }
+                printf("\nElija tecnica (1-%d): ", prota->cant_tec);
+
+                opt_tec = validarIntRango(1, prota->cant_tec) - 1;
+
+                if (prota->cosmo < prota->tecnicas[opt_tec].cosmo_necesario) {
+                    printf("\n¡Cosmo insuficiente! Necesitas %d\n", prota->tecnicas[opt_tec].cosmo_necesario);
+                    system("pause");
+                    continue;
+                }
+
+                printf("\n%s usa %s!\n", prota->nombre, prota->tecnicas[opt_tec].nombre);
+                EjecutarAccion(3, opt_tec, prota, enemigo, 0);
+                break;
+
+            case 4: // Objetos
+                MostrarInventario(prota);
+                if (InventarioVacio(prota)) {
+                    system("pause");
+                    continue;
+                }
+
+                printf("\nElija objeto (1-3) o 0 para cancelar: ");
+                opt_obj = validarIntRango(0, 3);
+                if (opt_obj == 0) continue;
+
+                UsarObjeto(prota, opt_obj - 1);
+                break;
+
+            case 5: // Huir
+                if (IntentarHuir()) {
+                    printf("\n¡Has escapado de la batalla!\n");
+                    return -1;
+                }
+                printf("\n¡La huida ha fallado!\n");
+                break;
+        }
+
+        // Verificar si el enemigo fue derrotado
+        if (enemigo->vida <= 0) {
+            printf("\n¡%s ha sido derrotado!\n", enemigo->nombre);
+            return 1;
+        }
+
+        // Turno del enemigo
+        eleccionEnemigo = EleccionRandomEnemigo(enemigo, &opt_tec_enemigo);
+        EjecutarAccionEnemiga(enemigo, prota, eleccionEnemigo, opt_tec_enemigo,opcion);
+
+        // Verificar si el jugador fue derrotado
+        if (prota->vida <= 0) {
+            printf("\n¡Has sido derrotado!\n");
+            return 0;
+        }
+
+
+        system("pause");
+    }
+}
+
+// ----------------- //
 void InicializarPersonaje(Personaje *personaje, Personaje *p_guardado,int selec)
 {
     if(selec == 1)
@@ -64,7 +387,9 @@ void InicializarPersonaje(Personaje *personaje, Personaje *p_guardado,int selec)
         printf("\nNo se pudo abrir el archivo de personajes");
         return;
     }
-    fread(&personaje,sizeof(personaje),1,fPersonaje); 	// Por ahora vamos a cargar siempre el primero en la lista de personajes
+	printf("\nElija algun personaje: ");
+	int opt_personaje = validarIntRango(1,5);
+    fread(&personaje,sizeof(personaje),opt_personaje,fPersonaje); 	// Por ahora vamos a cargar siempre el primero en la lista de personajes
     fclose(fPersonaje);
 
 }
@@ -83,142 +408,6 @@ Personaje cargar_enemigo_n(int n, const char *archivo)
     fclose(f);
     return enem;
 }
-
-int ejecutar_batalla(Personaje *prota, Personaje *enemigo)
-{
-    int opcion;
-    int opt_tec;
-    int opt_tec_enemigo;
-    int eleccionEnemigo;
-    // aca va la parte del menu
-
-    printf("Elija opcion: 1-atacar , 2-defenderse, 3-habilidad");
-    opcion = ValidarEleccion(1, 3, prota->cant_tec, &opt_tec, prota->tecnicas, prota->Cosmo);
-
-    eleccionEnemigo = EleccionRandomEnemigo(enemigo, &opt_tec_enemigo);
-
-    while (opcion != 4) // la opcion 4 seria salir de la batalla, escapar
-    {
-        EjecutarAccion(opcion, opt_tec, prota, enemigo, eleccionEnemigo);
-        if (enemigo->Vida <= 0)
-        {
-            return 1; // Ganó
-        }
-
-        EjecutarAccion(opcion, opt_tec, enemigo, prota, eleccionEnemigo);
-        if (prota->Vida <= 0)
-        {
-            return 0; // Perdió
-        }
-    }
-    return -1;  // Eligió escapar
-}
-int ValidarEleccion(int min, int max, int cantTec, int *opt_tec, Tecnica tecnicas[], float cosmo)
-{
-    int n = -1;
-
-    while (n == -1)
-    {
-        n = validarIntRango(min, max);
-
-        // if (n == 2)
-        //  opt_tec = seleccionarTecnica(&tecnicas,cant_tec,cosmo);
-        // menu que muestre la tecnicas disponibles
-        // debe validar que alcance el cosmo para poder realizarla
-        // si el usuario se arreepiente de elegir esta opcion , el valor de n pasa a ser -1
-
-        // en este caso voy a elegir siempre la [0], pero lo debe hacer la funcion selecccionarTecnica();
-        if (n == 2)
-            *opt_tec = 0; // elijo la primer tecnica
-    }
-    return n;
-}
-int validarIntRango(int min, int max)
-{
-    int num;
-    int error = 0;
-    do
-    {
-        scanf("%d", &num);
-        error = 1;
-        if (error)
-            printf("\n Elija una opcion valida");
-    }
-    while (num < min || num > max);
-    return num;
-}
-int EleccionRandomEnemigo(Personaje *enemigo, int *opt_tec_enemigo)
-{
-    srand(time(NULL));
-    int numAccion = -1;
-
-    while (numAccion == -1)
-    {
-        int numAccion = rand() % 3 + 1;
-
-        // if (numAccion == 2)
-        //  opt_tec = seleccionarTecnica(&tecnicas,cant_tec,cosmo);
-        // menu que muestre la tecnicas disponibles
-        // debe validar que alcance el cosmo para poder realizarla
-        // si el usuario se arreepiente de elegir esta opcion , el valor de n pasa a ser -1
-
-        // en este caso voy a elegir siempre la [0], pero lo debe hacer la funcion selecccionarTecnica();
-        if (numAccion == 2)
-            *opt_tec_enemigo = 0; // elijo la primer tecnica
-    }
-
-    return numAccion;
-}
-
-void EjecutarAccion(int opt, int opt_tec, Personaje *emisor, Personaje *receptor, int eleccionOponente)
-{
-    float danio;
-    switch (opt)
-    {
-    case 1:
-        danio = CalcularAtaque(emisor);
-        recibeDanio(danio, receptor, eleccionOponente);
-        break;
-    case 2:
-        printf("\n%s est� a la defensiva", emisor->Nombre);
-
-        break;
-    case 3:
-
-        danio = CalcularAtaqueTecnica(emisor, 0); // el segundo parametro es opt_tec
-        recibeDanio(danio, receptor, eleccionOponente);
-        break;
-    }
-}
-float CalcularAtaque(Personaje *p)
-{
-    float ataqueCalculado;
-
-    ataqueCalculado = p->ataque + p->ataque * p->arma.danio_porcentual;
-    return ataqueCalculado;
-}
-float CalcularAtaqueTecnica(Personaje *p, int num_tec) // hacemos una funcion nueva por que capaz tiene otros efectos las tecnica, ademas consume cosmo
-{
-    float ataqueCalculado;
-
-    ataqueCalculado = p->tecnicas[num_tec].ataque_tec + p->ataque * p->arma.danio_porcentual;
-    p->Cosmo -= p->tecnicas[num_tec].cosmo_necesario;
-
-    return ataqueCalculado;
-}
-void recibeDanio(float danio, Personaje *p, int eleccion)
-{
-    float defensa;
-    if (eleccion == 2)
-        defensa = p->defensa;
-    else
-        defensa = 0;
-
-    float danioInfligido = danio - danio * p->Armadura - danio * defensa;
-
-    p->Vida -= danioInfligido;
-}
-
 
 void establecer_color_texto(int color)
 {

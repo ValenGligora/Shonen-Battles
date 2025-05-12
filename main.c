@@ -4,7 +4,6 @@
 int main()
 {
     SetConsoleOutputCP(CP_UTF8);
-    FILE *partida;
     int selec;
     DatosPartida datos;
     Personaje personaje;
@@ -16,10 +15,16 @@ int main()
     if (selec == 3)
         return 0;
 
-    partida = cargar_partida(selec, &datos, "Partida.dat");
+    cargar_partida(selec, &datos, "Partida.dat");
     InicializarPersonaje(&personaje, &datos.pj_guardado,selec);
     // -------------------------INICIO DE MENU DE JUEGO -----------------------//
 
+    printf("%s,", personaje.nombre);
+    printf("%s",personaje.arma.nombre);
+    mostrar_personajes_disponibles("protagonistas_saga.dat");
+
+    printf("a");
+    Sleep(10000);
     jugar_historia("Texto-historia/0_intro_saga_santuario.txt",&datos,"enemigos_santuario.dat");
     // batalla(capituloN.batalla,personajes,opcion);
 
