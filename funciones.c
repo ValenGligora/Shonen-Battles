@@ -16,6 +16,10 @@ FILE* cargar_partida(int n, DatosPartida *datos, const char *nombreArchivo)
 	else
 	{ // Nueva partida
 		partida = fopen(nombreArchivo, "wb");
+
+		datos->num_batalla=0
+		datos->posicion_historia=0;
+
 		if (partida == NULL)
 		{
 			puts("No se pudo crear la partida");
@@ -30,7 +34,7 @@ FILE* cargar_partida(int n, DatosPartida *datos, const char *nombreArchivo)
 
 void guardar_partida(const char *archivo, DatosPartida *save) {
     FILE *f = fopen(archivo, "wb");
-    if (!f) 
+    if (!f)
 		return;
     fwrite(save, sizeof(DatosPartida), 1, f);
     fclose(f);
@@ -40,37 +44,7 @@ void guardar_partida(const char *archivo, DatosPartida *save) {
 void InicializarPersonaje(Personaje *personaje, Personaje *p_guardado)
 {
 	personaje = p_guardado;
-	/*
-	char nombre[]="Seiya";
-	float healt =100;
-	float attack =15;
-	float cosmo =150;
-	float arm =0.3;
-	float defense = 0.2;
 
-	char name_weapon[] = "Tridente de poseidon";
-	float damage_weapon= 0.4;
-
-	char nombre_tec[] = "Estrella de la muerte";
-	float danio_tec = 30;
-	int cosmo_nec = 60;
-	int cant_tec = 1;
-
-
-
-	strcpy(p->Nombre,nombre);
-	p->Vida = healt;
-	p->ataque = attack;
-	p->Cosmo = cosmo;
-	p->Armadura = arm;
-	p->defensa = defense;
-	strcpy(p->arma.nombre,name_weapon);
-	p->arma.danio_porcentual = damage_weapon;
-
-	strcpy(p->tecnicas[0].nombre,nombre_tec);
-	p->tecnicas[0].ataque_tec = danio_tec;
-	p->tecnicas[0].cosmo_necesario = cosmo_nec;
-	*/
 }
 Personaje cargar_enemigo_n(int n, const char *archivo)
 {
@@ -269,19 +243,25 @@ void jugar_historia(const char *archivo_historia, DatosPartida *guardado, const 
 		perror("No se pudo abrir historia");
 		return;
 	}
+
 	int resultado_batalla = 0;
 	int opcion_Menu = 1; // distinto de -1 para entrar
+	long posicion_Historia_postBatalla;
+	printf("\n DEBUG EMPIEZA A LEER HISTORIA");
+	printf("\n posicion carga de historia es: %d",guardado->posicion_historia);
 	fseek(fHistoria, guardado->posicion_historia, SEEK_SET); // continuar desde última posición
 
 	char linea[100];
 	fgets(linea, sizeof(linea), fHistoria);
 	while (!feof(fHistoria) && opcion_Menu !=-1)
 	{
+		printf("\n DEBUG ENTRA EN CICLO");
 		if (linea[0] == '|') // Cada que encuentra el delimitador entra en una batalla
 		{
-
+			printf("\n DEBUG ENCONTRO DELIMITADOR");
 			while (opcion_Menu != -1 && resultado_batalla != 1)
 			{
+
 				printf("\n>>> ¡Batalla %d! <<<\n", guardado->num_batalla + 1);
 				Personaje enemigo = cargar_enemigo_n(guardado->num_batalla, archivo_enemigos);
 				resultado_batalla = ejecutar_batalla(&guardado->pj_guardado, &enemigo);	// 1 gana ; 0 pierde ; -1 decide escapar de la batalla
@@ -295,52 +275,23 @@ void jugar_historia(const char *archivo_historia, DatosPartida *guardado, const 
 
 			if (resultado_batalla == 1)
 			{
+				posicion_Historia_postBatalla = ftell(fHistoria);	// En este caso que ganamos, actualizo el fseek
 				guardado->num_batalla++;
-				guardado->posicion_historia = ftell(fHistoria); // guardar posición después del delimitador
-				guardar_partida("save.dat", save);
+				guardado->posicion_historia = posicion_Historia_postBatalla; // guardar para comenzar historia desde la última batalla ganada
+				guardar_partida("save.dat", guardado);
 			}
 		}
 		else if (opcion_Menu!=-1 )
-		{
-			printf("%s", linea); // mostrar línea de historia
-			fgets(linea, sizeof(linea), fHistoria);
+		{									// En este caso que NO ganamos, no se actualiza el fseek
+				guardado->num_batalla++;
+				guardado->posicion_historia = posicion_Historia_postBatalla; // guardar para comenzar historia luego de la última batalla ganada
+				guardar_partida("save.dat", guardado);
 		}
+
+		resultado_batalla=0;
+		printf("%s", linea); // mostrar línea de historia
+		fgets(linea, sizeof(linea), fHistoria);
 	}
 
 	fclose(fHistoria);
 }
-
-//--PRUEBA--
-/*void crear_archivo_historia()
-{
-	FILE *archivo = fopen("Historia Principal", "wb");
-	if (archivo == NULL)
-	{
-		puts("No se pudo crear el archivo");
-		exit(1);
-	}
-
-	Capitulo capitulos[3] = {
-		{"Ejemplo de texto para rellenar", "batalla 1.bin"},
-		{"Ejemplo de texto para rellenar antes de la 2da batalla", "batalla 2.bin"},
-		{"M�s texto de ejemplo rellenar", "batalla 3.bin"}};
-	fwrite(capitulos, sizeof(Capitulo), 3, archivo);
-	fclose(archivo);
-}
-
-void crear_archivo_Personajes_Principales()
-{
-	FILE *archivo = fopen("HistoriaPrincipal", "wb");
-	if (archivo == NULL)
-	{
-		puts("No se pudo crear el archivo");
-		exit(1);
-	}
-
-	Personaje personajes[3] = {
-		{"Personaje 1", 100, 30, 20, 0.45, 0.20, {"seiya", 0.2}, {{"relampago", 55, 10}, {"relampago2", 30, 10}}, 2, {{"pocion vida", 2}}},
-		{"Personaje 2", 100, 30, 20, 0.45, 0.20, {"seiya2", 0.2}, {{"relampago3", 55, 10}, {"relampago4", 30, 10}}, 2, {{"pocion vida", 2}}}};
-	fwrite(personajes, sizeof(Personaje), 3, archivo);
-	fclose(archivo);
-}
-*/
