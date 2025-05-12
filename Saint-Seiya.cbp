@@ -61,7 +61,7 @@
 		<Unit filename="Textos batallas/Habilidades personajes.txt" />
 		<Unit filename="Textos batallas/Resumen inicial.txt" />
 		<Unit filename="Textos batallas/STATS INICIALES.txt" />
-		<Unit filename="enemigos_santuario.bin" />
+		<Unit filename="enemigos_santuario.dat" />
 		<Unit filename="funciones.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -69,7 +69,7 @@
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="protagonistas_saga.bin" />
+		<Unit filename="protagonistas_saga.dat" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

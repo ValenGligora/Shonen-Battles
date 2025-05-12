@@ -8,9 +8,10 @@
 
 1746459568 source:c:\users\diego\documents\github-proyect\shonen-battles\controlturnos-diego-desarrollando.c
 
-1747019810 source:c:\users\diego\documents\github-proyect\shonen-battles\main.c
+1747057741 source:c:\users\diego\documents\github-proyect\shonen-battles\main.c
 	"header.h"
 	<locale.h>
+	<windows.h>
 
 1747019031 c:\users\diego\documents\github-proyect\shonen-battles\header.h
 	<stdlib.h>
@@ -21,6 +22,8 @@
 1746463822 c:\users\diego\documents\github-proyect\shonen-battles\funciones.c
 	"header.h"
 
-1747019728 source:c:\users\diego\documents\github-proyect\shonen-battles\funciones.c
+1747060797 source:c:\users\diego\documents\github-proyect\shonen-battles\funciones.c
 	"header.h"
+	<windows.h>
+	<time.h>
 

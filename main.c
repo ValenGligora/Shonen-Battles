@@ -1,8 +1,9 @@
 #include "header.h"
 #include <locale.h>
+#include <windows.h>
 int main()
 {
-
+    SetConsoleOutputCP(CP_UTF8);
     FILE *partida;
     int selec;
     DatosPartida datos;
