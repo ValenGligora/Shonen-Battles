@@ -71,7 +71,7 @@ void batalla(FILE, Personaje);  // Se desarrolla cada batalla
 int sigue_con_vida(Personaje);  // Consulta si sigue con vida
 void mostrar_estado(Personaje); // Mostrar vida, acciones disponibles, etc
 
-void InicializarPersonaje(Personaje *, Personaje *); // el siguiente parametro seria el nombre del archivo con los atributos del personaje
+void InicializarPersonaje(Personaje *, Personaje *,int selec); // el siguiente parametro seria el nombre del archivo con los atributos del personaje
 void CargarEnemigo(int n, const char *archivo, Personaje enem);
 int ejecutar_batalla(Personaje *prota, Personaje *enemigo);
 

@@ -17,7 +17,7 @@ FILE* cargar_partida(int n, DatosPartida *datos, const char *nombreArchivo)
 	{ // Nueva partida
 		partida = fopen(nombreArchivo, "wb");
 
-		datos->num_batalla=0
+		datos->num_batalla=0;
 		datos->posicion_historia=0;
 
 		if (partida == NULL)
@@ -41,9 +41,21 @@ void guardar_partida(const char *archivo, DatosPartida *save) {
 }
 
 //--BATALLA--
-void InicializarPersonaje(Personaje *personaje, Personaje *p_guardado)
+void InicializarPersonaje(Personaje *personaje, Personaje *p_guardado,int selec)
 {
-	personaje = p_guardado;
+	if(selec == 1)
+	{
+		personaje = p_guardado;
+		return;
+	}
+	FILE* fPersonaje = fopen("protagonistas_saga.dat","rb");
+	if(!fPersonaje)
+	{
+		printf("\nNo se pudo abrir el archivo de personajes");
+		return;
+	}
+	fread(&personaje,sizeof(personaje),1,fPersonaje); 	// Por ahora vamos a cargar siempre el primero en la lista de personajes
+	fclose(fPersonaje);
 
 }
 Personaje cargar_enemigo_n(int n, const char *archivo)
@@ -235,63 +247,72 @@ int menu_principal()
 	return opcion;
 }
 
+void leer_hasta_delimitador(FILE *fHistoria, char *linea, size_t tam_linea) {
+    while (fgets(linea, tam_linea, fHistoria)) {
+        if (linea[0] == '|') {
+            break;  // Se detiene cuando encuentra el delimitador '|'
+        }
+        printf("%s", linea); // Imprimir historia hasta encontrar '|'
+    }
+}
+
+// Función principal para jugar la historia
 void jugar_historia(const char *archivo_historia, DatosPartida *guardado, const char *archivo_enemigos)
 {
-	FILE *fHistoria = fopen(archivo_historia, "r");
-	if (!fHistoria)
-	{
-		perror("No se pudo abrir historia");
-		return;
-	}
+    FILE *fHistoria = fopen(archivo_historia, "r");
+    if (!fHistoria)
+    {
+        perror("No se pudo abrir historia");
+        return;
+    }
 
-	int resultado_batalla = 0;
-	int opcion_Menu = 1; // distinto de -1 para entrar
-	long posicion_Historia_postBatalla;
-	printf("\n DEBUG EMPIEZA A LEER HISTORIA");
-	printf("\n posicion carga de historia es: %d",guardado->posicion_historia);
-	fseek(fHistoria, guardado->posicion_historia, SEEK_SET); // continuar desde última posición
+    int resultado_batalla = 0;
+    int opcion_Menu = 1; // distinto de -1 para entrar
+    long posicion_Historia_postBatalla;
+    printf("\nPosición carga de historia es: %ld", guardado->posicion_historia);
+    fseek(fHistoria, guardado->posicion_historia, SEEK_SET); // Continuar desde última posición
 
-	char linea[100];
-	fgets(linea, sizeof(linea), fHistoria);
-	while (!feof(fHistoria) && opcion_Menu !=-1)
-	{
-		printf("\n DEBUG ENTRA EN CICLO");
-		if (linea[0] == '|') // Cada que encuentra el delimitador entra en una batalla
-		{
-			printf("\n DEBUG ENCONTRO DELIMITADOR");
-			while (opcion_Menu != -1 && resultado_batalla != 1)
-			{
+    char linea[100];
+    fgets(linea, sizeof(linea), fHistoria);
 
-				printf("\n>>> ¡Batalla %d! <<<\n", guardado->num_batalla + 1);
-				Personaje enemigo = cargar_enemigo_n(guardado->num_batalla, archivo_enemigos);
-				resultado_batalla = ejecutar_batalla(&guardado->pj_guardado, &enemigo);	// 1 gana ; 0 pierde ; -1 decide escapar de la batalla
-				if(resultado_batalla != 1 ) 				// consultar si  desea intentarlo de nuevo o desea guardar la partida.
-				{
-					printf("Intentar de nuevo? 1 , Guardar partida y salir? -1"); //Se guarda hasta la ultima batalla ganada
-					scanf("%d",&opcion_Menu);
-				}
+    while (!feof(fHistoria) && opcion_Menu != -1)
+    {
+        // Lee la historia hasta el delimitador
+        leer_hasta_delimitador(fHistoria, linea, sizeof(linea));
 
-			}
+        if (linea[0] == '|') // Cada vez que encuentra el delimitador entra en una batalla
+        {
+            while (opcion_Menu != -1 && resultado_batalla != 1)
+            {
+                printf("\n>>> ¡Batalla %d! <<<\n", guardado->num_batalla + 1);
+                Personaje enemigo = cargar_enemigo_n(guardado->num_batalla, archivo_enemigos);
+                resultado_batalla = ejecutar_batalla(&guardado->pj_guardado, &enemigo); // 1 gana ; 0 pierde ; -1 decide escapar de la batalla
+                if (resultado_batalla != 1) // Consultar si desea intentarlo de nuevo o desea guardar la partida.
+                {
+                    printf("Intentar de nuevo? 1 , Guardar partida y salir? -1");
+                    scanf("%d", &opcion_Menu);
+                }
+            }
 
-			if (resultado_batalla == 1)
-			{
-				posicion_Historia_postBatalla = ftell(fHistoria);	// En este caso que ganamos, actualizo el fseek
-				guardado->num_batalla++;
-				guardado->posicion_historia = posicion_Historia_postBatalla; // guardar para comenzar historia desde la última batalla ganada
-				guardar_partida("save.dat", guardado);
-			}
-		}
-		else if (opcion_Menu!=-1 )
-		{									// En este caso que NO ganamos, no se actualiza el fseek
-				guardado->num_batalla++;
-				guardado->posicion_historia = posicion_Historia_postBatalla; // guardar para comenzar historia luego de la última batalla ganada
-				guardar_partida("save.dat", guardado);
-		}
+            // Solo se incrementa el número de batallas si la batalla es ganada
+            if (resultado_batalla == 1)
+            {
+                posicion_Historia_postBatalla = ftell(fHistoria); // En este caso que ganamos, actualizo el fseek
+                guardado->num_batalla++;
+                guardado->posicion_historia = posicion_Historia_postBatalla; // Guardar para continuar historia después de la última batalla ganada
+                guardar_partida("save.dat", guardado);
+            }
+        }
+        else if (opcion_Menu != -1)
+        { // En este caso que NO ganamos, no se actualiza el fseek
+            guardado->num_batalla++;  // Solo incrementar la batalla si no es un bucle de batallas fallidas
+            guardado->posicion_historia = posicion_Historia_postBatalla; // Guardar para comenzar historia luego de la última batalla ganada
+            guardar_partida("save.dat", guardado);
+        }
 
-		resultado_batalla=0;
-		printf("%s", linea); // mostrar línea de historia
-		fgets(linea, sizeof(linea), fHistoria);
-	}
+        resultado_batalla = 0;  // Resetear el resultado de la batalla después de cada iteración
+        fgets(linea, sizeof(linea), fHistoria);  // Leer la siguiente línea de la historia
+    }
 
-	fclose(fHistoria);
+    fclose(fHistoria);
 }
