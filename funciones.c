@@ -261,7 +261,7 @@ int menu_principal()
 	return opcion;
 }
 
-void jugar_historia(const char *archivo_historia, DatosPartida *save, const char *archivo_enemigos)
+void jugar_historia(const char *archivo_historia, DatosPartida *guardado, const char *archivo_enemigos)
 {
 	FILE *fHistoria = fopen(archivo_historia, "r");
 	if (!fHistoria)
@@ -271,7 +271,7 @@ void jugar_historia(const char *archivo_historia, DatosPartida *save, const char
 	}
 	int resultado_batalla = 0;
 	int opcion_Menu = 1; // distinto de -1 para entrar
-	fseek(fHistoria, save->posicion_historia, SEEK_SET); // continuar desde última posición
+	fseek(fHistoria, guardado->posicion_historia, SEEK_SET); // continuar desde última posición
 
 	char linea[100];
 	fgets(linea, sizeof(linea), fHistoria);
@@ -282,9 +282,9 @@ void jugar_historia(const char *archivo_historia, DatosPartida *save, const char
 
 			while (opcion_Menu != -1 && resultado_batalla != 1)
 			{
-				printf("\n>>> ¡Batalla %d! <<<\n", save->num_batalla + 1);
-				Personaje enemigo = cargar_enemigo_n(save->num_batalla, archivo_enemigos);
-				resultado_batalla = ejecutar_batalla(&save->pj_guardado, &enemigo);	// 1 gana ; 0 pierde ; -1 decide escapar de la batalla
+				printf("\n>>> ¡Batalla %d! <<<\n", guardado->num_batalla + 1);
+				Personaje enemigo = cargar_enemigo_n(guardado->num_batalla, archivo_enemigos);
+				resultado_batalla = ejecutar_batalla(&guardado->pj_guardado, &enemigo);	// 1 gana ; 0 pierde ; -1 decide escapar de la batalla
 				if(resultado_batalla != 1 ) 				// consultar si  desea intentarlo de nuevo o desea guardar la partida.
 				{
 					printf("Intentar de nuevo? 1 , Guardar partida y salir? -1"); //Se guarda hasta la ultima batalla ganada
@@ -295,8 +295,8 @@ void jugar_historia(const char *archivo_historia, DatosPartida *save, const char
 
 			if (resultado_batalla == 1)
 			{
-				save->num_batalla++;
-				save->posicion_historia = ftell(fHistoria); // guardar posición después del delimitador
+				guardado->num_batalla++;
+				guardado->posicion_historia = ftell(fHistoria); // guardar posición después del delimitador
 				guardar_partida("save.dat", save);
 			}
 		}
