@@ -40,7 +40,7 @@ typedef struct
     float armadura;
     float defensa;
     Arma arma;
-    Tecnica tecnicas[5];
+    Tecnica tecnicas[2];
     int cant_tec;
     Inventario invent[1];
 } Personaje;
@@ -49,7 +49,7 @@ typedef struct
 {
     long posicion_historia;                 
     int num_batalla;
-    Personaje pj_guardado; // estado del personaje completo
+    Personaje pj_guardado[5]; // atributos de los personajes
 } DatosPartida;
 
 // ------------------------------ -------------------- --------------------------- //
@@ -64,7 +64,7 @@ void crear_archivo_historia();
 void cargar_partida(int n, DatosPartida *datos, const char *nombreArchivo);
 
 void guardar_partida(const char*, DatosPartida *save);
-
+void mostrarPersonaje(Personaje p);
 //--JUEGO--
 // int menu_principal();                                     // Mostrar inicio: "iniciar juego", "salir", "continuar aventura"
 int menu_principal();
@@ -75,7 +75,9 @@ void batalla(FILE, Personaje);  // Se desarrolla cada batalla
 int sigue_con_vida(Personaje);  // Consulta si sigue con vida
 void mostrar_estado(Personaje); // Mostrar vida, acciones disponibles, etc
 
-void InicializarPersonaje(Personaje *personaje, Personaje *p_guardado,int selec);
+void InicializarPersonajeVector(Personaje *p_guardado);
+void Elegir_Personaje(Personaje* p,Personaje* pParaBatalla);
+
 void CargarEnemigo(int n, const char *archivo, Personaje enem);
 int ejecutar_batalla(Personaje *prota, Personaje *enemigo);
 

@@ -3,16 +3,16 @@
 
 #include <time.h>
 
-#define VELOCIDAD_TIPO 10    // ms entre caracteres
-#define PAUSA_LINEA 200      // ms entre líneas
-#define PAUSA_PUNTUACION 100 // ms extra para .!?
+#define VELOCIDAD_TIPO 5    // ms entre caracteres
+#define PAUSA_LINEA 20      // ms entre líneas
+#define PAUSA_PUNTUACION 5 // ms extra para .!?
 
 
 
 #include <stdio.h>
 #include <stdlib.h>
 
-void mostrar_personajes_disponibles(const char* archivo) {
+/*void mostrar_personajes_disponibles(const char* archivo) {
     FILE* f = fopen(archivo, "rb");
     if (f == NULL) {
         puts("No se pudo abrir el archivo de personajes.");
@@ -43,7 +43,7 @@ void mostrar_personajes_disponibles(const char* archivo) {
 
         // Mostrar inventario
         printf("Inventario:\n");
-        for (int j = 0; j < 3; j++) {
+        for (int j = 0; j < 2; j++) {
             if (p.invent[j].usos > 0) {
                 printf("  - %s (usos: %d)\n", p.invent[j].elemento, p.invent[j].usos);
             }
@@ -54,8 +54,33 @@ void mostrar_personajes_disponibles(const char* archivo) {
 
     fclose(f);
 }
+*/
+void mostrarPersonaje(Personaje p) {
+    printf("\n=== %s ===\n", p.nombre);
+    printf("Vida: %.1f/%.1f\n", p.vida, p.vidaMax);
+    printf("Cosmo: %.1f/%.1f\n", p.cosmo, p.cosmoMax);
+    printf("Ataque: %.1f\n", p.ataque);
+    printf("Armadura: %.1f\n", p.armadura);
+    printf("Defensa: %.1f\n", p.defensa);
 
+    printf("\nArma: %s (%.2fx daño)\n", p.arma.nombre, p.arma.danio_porcentual);
 
+    printf("\nTécnicas (%d):\n", p.cant_tec);
+    for (int i = 0; i < p.cant_tec; i++) {
+        printf("- %s (Daño: %.1f, Cosmo: %d)\n",
+               p.tecnicas[i].nombre,
+               p.tecnicas[i].ataque_tec,
+               p.tecnicas[i].cosmo_necesario);
+    }
+
+    printf("\nInventario:\n");
+    for (int i = 0; i < 2; i++) {
+        if (strlen(p.invent[i].elemento) > 0) {
+            printf("- %s (usos: %d)\n", p.invent[i].elemento, p.invent[i].usos);
+        }
+    }
+    printf("========================\n");
+}
 void cargar_partida(int n, DatosPartida *datos, const char *nombreArchivo)
 {
     FILE *partida;
@@ -69,9 +94,8 @@ void cargar_partida(int n, DatosPartida *datos, const char *nombreArchivo)
         fread(datos, sizeof(DatosPartida), 1, partida);
         fclose(partida);
     }
+    printf("PARTIDA CARGADA");
 }
-
-
 void guardar_partida(const char *archivo, DatosPartida *save)
 {
     FILE *f = fopen(archivo, "wb");
@@ -374,7 +398,7 @@ int ejecutar_batalla(Personaje *prota, Personaje *enemigo) {
 }
 
 // ----------------- //
-void InicializarPersonaje(Personaje *personaje, Personaje *p_guardado,int selec)
+/*void InicializarPersonaje(Personaje *personaje, Personaje *p_guardado,int selec)
 {
     if(selec == 1)
     {
@@ -386,14 +410,106 @@ void InicializarPersonaje(Personaje *personaje, Personaje *p_guardado,int selec)
     {
         printf("\nNo se pudo abrir el archivo de personajes");
         return;
-    }
+
 	printf("\nElija algun personaje: ");
 	int opt_personaje = validarIntRango(1,5);
-    fseek(fPersonaje,sizeof(personaje),opt_personaje); /*Me muevo a la estructura de personaje que quiero usar*/
-    fread(&personaje,sizeof(personaje),1,fPersonaje); /* Leo los datos de ese personaje*/
+    fseek(fPersonaje,sizeof(personaje),opt_personaje); //Me muevo a la estructura de personaje que quiero usar
+    fread(&personaje,sizeof(personaje),1,fPersonaje); // Leo los datos de ese personaje
     fclose(fPersonaje);
 
 }
+*/
+
+/*
+//***********inicio nuevo****************
+void InicializarPersonajeVector(Personaje *p_guardado) {
+    FILE* fPersonaje = fopen("Datos_iniciales/personajes.dat", "rb");
+    if(!fPersonaje) {
+        printf("\nError: No se pudo abrir personajes.dat\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Verificar tamaño del archivo
+    fseek(fPersonaje, 0, SEEK_END);
+    long fileSize = ftell(fPersonaje);
+    rewind(fPersonaje);
+
+    if(fileSize < sizeof(Personaje) * 5) {
+        printf("\nError: Archivo personajes.dat corrupto o incompleto\n");
+        fclose(fPersonaje);
+        exit(EXIT_FAILURE);
+    }
+
+    // Leer los 5 personajes
+    size_t read = fread(p_guardado, sizeof(Personaje), 5, fPersonaje);
+    if(read != 5) {
+        printf("\nError: Solo se leyeron %u personajes\n", read);
+        fclose(fPersonaje);
+        exit(EXIT_FAILURE);
+    }
+
+    fclose(fPersonaje);
+}
+*/
+
+void InicializarPersonajeVector(Personaje *p_guardado)
+{
+
+    FILE* fPersonaje = fopen("Datos_iniciales/personajes.dat","rb");
+    if(!fPersonaje)
+    {
+        printf("\nNo se pudo abrir el archivo de personajes");
+        return;
+    }
+
+    fread(p_guardado,sizeof(Personaje),5,fPersonaje);
+    fclose(fPersonaje);
+
+}
+
+void Elegir_Personaje(Personaje* p, Personaje* pParaBatalla){
+    int opt_personaje;
+    printf("\nElija algun personaje: \n");
+
+    for (int i=0;i<5;i++){
+        printf("\n=== %s ===\n", p->nombre);
+        printf("Vida: %.1f/%.1f\n", p->vida, p->vidaMax);
+        printf("Cosmo: %.1f/%.1f\n", p->cosmo, p->cosmoMax);
+        printf("Ataque: %.1f\n", p->ataque);
+        printf("Armadura: %.1f\n", p->armadura);
+        printf("Defensa: %.1f\n", p->defensa);
+
+        printf("\nArma: %s (%.2fx daño)\n", p->arma.nombre, p->arma.danio_porcentual);
+
+        printf("\nTécnicas %d:\n", p->cant_tec);
+        for (int j = 0; j < p->cant_tec; j++) {
+            printf("- %s (Daño: %.1f, Cosmo: %d)\n",
+                p->tecnicas[j].nombre,
+                p->tecnicas[j].ataque_tec,
+                p->tecnicas[j].cosmo_necesario);
+        }
+
+        printf("\nInventario:\n");
+        for (int k = 0; k < 2; k++) {
+            if (strlen(p->invent[k].elemento) > 0) {
+                printf("- %s (usos: %d)\n", p->invent[k].elemento, p->invent[k].usos);
+            }
+        }
+        printf("\n");
+        p++;
+    }
+
+    p-=5;
+	opt_personaje = validarIntRango(1,5) - 1;
+    p+=opt_personaje;
+    memcpy(pParaBatalla, &p[opt_personaje], sizeof(Personaje));
+}
+
+
+
+
+
+
 Personaje cargar_enemigo_n(int n, const char *archivo)
 {
     Personaje enem;
@@ -538,23 +654,30 @@ void jugar_historia(const char *archivo_historia, DatosPartida *guardado, const 
     int resultado_batalla = 0;
     int opcion_Menu = 1; // distinto de -1 para entrar
     long posicion_Historia_postBatalla;
+    Personaje personajeBatalla;
     fseek(fHistoria, guardado->posicion_historia, SEEK_SET); // Continuar desde última posición
 
     char linea[200];
     fgets(linea, sizeof(linea), fHistoria);
 
+    puts("DECLARO VARIABLES");
     printf("\n");
     while (!feof(fHistoria) && opcion_Menu != -1)
     {
+        printf("ENTRÓ A LEER");
         leer_historia(fHistoria, linea, sizeof(linea));
 
         if (linea[0] == '|') // Cada vez que encuentra el delimitador entra en una batalla
         {
+            printf("ENTRÓ A BATALLA");
+            //Elegir personaje
+            Elegir_Personaje(guardado->pj_guardado,&personajeBatalla);
+
             while (opcion_Menu != -1 && resultado_batalla != 1)
             {
                 printf("\n>>> ¡Batalla %d! <<<\n", guardado->num_batalla + 1);
                 Personaje enemigo = cargar_enemigo_n(guardado->num_batalla, archivo_enemigos);
-                resultado_batalla = ejecutar_batalla(&guardado->pj_guardado, &enemigo); // 1 gana ; 0 pierde ; -1 decide escapar de la batalla
+                resultado_batalla = ejecutar_batalla(&personajeBatalla, &enemigo); // 1 gana ; 0 pierde ; -1 decide escapar de la batalla
                 if (resultado_batalla != 1) // Consultar si desea intentarlo de nuevo o desea guardar la partida.
                 {
                     printf("Intentar de nuevo? 1 , Guardar partida y salir? -1");
@@ -565,6 +688,11 @@ void jugar_historia(const char *archivo_historia, DatosPartida *guardado, const 
             // Solo se incrementa el número de batallas si la batalla es ganada
             if (resultado_batalla == 1)
             {
+
+                // ESPACIO PARA DAR RECOMPENSAS AL JUGADOR CON EL PERSONAJE QUE HAYA ELEGIDO
+
+                //
+
                 posicion_Historia_postBatalla = ftell(fHistoria); // En este caso que ganamos, actualizo el fseek
                 guardado->num_batalla++;
                 guardado->posicion_historia = posicion_Historia_postBatalla; // Guardar para continuar historia después de la última batalla ganada
