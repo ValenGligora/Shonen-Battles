@@ -42,12 +42,12 @@ typedef struct
     Arma arma;
     Tecnica tecnicas[5];
     int cant_tec;
-    Inventario invent[3];
+    Inventario invent[1];
 } Personaje;
 
 typedef struct
 {
-    long posicion_historia;
+    long posicion_historia;                 
     int num_batalla;
     Personaje pj_guardado; // estado del personaje completo
 } DatosPartida;
@@ -68,6 +68,7 @@ void guardar_partida(const char*, DatosPartida *save);
 //--JUEGO--
 // int menu_principal();                                     // Mostrar inicio: "iniciar juego", "salir", "continuar aventura"
 int menu_principal();
+void mostrar_personajes_disponibles(const char*);
 void jugar_historia(const char *archivo_historia, DatosPartida *save, const char *archivo_enemigos);
 //--BATALLA--
 void batalla(FILE, Personaje);  // Se desarrolla cada batalla

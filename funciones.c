@@ -381,7 +381,7 @@ void InicializarPersonaje(Personaje *personaje, Personaje *p_guardado,int selec)
         personaje = p_guardado;
         return;
     }
-    FILE* fPersonaje = fopen("protagonistas_saga.dat","rb");
+    FILE* fPersonaje = fopen("Datos_iniciales/personajes.dat","rb");
     if(!fPersonaje)
     {
         printf("\nNo se pudo abrir el archivo de personajes");
@@ -389,7 +389,8 @@ void InicializarPersonaje(Personaje *personaje, Personaje *p_guardado,int selec)
     }
 	printf("\nElija algun personaje: ");
 	int opt_personaje = validarIntRango(1,5);
-    fread(&personaje,sizeof(personaje),opt_personaje,fPersonaje); 	// Por ahora vamos a cargar siempre el primero en la lista de personajes
+    fseek(fPersonaje,sizeof(personaje),opt_personaje); /*Me muevo a la estructura de personaje que quiero usar*/
+    fread(&personaje,sizeof(personaje),1,fPersonaje); /* Leo los datos de ese personaje*/
     fclose(fPersonaje);
 
 }
