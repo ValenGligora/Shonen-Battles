@@ -8,6 +8,7 @@ int main(){
     if(selec == 3) return 0;
     juego = cargar_partida(selec);
     
+    fclose(juego);
     return 0;
 }
 
