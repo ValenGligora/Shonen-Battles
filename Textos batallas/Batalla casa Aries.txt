@@ -1,0 +1,55 @@
+# META
+NÚMERO_CASA: 1
+NOMBRE_ENEMIGO: Mu de Aries
+
+# DESCRIPCION
+"La primera casa del Santuario se alza silenciosa. Mu, el último discípulo de Aries, los recibe con una mirada que combina sabiduría y preocupación. Ahora deberán enfrentarse al guardián de la casa de Aries, Mu."
+
+# HISTORIA
+"Tras superar los obstáculos iniciales del Santuario, los Caballeros de Bronce llegan exhaustos a la primera prueba real. Las armaduras muestran signos de daño por las batallas preliminares."
+
+# TEXTO DINÁMICO
+[INICIO]
+"Mu observa sus armaduras dañadas: 'Puedo repararlas... si demuestran ser dignos'."
+[COMBATE]
+"¡Cristales cósmicos emergen del suelo!: '¡Muro de Cristal!'"
+[VICTORIA]
+"Mu asiente con aprobación: 'Su determinación es genuina. Avancen, pero tengan cuidado'."
+[DERROTA]
+"Los cristales los envuelven. La última visión es de Mu alejándose."
+
+# STATS ENEMIGO
+HP: 0 (no combate directo)
+ATAQUE: 0
+DEFENSA: 50
+COSMOS: 200
+DEBILIDAD: Persuasión
+
+# TÉCNICAS_ENEMIGO
+1. Nombre: "Reparación Cósmica"
+   Daño: 0
+   Efecto: Cura_30%_HP
+   Diálogo: "El cosmos puede sanar... o destruir"
+
+2. Nombre: "Muro de Cristal"
+   Daño: 0
+   Efecto: Bloqueo_Total
+   Diálogo: "La verdadera fuerza no es física"
+
+# EVENTOS_ESPECIALES
+1. Trigger: "Diálogo_persuasivo"
+   Diálogo: "Mu: 'Sus palabras tienen sabiduría...'"
+   Efecto: Evita_combate
+
+2. Trigger: "Shiryu_en_equipo"
+   Diálogo: "Shiryu: 'Maestro Mu, necesitamos su ayuda'"
+   Efecto: Bonificación_reparación
+
+3. Trigger: "Usa_Objeto_Sagrado"
+   Diálogo: "Mu examina el objeto con interés"
+   Efecto: Revela_información_secreta
+
+# RECOMPENSAS
+- Reparación completa de armaduras
+- +10% defensa permanente
+- Información sobre las próximas casas

@@ -1,0 +1,55 @@
+# META
+NÚMERO_CASA: 4
+NOMBRE_ENEMIGO: Mascara de Muerte de Cáncer
+
+# CONDICIONES
+REQUIERE: Fragmento_de_Géminis
+DESBLOQUEA: Llave_del_Inframundo
+
+# DESCRIPCION
+"El ambiente se enrarece al entrar en la Casa de Cáncer. Las paredes están decoradas con rostros de los caídos. Mascara de Muerte, con una sonrisa siniestra, les da la bienvenida al reino de los muertos. Ahora deberán enfrentarse al guardián de la casa de Cáncer, Mascara de Muerte"
+
+# HISTORIA
+"En la casa más traicionera, enfrentaste las ilusiones de Saga. Las paredes sangraban y los recuerdos se torcían. Al resolver sus enigmas mentales, rompiste el hechizo que lo corrompía. En sus últimos momentos, Saga recuperó la conciencia y murmuró una advertencia sobre el Patriarca.
+Ahora deberan enfrentarse al guardian de la casa de Cancer, Mascara de Muerte"
+
+# TEXTO DINÁMICO
+[INICIO]
+"Un caballero con armadura que emana energía oscura se ríe: 'Soy Mascara de Muerte de Cáncer. ¡Les mostraré el verdadero infierno!'"
+[COMBATE]
+"Portales al Inframundo se abren a su alrededor: '¡Disfruten su visita eterna!'"
+[VICTORIA]
+"Mascara de Muerte cae de rodillas mientras los portales se cierran: 'Imposible... volveré...'"
+[DERROTA]
+"Un portal se traga tu cuerpo... la oscuridad lo consume todo."
+
+# STATS ENEMIGO
+HP: 165
+ATAQUE: 28
+DEFENSA: 18
+COSMOS: 120
+DEBILIDAD: Luz
+
+# TÉCNICAS_ENEMIGO
+1. Nombre: "Regreso al Infierno"
+   Daño: 35
+   Efecto: Envía_1_Turno_Inframundo
+   Diálogo: "¡Prueben el sabor de la muerte!"
+
+2. Nombre: "Almas Perdidas"
+   Daño: 20
+   Efecto: Drena_10_HP_por_Turno
+   Diálogo: "¡Sus almas alimentarán mi poder!"
+
+# EVENTOS_ESPECIALES
+1. Trigger: "HP_menor_40"
+   Diálogo: "Deathmask se enfurece: '¡No escaparán tan fácilmente!'"
+   Efecto: Aumenta_daño_25%
+
+2. Trigger: "Shiryu_en_equipo"
+   Diálogo: "Shiryu: '¡No temeré tu oscuridad!'"
+   Efecto: Resistencia_a_Inframundo
+
+3. Trigger: "Usa_Excalibur"
+   Diálogo: "¡La espada sagrada purifica los portales!"
+   Efecto: Anula_técnicas_oscuras
