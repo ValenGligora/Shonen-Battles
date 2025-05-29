@@ -61,12 +61,24 @@
 		<Unit filename="Textos batallas/Habilidades personajes.txt" />
 		<Unit filename="Textos batallas/Resumen inicial.txt" />
 		<Unit filename="Textos batallas/STATS INICIALES.txt" />
+		<Unit filename="combate.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="enemigos.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="enemigos_santuario.dat" />
 		<Unit filename="funciones.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="header.h" />
+		<Unit filename="historia.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="personajes.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="protagonistas_saga.dat" />

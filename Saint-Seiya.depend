@@ -1,14 +1,17 @@
 # depslib dependency file v1.0
-1748476146 source:c:\users\pc\documents\topicos de programacion\saint-seiya\main.c
+1748549763 source:c:\users\pc\documents\topicos de programacion\saint-seiya\main.c
 	"header.h"
 	<locale.h>
 	<windows.h>
 
-1748482725 c:\users\pc\documents\topicos de programacion\saint-seiya\header.h
+1748549397 c:\users\pc\documents\topicos de programacion\saint-seiya\header.h
 	<stdlib.h>
 	<stdio.h>
 	<string.h>
 	<time.h>
+	<windows.h>
+	<conio.h>
+	<windows.h>
 
 1746459568 source:c:\users\diego\documents\github-proyect\shonen-battles\controlturnos-diego-desarrollando.c
 
@@ -33,17 +36,24 @@
 	<stdio.h>
 	<stdlib.h>
 
-1748484988 source:c:\users\pc\documents\topicos de programacion\saint-seiya\funciones.c
+1748548908 source:c:\users\pc\documents\topicos de programacion\saint-seiya\funciones.c
 	"header.h"
-	<windows.h>
-	<conio.h>
-	<time.h>
-	<stdio.h>
-	<stdlib.h>
 
 1748459128 source:c:\users\pc\documents\topicos de programacion\saint-seiya\header.h
 	<stdlib.h>
 	<stdio.h>
 	<string.h>
 	<time.h>
+
+1748548908 source:c:\users\pc\documents\topicos de programacion\saint-seiya\historia.c
+	"header.h"
+
+1748550061 source:c:\users\pc\documents\topicos de programacion\saint-seiya\enemigos.c
+	"header.h"
+
+1748550047 source:c:\users\pc\documents\topicos de programacion\saint-seiya\combate.c
+	"header.h"
+
+1748550026 source:c:\users\pc\documents\topicos de programacion\saint-seiya\personajes.c
+	"header.h"
 

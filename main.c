@@ -4,10 +4,10 @@
 int main()
 {
     SetConsoleOutputCP(CP_UTF8);
+    setlocale(LC_ALL, "es_ES.UTF-8");
+
     int selec;
     DatosPartida datos_actuales; //SI HAY PARTIDA SON LOS DATOS DE PROGRESO, SI NO HAY PARTIDA SE TIENEN LOS DATOS INICIALES Y SE GUARDA HASTA DONDE SE LLEGO
-
-    setlocale(LC_ALL, "es_ES.UTF-8");
 
     // ----------------------INICIO DE MENU Y CARGA DE JUEGO --------------------//
 
