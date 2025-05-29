@@ -9,24 +9,20 @@ int main()
 
     setlocale(LC_ALL, "es_ES.UTF-8");
 
-    FILE* juego;
-    int selec; //
-    selec = menu_principal();//mostrar opciones en pantalla tales como cargar partida, nueva partida, salir del juego, (opciones?: posibilidad de poner juego en ingles? algo más?)
-    if(selec == 3) return 0;
-    //juego = cargar_partida(selec);
-    
-    fclose(juego);
     // ----------------------INICIO DE MENU Y CARGA DE JUEGO --------------------//
 
-    selec = menu_principal(); // mostrar opciones en pantalla tales como cargar partida, nueva partida, salir del juego, (opciones?: posibilidad de poner juego en ingles? algo más?)
+    selec = menu_principal(); // mostrar opciones en pantalla tales como cargar partida, nueva partida, salir del juego, (opciones?: posibilidad de poner juego en ingles? ; guardar mas de un archivo de partida algo más?)
     if (selec == 3)
         return 0;
 
     cargar_partida(selec, &datos_actuales, "Partida.dat");
     if(selec == 2)
     {
+        datos_actuales.posicion_historia=0;
+        datos_actuales.num_batalla=0;
+        //reiniciar momento de la historia y la batalla
         InicializarPersonajeVector(datos_actuales.pj_guardado);
-        puts("empezando a mostar");
+        puts("\nEmpezando a mostar");
         for (int i = 0; i < 4; i++) {
         mostrarPersonaje(datos_actuales.pj_guardado[i]);
         }

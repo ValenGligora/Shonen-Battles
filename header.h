@@ -40,14 +40,15 @@ typedef struct
     float armadura;
     float defensa;
     Arma arma;
-    Tecnica tecnicas[2];
+    Tecnica tecnicas[3];
     int cant_tec;
-    Inventario invent[1];
+    Inventario invent[5];
+    int cant_item;
 } Personaje;
 
 typedef struct
 {
-    long posicion_historia;                 
+    long posicion_historia;
     int num_batalla;
     Personaje pj_guardado[5]; // atributos de los personajes
 } DatosPartida;
@@ -70,8 +71,9 @@ void mostrarPersonaje(Personaje p);
 int menu_principal();
 void mostrar_personajes_disponibles(const char*);
 void jugar_historia(const char *archivo_historia, DatosPartida *save, const char *archivo_enemigos);
+int efecto_typing(const char* texto,int skip);
 //--BATALLA--
-void batalla(FILE, Personaje);  // Se desarrolla cada batalla
+void batalla(FILE, Personaje);  // Se desarrolla cada batalla la batalla habria que hacerla con memoria dinamica que es parte de la consigna
 int sigue_con_vida(Personaje);  // Consulta si sigue con vida
 void mostrar_estado(Personaje); // Mostrar vida, acciones disponibles, etc
 

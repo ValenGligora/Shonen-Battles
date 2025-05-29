@@ -1,11 +1,12 @@
 #include "header.h"
 #include <windows.h> // Para system() y SetConsoleTextAttribute()
+#include <conio.h> // para _getch() y kbhit SOLO FUNCIONA EN WINDOWS
 
 #include <time.h>
 
-#define VELOCIDAD_TIPO 5    // ms entre caracteres
-#define PAUSA_LINEA 20      // ms entre líneas
-#define PAUSA_PUNTUACION 5 // ms extra para .!?
+#define VELOCIDAD_TIPO 40   // ms entre caracteres
+#define PAUSA_LINEA 100      // ms entre líneas
+#define PAUSA_PUNTUACION 250 // ms extra para .!?
 
 
 
@@ -74,7 +75,7 @@ void mostrarPersonaje(Personaje p) {
     }
 
     printf("\nInventario:\n");
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < p.cant_item; i++) {
         if (strlen(p.invent[i].elemento) > 0) {
             printf("- %s (usos: %d)\n", p.invent[i].elemento, p.invent[i].usos);
         }
@@ -113,9 +114,10 @@ int validarIntRango(int min, int max)
     do
     {
         if (error)
-            printf("\n Elija una opcion valida");
+            printf("\n Elija una opcion valida\n");
 		scanf("%d", &num);
 		error = 1;
+        while (getchar() != '\n'); // Limpiar buffer
     }
     while (num < min || num > max);
     return num;
@@ -132,7 +134,7 @@ int ValidarEleccion(int min, int max) {
 }
 
 int InventarioVacio(Personaje *p) {
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < p->cant_item; i++) {
         if (strlen(p->invent[i].elemento) > 0 && p->invent[i].usos > 0) {
             return 0; // Hay objetos disponibles
         }
@@ -142,7 +144,7 @@ int InventarioVacio(Personaje *p) {
 }
 void MostrarInventario(Personaje *p) {
     printf("\nInventario:\n");
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < p->cant_item; i++) {
         if (strlen(p->invent[i].elemento) > 0 && p->invent[i].usos > 0) {
             printf("%d. %s (%d usos)\n", i+1, p->invent[i].elemento, p->invent[i].usos);
         } else {
@@ -360,8 +362,8 @@ int ejecutar_batalla(Personaje *prota, Personaje *enemigo) {
                     continue;
                 }
 
-                printf("\nElija objeto (1-3) o 0 para cancelar: ");
-                opt_obj = validarIntRango(0, 3);
+                printf("\nElija objeto (1-%d) o 0 para cancelar: ",prota->cant_item);
+                opt_obj = validarIntRango(0, prota->cant_item);
                 if (opt_obj == 0) continue;
 
                 UsarObjeto(prota, opt_obj - 1);
@@ -421,7 +423,7 @@ int ejecutar_batalla(Personaje *prota, Personaje *enemigo) {
 */
 
 /*
-//***********inicio nuevo****************
+// ***********inicio nuevo****************
 void InicializarPersonajeVector(Personaje *p_guardado) {
     FILE* fPersonaje = fopen("Datos_iniciales/personajes.dat", "rb");
     if(!fPersonaje) {
@@ -490,7 +492,7 @@ void Elegir_Personaje(Personaje* p, Personaje* pParaBatalla){
         }
 
         printf("\nInventario:\n");
-        for (int k = 0; k < 2; k++) {
+        for (int k = 0; k < p->cant_item; k++) {
             if (strlen(p->invent[k].elemento) > 0) {
                 printf("- %s (usos: %d)\n", p->invent[k].elemento, p->invent[k].usos);
             }
@@ -592,16 +594,24 @@ int menu_principal()
 
 
 
-void efecto_typing(const char* texto)
+int efecto_typing(const char* texto, int skip)
 {
     for (int i = 0; texto[i] != '\0'; i++)
     {
         putchar(texto[i]);
         fflush(stdout);
 
-        if (texto[i] != ' ')
+        if (texto[i] != ' ' && skip== 0)
             Sleep(VELOCIDAD_TIPO);
 
+        if (!skip && kbhit())
+        {
+            char c = _getch();
+            if (c == '\r')
+                { // Enter es '\r' en Windows
+                skip = 1;
+                }
+        }
         /*
             switch(texto[i]) {
                 case '.': case '!': case '?': case ':':
@@ -614,26 +624,30 @@ void efecto_typing(const char* texto)
             }
         */
     }
+    if(skip == 0)
+        Sleep(PAUSA_LINEA);
+
+    return skip;
 }
 
 void leer_historia(FILE *archivo, char *buffer, size_t tam_buffer)
 {
 
     system("cls");
-    while (fgets(buffer, tam_buffer, archivo))
+    int skip=0; //saltear introduccion
+    do
     {
         //buffer[strcspn(buffer, "\n")] = '\0'; // Eliminar salto de línea
 
         if (buffer[0] == '|') break;
 
         printf("%5s"," ");
-        efecto_typing(buffer);
-        Sleep(PAUSA_LINEA);
-    }
+        skip = efecto_typing(buffer,skip);
+    }while (fgets(buffer, tam_buffer, archivo));
 
     establecer_color_texto(14);
     printf("\n  ╔══════════════════════════════════════════════════╗\n");
-    printf("  ║       PRESIONA ENTER PARA CONTINUAR...        ║\n");
+    printf("  ║        PRESIONA ENTER PARA CONTINUAR...          ║\n");
     printf("  ╚══════════════════════════════════════════════════╝\n");
     establecer_color_texto(7); // Restaurar color
 
