@@ -1,8 +1,8 @@
 #include "header.h"
 
-Personaje cargar_enemigo_n(int n, const char *archivo)
+Enemigo cargar_enemigo_n(int n, const char *archivo)
 {
-    Personaje enem;
+    Enemigo enem;
     FILE *f = fopen(archivo, "rb");
     if (!f)
     {
@@ -10,13 +10,13 @@ Personaje cargar_enemigo_n(int n, const char *archivo)
         exit(1);
     }
 
-    fseek(f, sizeof(Personaje) * n, SEEK_SET); // saltar a enemigo n
-    fread(&enem, sizeof(Personaje), 1, f);
+    fseek(f, sizeof(Enemigo) * n, SEEK_SET); // saltar a enemigo n
+    fread(&enem, sizeof(Enemigo), 1, f);
     fclose(f);
     return enem;
 }
 
-int EleccionRandomEnemigo(Personaje *enemigo, int *opt_tec_enemigo)
+int EleccionRandomEnemigo(Enemigo *enemigo, int *opt_tec_enemigo)
 {
     srand(time(NULL));
     int numAccion = -1;
@@ -39,18 +39,18 @@ int EleccionRandomEnemigo(Personaje *enemigo, int *opt_tec_enemigo)
     return numAccion;
 }
 
-void EjecutarAccionEnemiga(Personaje *enemigo, Personaje *prota, int accion, int opt_tec,int opt_oponente) {
+void EjecutarAccionEnemiga(Enemigo *enemigo, Personaje *prota, int accion, int opt_tec,int opt_oponente) {
     switch(accion) {
         case 1: // Ataque básico
-            printf("\n%s ataca con un golpe basico!\n", enemigo->nombre);
+            printf("\n%s ataca con un golpe basico!\n", enemigo->Nombre);
             EjecutarAccion(accion,opt_tec,enemigo, prota, opt_oponente);
             break;
         case 2: // Defensa
-            printf("\n%s se defiende!\n", enemigo->nombre);
+            printf("\n%s se defiende!\n", enemigo->Nombre);
             Defender(enemigo);
             break;
         case 3: // Técnica
-            printf("\n%s usa %s!\n", enemigo->nombre, enemigo->tecnicas[opt_tec].nombre);
+            printf("\n%s usa %s!\n", enemigo->Nombre, enemigo->tecnicas[opt_tec].nombre);
             float danio = CalcularDanioTecnica(enemigo, opt_tec);
 			recibeDanio(danio, prota, opt_oponente);
             break;

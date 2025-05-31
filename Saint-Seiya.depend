@@ -4,7 +4,7 @@
 	<locale.h>
 	<windows.h>
 
-1748549397 c:\users\pc\documents\topicos de programacion\saint-seiya\header.h
+1748716121 c:\users\pc\documents\topicos de programacion\saint-seiya\header.h
 	<stdlib.h>
 	<stdio.h>
 	<string.h>
@@ -45,13 +45,13 @@
 	<string.h>
 	<time.h>
 
-1748548908 source:c:\users\pc\documents\topicos de programacion\saint-seiya\historia.c
+1748711089 source:c:\users\pc\documents\topicos de programacion\saint-seiya\historia.c
 	"header.h"
 
-1748550061 source:c:\users\pc\documents\topicos de programacion\saint-seiya\enemigos.c
+1748711043 source:c:\users\pc\documents\topicos de programacion\saint-seiya\enemigos.c
 	"header.h"
 
-1748550047 source:c:\users\pc\documents\topicos de programacion\saint-seiya\combate.c
+1748711691 source:c:\users\pc\documents\topicos de programacion\saint-seiya\combate.c
 	"header.h"
 
 1748550026 source:c:\users\pc\documents\topicos de programacion\saint-seiya\personajes.c

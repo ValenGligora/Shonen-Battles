@@ -1,6 +1,6 @@
 #include "header.h"
 
-int ejecutar_batalla(Personaje *prota, Personaje *enemigo) {
+int ejecutar_batalla(Personaje *prota, Enemigo *enemigo) {
     int opcion, opt_tec, opt_obj, opt_tec_enemigo, eleccionEnemigo;
 
     while (1) {
@@ -10,13 +10,30 @@ int ejecutar_batalla(Personaje *prota, Personaje *enemigo) {
 
         // Mostrar estado de los combatientes hay que fixear las lineas
         printf("============================================\n");
-        printf("| %-20s VS %-20s |\n", prota->nombre, enemigo->nombre);
+        printf("| %-20s VS %-20s |\n", prota->nombre, enemigo->Nombre);
         printf("| Vida: %-4.0f/%-4.0f    Vida: %-4.0f/%-4.0f |\n",
                prota->vida, prota->vidaMax, enemigo->vida, enemigo->vidaMax);
         printf("| Cosmo: %-3.0f/%-3.0f   Cosmo: %-3.0f/%-3.0f |\n",
                prota->cosmo, prota->cosmoMax, enemigo->cosmo, enemigo->cosmoMax);
         printf("============================================\n\n");
 
+        //Barra de vida protagonista
+        int vidaprom = (prota->vida/prota->vidaMax)*10;
+
+        printf("Barra de vida de %-20s\n",prota->nombre);
+
+        if(vidaprom > 7)    establecer_color_texto(2);
+        else if(vidaprom > 3) establecer_color_texto(6);
+        else    establecer_color_texto(4);
+
+        for(int i = 0; i < 10; i++)
+        {
+            if(i<vidaprom)  printf("█");
+            else    printf(".");
+        }
+        establecer_color_texto(7); // Restaurar color
+
+        putchar('\n');
         // Menú de opciones
         printf("1. Atacar con %s\n", prota->arma.nombre);
         printf("2. Defenderse\n");
@@ -46,7 +63,7 @@ int ejecutar_batalla(Personaje *prota, Personaje *enemigo) {
                     continue;
                 }
 
-                printf("\nTecnicas disponibles:\n");
+                printf("\nTecnicas disponibles:\n"); // hay que configurar las técnicas especiales (Las que no hace daño) no se que hacen
                 for (int i = 0; i < prota->cant_tec; i++) {
                     printf("%d. %s (%.1f ATQ, %d Cosmo)\n",
                           i+1, prota->tecnicas[i].nombre,
@@ -92,7 +109,8 @@ int ejecutar_batalla(Personaje *prota, Personaje *enemigo) {
 
         // Verificar si el enemigo fue derrotado
         if (enemigo->vida <= 0) {
-            printf("\n¡%s ha sido derrotado!\n", enemigo->nombre);
+            system("cls");
+            printf("\n¡%s ha sido derrotado!\n", enemigo->Nombre);
             return 1;
         }
 
@@ -102,6 +120,7 @@ int ejecutar_batalla(Personaje *prota, Personaje *enemigo) {
 
         // Verificar si el jugador fue derrotado
         if (prota->vida <= 0) {
+            system("cls");
             printf("\n¡Has sido derrotado!\n");
             return 0;
         }
@@ -117,12 +136,12 @@ void UsarObjeto(Personaje *p, int obj_index) {
     printf("\n%s usa %s!\n", p->nombre, p->invent[obj_index].elemento);
 
     // Efectos según tipo de objeto (debes implementar esta lógica)
-    if (strstr(p->invent[obj_index].elemento, "Cura") != NULL) {
+    if (strstr(p->invent[obj_index].elemento, "Pocion de vida") != NULL) {
         p->vida += 50;
         if (p->vida > p->vidaMax) p->vida = p->vidaMax;
         printf("¡Restauradas 50 puntos de vida!\n");
     }
-    else if (strstr(p->invent[obj_index].elemento, "Cosmo") != NULL) {
+    else if (strstr(p->invent[obj_index].elemento, "Pocion de cosmo") != NULL) {
         p->cosmo += 30;
         if (p->cosmo > p->cosmoMax) p->cosmo = p->cosmoMax;
         printf("¡Restaurados 30 puntos de cosmo!\n");

@@ -54,13 +54,18 @@ void jugar_historia(const char *archivo_historia, DatosPartida *guardado, const 
         if (linea[0] == '|') // Cada vez que encuentra el delimitador entra en una batalla
         {
             printf("ENTRÓ A BATALLA");
-            //Elegir personaje
-            Elegir_Personaje(guardado->pj_guardado,&personajeBatalla);
 
             while (opcion_Menu != -1 && resultado_batalla != 1)
             {
-                printf("\n>>> ¡Batalla %d! <<<\n", guardado->num_batalla + 1);
-                Personaje enemigo = cargar_enemigo_n(guardado->num_batalla, archivo_enemigos);
+
+                Elegir_Personaje(guardado->pj_guardado,&personajeBatalla);//la cambie de posicion asi si se pierde el combate pueden probar con otro personaje
+
+                system("cls");
+                printf("\n\t>>> ¡BATALLA %d! <<<\n", guardado->num_batalla + 1);
+                putchar('\n');
+                system("pause");
+
+                Enemigo enemigo = cargar_enemigo_n(guardado->num_batalla, archivo_enemigos);
                 resultado_batalla = ejecutar_batalla(&personajeBatalla, &enemigo); // 1 gana ; 0 pierde ; -1 decide escapar de la batalla
                 if (resultado_batalla != 1) // Consultar si desea intentarlo de nuevo o desea guardar la partida.
                 {
@@ -88,6 +93,7 @@ void jugar_historia(const char *archivo_historia, DatosPartida *guardado, const 
             // En este caso que NO ganamos, no se actualiza el fseek
             guardado->num_batalla++;  // Solo incrementar la batalla si no es un bucle de batallas fallidas
             guardado->posicion_historia = posicion_Historia_postBatalla; // Guardar para comenzar historia luego de la última batalla ganada
+            //Elegir_Personaje(guardado->pj_guardado,&personajeBatalla);//permitir elegir con que persoanje pelear la batalla de nuevo.
             guardar_partida("save.dat", guardado);
         }
 

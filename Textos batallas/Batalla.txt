@@ -1,0 +1,1 @@
+Aca debería poners el texto que se leera antes y después de una pelea para luego ser leído con memoría dinámica

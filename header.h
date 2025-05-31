@@ -55,6 +55,18 @@ typedef struct
     int cant_item;
 } Personaje;
 
+typedef struct{
+    char Nombre[20];
+    float vida;
+    float vidaMax;
+    float ataque;
+    float cosmo;
+    float cosmoMax;
+    float defensa;
+    Tecnica tecnicas[2];
+    char Inicio_Batalla[250];
+} Enemigo;
+
 typedef struct
 {
     long posicion_historia;
@@ -66,57 +78,58 @@ typedef struct
 
 // -------------------------ENCABEZADO FUNCIONES -----------------------//
 
-//--PRUEBA--
+//--FUNCIONES NO IMPLEMENTADAS--
 void crear_archivo_historia();
-// void crear_archivo_Personajes_Principales();
-
-//--ARCHIVO PARTIDA--
-void cargar_partida(int n, DatosPartida *datos, const char *nombreArchivo);
-
-void guardar_partida(const char*, DatosPartida *save);
-void mostrarPersonaje(Personaje p);
-
-//--JUEGO--
-// int menu_principal();                                     // Mostrar inicio: "iniciar juego", "salir", "continuar aventura"
-int menu_principal();
-void mostrar_personajes_disponibles(const char*);
-void jugar_historia(const char *archivo_historia, DatosPartida *save, const char *archivo_enemigos);
-int efecto_typing(const char* texto,int skip);
-void establecer_color_texto(int color);
-
-//--EXTRA--
-
-void MostrarInventario(Personaje *p);
-int InventarioVacio(Personaje *p);
-void UsarObjeto(Personaje *p, int obj_index);
-
-
-//--BATALLA--
-
 void batalla(FILE, Personaje);  // Se desarrolla cada batalla la batalla habria que hacerla con memoria dinamica que es parte de la consigna
 int sigue_con_vida(Personaje);  // Consulta si sigue con vida
 void mostrar_estado(Personaje); // Mostrar vida, acciones disponibles, etc
-void recibeDanio(float danio, Personaje *p, int eleccion);
-void EjecutarAccion(int, int, Personaje *, Personaje *, int);
+// void crear_archivo_Personajes_Principales();
 
-void Defender(Personaje *p);
 
-void InicializarPersonajeVector(Personaje *p_guardado);
-void Elegir_Personaje(Personaje* p,Personaje* pParaBatalla);
+//--Historia.c--
 
-int ejecutar_batalla(Personaje *prota, Personaje *enemigo);
+void jugar_historia(const char *archivo_historia, DatosPartida *save, const char *archivo_enemigos);
+int efecto_typing(const char* texto,int skip);
+
+void mostrar_personajes_disponibles(const char*);
+
+//--Funciones.c--
+
+void mostrar_menu();
+int menu_principal();
+void cargar_partida(int n, DatosPartida *datos, const char *nombreArchivo);
+void guardar_partida(const char*, DatosPartida *save);
 
 int ValidarEleccion(int min, int max);
 int validarIntRango(int, int);
+void MostrarInventario(Personaje *p);
+int InventarioVacio(Personaje *p);
+void Elegir_Personaje(Personaje* p,Personaje* pParaBatalla);
 
-//--Enemigo--
-int EleccionRandomEnemigo(Personaje *enemigo, int *opt_tec_enemigo);
-void EjecutarAccionEnemiga(Personaje *enemigo, Personaje *prota, int accion, int opt_tec,int opt_oponente);
-Personaje cargar_enemigo_n(int n, const char *archivo);
+void establecer_color_texto(int color);
 
+
+//--Comabte.c--
+
+int ejecutar_batalla(Personaje *prota, Enemigo *enemigo);
+void UsarObjeto(Personaje *p, int obj_index);
 float CalcularAtaque(Personaje *prota);
 float CalcularAtaqueTecnica(Personaje *p, int num_tec);
 float CalcularDanioTecnica(Personaje *p, int num_tec);
+void recibeDanio(float danio, Personaje *p, int eleccion);
+void Defender(Personaje *p);
+
+//--Perosnajes.c--
+
+void InicializarPersonajeVector(Personaje *p_guardado);
+void mostrarPersonaje(Personaje p);
+void EjecutarAccion(int, int, Personaje *, Personaje *, int);
+
+//--Enemigos.c--
+
+Enemigo cargar_enemigo_n(int n, const char *archivo);
+int EleccionRandomEnemigo(Enemigo *enemigo, int *opt_tec_enemigo);
+void EjecutarAccionEnemiga(Enemigo *enemigo, Personaje *prota, int accion, int opt_tec,int opt_oponente);
 
 // ------------------------------ -------------------- --------------------------- //
 
