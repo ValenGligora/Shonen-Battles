@@ -130,6 +130,14 @@ void guardar_partida(const char *archivo, DatosPartida *save)
 }
 
 //--BATALLA--
+
+float CalcularDanioTecnicaEnemigo(Enemigo *e, int num_tec) {
+    Tecnica *tec = &e->tecnicas[num_tec];
+    float danio_base = e->ataque;
+    float danio_final = danio_base * (tec->ataque_tec / 100.0f);
+    e->cosmo -= tec->cosmo_necesario;
+    return danio_final;
+}
 int validarIntRango(int min, int max)
 {
     int num;
@@ -166,6 +174,7 @@ void MostrarInventario(Personaje *p) {
         }
     }
 }
+
 
 int InventarioVacio(Personaje *p) {
     for (int i = 0; i < p->cant_item; i++) {

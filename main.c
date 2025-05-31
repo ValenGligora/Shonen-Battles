@@ -3,6 +3,8 @@
 #include <windows.h>
 int main()
 {
+    srand((unsigned int)time(NULL)); // Solo una vez al comienzo del juego
+
     SetConsoleOutputCP(CP_UTF8);
     setlocale(LC_ALL, "es_ES.UTF-8");
 

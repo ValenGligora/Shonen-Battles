@@ -115,8 +115,12 @@ int ejecutar_batalla(Personaje *prota, Enemigo *enemigo) {
         }
 
         // Turno del enemigo
-        eleccionEnemigo = EleccionRandomEnemigo(enemigo, &opt_tec_enemigo);
-        EjecutarAccionEnemiga(enemigo, prota, eleccionEnemigo, opt_tec_enemigo,opcion);
+        if(opcion!=4){
+
+            eleccionEnemigo = EleccionRandomEnemigo(enemigo, &opt_tec_enemigo);
+            EjecutarAccionEnemiga(enemigo, prota, eleccionEnemigo, opt_tec_enemigo,opcion);
+        }
+
 
         // Verificar si el jugador fue derrotado
         if (prota->vida <= 0) {
