@@ -63,16 +63,26 @@ int ejecutar_batalla(Personaje *prota, Enemigo *enemigo) {
                     continue;
                 }
 
-                printf("\nTecnicas disponibles:\n"); // hay que configurar las técnicas especiales (Las que no hace daño) no se que hacen
+                printf("\nTecnicas disponibles:\n");
                 for (int i = 0; i < prota->cant_tec; i++) {
                     printf("%d. %s (%.1f ATQ, %d Cosmo)\n",
-                          i+1, prota->tecnicas[i].nombre,
+                          i + 1, prota->tecnicas[i].nombre,
                           prota->tecnicas[i].ataque_tec,
                           prota->tecnicas[i].cosmo_necesario);
                 }
-                printf("\nElija tecnica (1-%d): ", prota->cant_tec);
 
-                opt_tec = validarIntRango(1, prota->cant_tec) - 1;
+                // Agregar opción para volver
+                printf("0. Volver\n");
+                printf("\nElija tecnica (0-%d): ", prota->cant_tec);
+
+                opt_tec = validarIntRango(0, prota->cant_tec) - 1;
+
+                // Si eligió volver
+                if (opt_tec == -1) {
+                    printf("\nVolviendo al menú...\n");
+                    system("pause");
+                    continue;
+                }
 
                 if (prota->cosmo < prota->tecnicas[opt_tec].cosmo_necesario) {
                     printf("\n¡Cosmo insuficiente! Necesitas %d\n", prota->tecnicas[opt_tec].cosmo_necesario);
@@ -83,6 +93,7 @@ int ejecutar_batalla(Personaje *prota, Enemigo *enemigo) {
                 printf("\n%s usa %s!\n", prota->nombre, prota->tecnicas[opt_tec].nombre);
                 EjecutarAccion(3, opt_tec, prota, enemigo, 0);
                 break;
+
 
             case 4: // Objetos
                 MostrarInventario(prota);
@@ -152,6 +163,7 @@ void UsarObjeto(Personaje *p, int obj_index) {
     }
 
     p->invent[obj_index].usos--;
+
     if (p->invent[obj_index].usos <= 0) {
         memset(p->invent[obj_index].elemento, 0, 30); // Eliminar objeto si no quedan usos
     }

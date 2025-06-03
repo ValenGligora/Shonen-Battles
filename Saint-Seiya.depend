@@ -86,3 +86,32 @@
 1748711073 source:c:\users\shany\onedrive - universidad nacional de la matanza\escritorio\topicos\tp topicos\shonen-battles\shonen-battles\personajes.c
 	"header.h"
 
+1748793001 source:c:\users\valen\desktop\shonen-battles\combate.c
+	"header.h"
+
+1748793001 c:\users\valen\desktop\shonen-battles\header.h
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	<time.h>
+	<windows.h>
+	<conio.h>
+	<windows.h>
+
+1748793001 source:c:\users\valen\desktop\shonen-battles\enemigos.c
+	"header.h"
+
+1748793001 source:c:\users\valen\desktop\shonen-battles\funciones.c
+	"header.h"
+
+1748793001 source:c:\users\valen\desktop\shonen-battles\historia.c
+	"header.h"
+
+1748793001 source:c:\users\valen\desktop\shonen-battles\main.c
+	"header.h"
+	<locale.h>
+	<windows.h>
+
+1748793001 source:c:\users\valen\desktop\shonen-battles\personajes.c
+	"header.h"
+
