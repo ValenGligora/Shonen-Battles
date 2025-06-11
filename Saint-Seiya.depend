@@ -57,3 +57,61 @@
 1748550026 source:c:\users\pc\documents\topicos de programacion\saint-seiya\personajes.c
 	"header.h"
 
+1748724910 source:c:\users\shany\onedrive - universidad nacional de la matanza\escritorio\topicos\tp topicos\shonen-battles\shonen-battles\combate.c
+	"header.h"
+
+1748730469 c:\users\shany\onedrive - universidad nacional de la matanza\escritorio\topicos\tp topicos\shonen-battles\shonen-battles\header.h
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	<time.h>
+	<windows.h>
+	<conio.h>
+	<windows.h>
+
+1748731830 source:c:\users\shany\onedrive - universidad nacional de la matanza\escritorio\topicos\tp topicos\shonen-battles\shonen-battles\enemigos.c
+	"header.h"
+
+1748730469 source:c:\users\shany\onedrive - universidad nacional de la matanza\escritorio\topicos\tp topicos\shonen-battles\shonen-battles\funciones.c
+	"header.h"
+
+1748731611 source:c:\users\shany\onedrive - universidad nacional de la matanza\escritorio\topicos\tp topicos\shonen-battles\shonen-battles\historia.c
+	"header.h"
+
+1748724741 source:c:\users\shany\onedrive - universidad nacional de la matanza\escritorio\topicos\tp topicos\shonen-battles\shonen-battles\main.c
+	"header.h"
+	<locale.h>
+	<windows.h>
+
+1748711073 source:c:\users\shany\onedrive - universidad nacional de la matanza\escritorio\topicos\tp topicos\shonen-battles\shonen-battles\personajes.c
+	"header.h"
+
+1748793001 source:c:\users\valen\desktop\shonen-battles\combate.c
+	"header.h"
+
+1748793001 c:\users\valen\desktop\shonen-battles\header.h
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	<time.h>
+	<windows.h>
+	<conio.h>
+	<windows.h>
+
+1748793001 source:c:\users\valen\desktop\shonen-battles\enemigos.c
+	"header.h"
+
+1748793001 source:c:\users\valen\desktop\shonen-battles\funciones.c
+	"header.h"
+
+1748793001 source:c:\users\valen\desktop\shonen-battles\historia.c
+	"header.h"
+
+1748793001 source:c:\users\valen\desktop\shonen-battles\main.c
+	"header.h"
+	<locale.h>
+	<windows.h>
+
+1748793001 source:c:\users\valen\desktop\shonen-battles\personajes.c
+	"header.h"
+

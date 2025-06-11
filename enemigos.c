@@ -1,3 +1,5 @@
+
+
 #include "header.h"
 
 Enemigo cargar_enemigo_n(int n, const char *archivo)
@@ -16,44 +18,72 @@ Enemigo cargar_enemigo_n(int n, const char *archivo)
     return enem;
 }
 
+// Elige acción aleatoria válida para el enemigo
 int EleccionRandomEnemigo(Enemigo *enemigo, int *opt_tec_enemigo)
 {
-    srand(time(NULL));
-    int numAccion = -1;
+    int accion_valida = 0;
+    int intento = 0;
 
-    while (numAccion == -1)
+    while (!accion_valida && intento < 10)
     {
-        numAccion = rand() % 3 + 1;
+        int numAccion = rand() % 3 + 1; // 1 = ataque, 2 = defensa, 3 = técnica
+        intento++;
 
-        // if (numAccion == 2)
-        //  opt_tec = seleccionarTecnica(&tecnicas,cant_tec,cosmo);
-        // menu que muestre la tecnicas disponibles
-        // debe validar que alcance el cosmo para poder realizarla
-        // si el usuario se arreepiente de elegir esta opcion , el valor de n pasa a ser -1
-
-        // en este caso voy a elegir siempre la [0], pero lo debe hacer la funcion selecccionarTecnica();
-        if (numAccion == 2)
-            *opt_tec_enemigo = 0; // elijo la primer tecnica
+        if (numAccion == 3)
+        {
+            // Verificar si alguna técnica es utilizable
+            for (int i = 0; i < 2; i++)
+            {
+                if (strlen(enemigo->tecnicas[i].nombre) > 0 &&
+                    enemigo->cosmo >= enemigo->tecnicas[i].cosmo_necesario)
+                {
+                    *opt_tec_enemigo = i;
+                    return 3;
+                }
+            }
+            // No tiene cosmo suficiente para ninguna técnica, reintenta
+        }
+        else
+        {
+            return numAccion; // 1 o 2
+        }
     }
 
-    return numAccion;
+    // Si no se encontró ninguna acción válida después de varios intentos, se defiende por defecto
+    return 2;
 }
 
-void EjecutarAccionEnemiga(Enemigo *enemigo, Personaje *prota, int accion, int opt_tec,int opt_oponente) {
-    switch(accion) {
-        case 1: // Ataque básico
-            printf("\n%s ataca con un golpe basico!\n", enemigo->Nombre);
-            EjecutarAccion(accion,opt_tec,enemigo, prota, opt_oponente);
-            break;
-        case 2: // Defensa
-            printf("\n%s se defiende!\n", enemigo->Nombre);
-            Defender(enemigo);
-            break;
-        case 3: // Técnica
+void EjecutarAccionEnemiga(Enemigo *enemigo, Personaje *prota, int accion, int opt_tec, int opt_oponente)
+{
+    switch (accion)
+    {
+    case 1: // Ataque básico
+        printf("\n%s ataca con un golpe básico!\n", enemigo->Nombre);
+        EjecutarAccion(1, 0, enemigo, prota, opt_oponente);
+        break;
+
+    case 2: // Defensa
+        printf("\n%s se defiende!\n", enemigo->Nombre);
+        Defender(enemigo);
+        break;
+
+    case 3: {
+        if (enemigo->cosmo >= enemigo->tecnicas[opt_tec].cosmo_necesario)
+        {
             printf("\n%s usa %s!\n", enemigo->Nombre, enemigo->tecnicas[opt_tec].nombre);
-            float danio = CalcularDanioTecnica(enemigo, opt_tec);
-			recibeDanio(danio, prota, opt_oponente);
-            break;
+            float danio = CalcularDanioTecnicaEnemigo(enemigo, opt_tec);
+            recibeDanio(danio, prota, opt_oponente);
+        }
+        else
+        {
+            printf("\n%s intentó usar una técnica pero no tenía suficiente cosmo.\n", enemigo->Nombre);
+            printf("%s se pone a la defensiva.\n", enemigo->Nombre);
+            Defender(enemigo);
+        }
+        break;
+            }
     }
-}
 
+
+
+}

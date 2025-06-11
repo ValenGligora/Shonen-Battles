@@ -110,7 +110,7 @@ void establecer_color_texto(int color);
 
 
 //--Comabte.c--
-
+float CalcularDanioTecnicaEnemigo(Enemigo *e, int num_tec);
 int ejecutar_batalla(Personaje *prota, Enemigo *enemigo);
 void UsarObjeto(Personaje *p, int obj_index);
 float CalcularAtaque(Personaje *prota);
