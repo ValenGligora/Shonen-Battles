@@ -132,13 +132,17 @@ void jugar_historia(const char *archivo_historia, DatosPartida *guardado, const 
             do
             {
                 Elegir_Personaje(guardado->pj_guardado, &personajeBatalla);
+                Enemigo enemigo = cargar_enemigo_n(guardado->num_batalla, archivo_enemigos);
 
                 system("cls");
-                printf("\n\t>>> ¡BATALLA %d! <<<\n", guardado->num_batalla + 1);
+                printf("\n>>> ¡BATALLA %d! <<<\n\n", guardado->num_batalla + 1);
+
+                puts(enemigo.Inicio_Batalla);
+
                 putchar('\n');
                 system("pause");
 
-                Enemigo enemigo = cargar_enemigo_n(guardado->num_batalla, archivo_enemigos);
+
                 resultado_batalla = ejecutar_batalla(&personajeBatalla, &enemigo);
 
                 if (resultado_batalla == -1) {
@@ -146,7 +150,7 @@ void jugar_historia(const char *archivo_historia, DatosPartida *guardado, const 
                     int salir;
                     scanf("%d", &salir);
                     if (salir == 1) {
-                        guardar_partida("Partida.dat", guardado);
+                        guardar_partida("Guardado/Partida.dat", guardado);
                         fclose(fHistoria);
                         return;
                     }
@@ -167,10 +171,10 @@ void jugar_historia(const char *archivo_historia, DatosPartida *guardado, const 
 
                     int guardar = 0;
                     printf("\n¿Deseás guardar tu progreso? (1 = Sí / 0 = No): ");
-                    scanf("%d", &guardar);
+                    guardar = validarIntRango(0,1);
 
                     if (guardar == 1) {
-                        guardar_partida("Partida.dat", guardado);
+                        guardar_partida("Guardado/Partida.dat", guardado);
                         printf("✅ Partida guardada exitosamente.\n");
                         system("pause");
                     } else {

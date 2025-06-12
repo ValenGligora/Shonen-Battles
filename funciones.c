@@ -4,49 +4,6 @@
 #define PAUSA_LINEA 100      // ms entre líneas
 #define PAUSA_PUNTUACION 250 // ms extra para .!?
 
-/*void mostrar_personajes_disponibles(const char* archivo) {
-    FILE* f = fopen(archivo, "rb");
-    if (f == NULL) {
-        puts("No se pudo abrir el archivo de personajes.");
-        return;
-    }
-
-    Personaje p;
-    int i = 1;
-    while (fread(&p, sizeof(Personaje), 1, f) == 1) {
-        printf("---- Personaje #%d ----\n", i++);
-        printf("Nombre: %s\n", p.nombre);
-        printf("Vida: %.1f / %.1f\n", p.vida, p.vidaMax);
-        printf("Cosmo: %.1f / %.1f\n", p.cosmo, p.cosmoMax);
-        printf("Ataque: %.1f\n", p.ataque);
-        printf("Armadura: %.1f | Defensa: %.1f\n", p.armadura, p.defensa);
-
-        // Mostrar arma
-        printf("Arma: %s (Daño: %.1f%%)\n", p.arma.nombre, p.arma.danio_porcentual);
-
-        // Mostrar técnicas
-        printf("Técnicas:\n");
-        for (int j = 0; j < p.cant_tec; j++) {
-            printf("  - %s | Daño: %.1f | Cosmo: %d\n",
-                   p.tecnicas[j].nombre,
-                   p.tecnicas[j].ataque_tec,
-                   p.tecnicas[j].cosmo_necesario);
-        }
-
-        // Mostrar inventario
-        printf("Inventario:\n");
-        for (int j = 0; j < 2; j++) {
-            if (p.invent[j].usos > 0) {
-                printf("  - %s (usos: %d)\n", p.invent[j].elemento, p.invent[j].usos);
-            }
-        }
-
-        printf("\n");
-    }
-
-    fclose(f);
-}
-*/
 void mostrar_menu()
 {
     system("cls"); // Limpiar pantalla
@@ -91,6 +48,7 @@ int menu_principal()
     {
     case 1:
         printf("\n   -> Continuando la partida...\n\n");
+        Sleep(1000);
         break;
     case 2:
         printf("\n   -> Iniciando nueva partida...\n\n");
@@ -98,6 +56,7 @@ int menu_principal()
         break;
     default:
         printf("\n   Saliendo del juego. Hasta la proxima!\n");
+        Sleep(1000);
     }
 
     // Restaurar color original
@@ -118,7 +77,7 @@ void cargar_partida(int n, DatosPartida *datos, const char *nombreArchivo)
         fread(datos, sizeof(DatosPartida), 1, partida);
         fclose(partida);
     }
-    printf("PARTIDA CARGADA");
+    //printf("PARTIDA CARGADA");
 }
 void guardar_partida(const char *archivo, DatosPartida *save)
 {
@@ -187,28 +146,6 @@ int InventarioVacio(Personaje *p) {
 }
 
 // ----------------- //
-/*void InicializarPersonaje(Personaje *personaje, Personaje *p_guardado,int selec)
-{
-    if(selec == 1)
-    {
-        personaje = p_guardado;
-        return;
-    }
-    FILE* fPersonaje = fopen("Datos_iniciales/personajes.dat","rb");
-    if(!fPersonaje)
-    {
-        printf("\nNo se pudo abrir el archivo de personajes");
-        return;
-
-	printf("\nElija algun personaje: ");
-	int opt_personaje = validarIntRango(1,5);
-    fseek(fPersonaje,sizeof(personaje),opt_personaje); //Me muevo a la estructura de personaje que quiero usar
-    fread(&personaje,sizeof(personaje),1,fPersonaje); // Leo los datos de ese personaje
-    fclose(fPersonaje);
-
-}
-*/
-
 /*
 // ***********inicio nuevo****************
 void InicializarPersonajeVector(Personaje *p_guardado) {
@@ -280,38 +217,7 @@ void Elegir_Personaje(Personaje* p, Personaje* pParaBatalla){
     }
     p-=opt_personaje;
     memcpy(pParaBatalla, &p[opt_personaje], sizeof(Personaje));
-/*
-    for (int i=0;i<5;i++){
-        printf("\n=== %s ===\n", p->nombre);
-        printf("Vida: %.1f/%.1f\n", p->vida, p->vidaMax);
-        printf("Cosmo: %.1f/%.1f\n", p->cosmo, p->cosmoMax);
-        printf("Ataque: %.1f\n", p->ataque);
-        printf("Armadura: %.1f\n", p->armadura);
-        printf("Defensa: %.1f\n", p->defensa);
 
-        printf("\nArma: %s (%.2fx daño)\n", p->arma.nombre, p->arma.danio_porcentual);
-
-        printf("\nTécnicas %d:\n", p->cant_tec);
-        for (int j = 0; j < p->cant_tec; j++) {
-            printf("- %s (Daño: %.1f, Cosmo: %d)\n",
-                p->tecnicas[j].nombre,
-                p->tecnicas[j].ataque_tec,
-                p->tecnicas[j].cosmo_necesario);
-        }
-
-        printf("\nInventario:\n");
-        for (int k = 0; k < p->cant_item; k++) {
-            if (strlen(p->invent[k].elemento) > 0) {
-                printf("- %s (usos: %d)\n", p->invent[k].elemento, p->invent[k].usos);
-            }
-        }
-        printf("\n");
-        p++;
-    }
-    p-=5;
-	opt_personaje = validarIntRango(1,5) - 1;
-    p+=opt_personaje;
-*/
 }
 
 void establecer_color_texto(int color)

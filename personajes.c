@@ -45,23 +45,22 @@ void mostrarPersonaje(Personaje p)
     printf("========================\n");
 }
 
-void EjecutarAccion(int opt, int opt_tec, Personaje *emisor, Personaje *receptor, int eleccionOponente)
+void EjecutarAccion(int opt, int opt_tec, Personaje *personaje, Enemigo *enemigo, int eleccionOponente)
 {
     float danio;
     switch (opt)
     {
     case 1:
-        danio = CalcularAtaque(emisor);
-        recibeDanio(danio, receptor, eleccionOponente);
+        danio = personaje->ataque + personaje->ataque * personaje->arma.danio_porcentual;
+        enemigo->vida -= recibeDanio(danio, enemigo->defensa,0,eleccionOponente);//armadura 0 los enemigos no poseen armadura solo defensa
         break;
     case 2:
-        printf("\n%s está a la defensiva", emisor->nombre);
-
+        Defender(personaje, 0);// 0 es el tipo de entidad personaje
         break;
     case 3:
 
-        danio = CalcularDanioTecnica(emisor,opt_tec);
-        recibeDanio(danio, receptor, eleccionOponente);
+        danio = CalcularDanioTecnica(personaje,opt_tec,0);
+        enemigo->vida -= recibeDanio(danio, enemigo->defensa, 0 , eleccionOponente);
         break;
     }
 }

@@ -110,20 +110,17 @@ void establecer_color_texto(int color);
 
 
 //--Comabte.c--
-float CalcularDanioTecnicaEnemigo(Enemigo *e, int num_tec);
 int ejecutar_batalla(Personaje *prota, Enemigo *enemigo);
 void UsarObjeto(Personaje *p, int obj_index);
-float CalcularAtaque(Personaje *prota);
-float CalcularAtaqueTecnica(Personaje *p, int num_tec);
-float CalcularDanioTecnica(Personaje *p, int num_tec);
-void recibeDanio(float danio, Personaje *p, int eleccion);
-void Defender(Personaje *p);
+float CalcularDanioTecnica(void *entidad, int num_tec, int tipo_entidad);
+float recibeDanio(float danio, float defensaBase, float armadura,int eleccion);
+void Defender(void* entidad, int tipo_entidad);
 
 //--Perosnajes.c--
 
 void InicializarPersonajeVector(Personaje *p_guardado);
 void mostrarPersonaje(Personaje p);
-void EjecutarAccion(int, int, Personaje *, Personaje *, int);
+void EjecutarAccion(int, int, Personaje *emisor, Enemigo *receptor, int);
 
 //--Enemigos.c--
 

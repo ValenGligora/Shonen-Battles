@@ -11,27 +11,46 @@ int ejecutar_batalla(Personaje *prota, Enemigo *enemigo) {
         // Mostrar estado de los combatientes hay que fixear las lineas
         printf("============================================\n");
         printf("| %-20s VS %-20s |\n", prota->nombre, enemigo->Nombre);
-        printf("| Vida: %-4.0f/%-4.0f    Vida: %-4.0f/%-4.0f |\n",
-               prota->vida, prota->vidaMax, enemigo->vida, enemigo->vidaMax);
+        //printf("| Vida: %-4.0f/%-4.0f    Vida: %-4.0f/%-4.0f |\n",prota->vida, prota->vidaMax, enemigo->vida, enemigo->vidaMax);
         printf("| Cosmo: %-3.0f/%-3.0f   Cosmo: %-3.0f/%-3.0f |\n",
                prota->cosmo, prota->cosmoMax, enemigo->cosmo, enemigo->cosmoMax);
         printf("============================================\n\n");
 
         //Barra de vida protagonista
-        int vidaprom = (prota->vida/prota->vidaMax)*10;
+        int vidapromPersonaje = (prota->vida/prota->vidaMax)*10;
+        int vidapromEnemigo = (enemigo->vida/enemigo->vidaMax)*10;
 
-        printf("Barra de vida de %-20s\n",prota->nombre);
+        printf("Vida de %s\t\tVida de %s\n",prota->nombre,enemigo->Nombre);
 
-        if(vidaprom > 7)    establecer_color_texto(2);
-        else if(vidaprom > 3) establecer_color_texto(6);
+        if(vidapromPersonaje > 7)    establecer_color_texto(2);
+        else if(vidapromPersonaje > 3) establecer_color_texto(6);
         else    establecer_color_texto(4);
 
         for(int i = 0; i < 10; i++)
         {
-            if(i<vidaprom)  printf("█");
+            if(i<vidapromPersonaje)  printf("█");
             else    printf(".");
         }
+
         establecer_color_texto(7); // Restaurar color
+
+        printf(" %.0f/%.0f",prota->vida, prota->vidaMax);
+        printf("\t");
+
+        if(vidapromEnemigo > 7)    establecer_color_texto(2);
+        else if(vidapromEnemigo > 3) establecer_color_texto(6);
+        else    establecer_color_texto(4);
+
+        for(int i = 0; i < 10; i++)
+        {
+            if(i<vidapromEnemigo)  printf("█");
+            else    printf(".");
+        }
+
+        establecer_color_texto(7); // Restaurar color
+
+        printf(" %.0f/%.0f",enemigo->vida, enemigo->vidaMax);
+        printf("\t");
 
         putchar('\n');
         // Menú de opciones
@@ -47,16 +66,18 @@ int ejecutar_batalla(Personaje *prota, Enemigo *enemigo) {
         // Turno del jugador
         switch(opcion) {
             case 1: // Ataque básico
+
                 printf("\n%s ataca con %s!\n", prota->nombre, prota->arma.nombre);
                 EjecutarAccion(1, 0, prota, enemigo, 0);
                 break;
 
             case 2: // Defensa
-                printf("\n%s se prepara para defender!\n", prota->nombre);
+
                 EjecutarAccion(2, 0, prota, enemigo, 0);
                 break;
 
             case 3: // Técnicas
+
                 if (prota->cant_tec == 0) {
                     printf("\nNo tienes tecnicas disponibles!\n");
                     system("pause");
@@ -169,53 +190,93 @@ void UsarObjeto(Personaje *p, int obj_index) {
     }
 }
 
-float CalcularAtaque(Personaje *p)
-{
-    float ataqueCalculado;
+float CalcularDanioTecnica(void *entidad, int num_tec, int tipo_entidad) {
+    //la tecnica es flat damage
+    Tecnica *tec;
+    Personaje* p;
+    Enemigo* e;
 
-    ataqueCalculado = p->ataque + p->ataque * p->arma.danio_porcentual;
-    return ataqueCalculado;
-}
+    float danio_final;
+    switch (tipo_entidad)
+    {
+    case 0: //Personaje
+        // Consumir cosmo
+        p = (Personaje*)entidad;
+        tec = &p->tecnicas[num_tec];
+        danio_final = tec->ataque_tec;
+        p->cosmo -= tec->cosmo_necesario;
 
-float CalcularDanioTecnica(Personaje *p, int num_tec) {
-    Tecnica *tec = &p->tecnicas[num_tec];
-
-    // Daño base con arma
-    float danio_base = p->ataque + (p->ataque * p->arma.danio_porcentual);
-
-    // Daño final modificado por la técnica (asumimos ataque_tec como multiplicador)
-    float danio_final = danio_base * (tec->ataque_tec/100);
-
-    // Consumir cosmo
-    p->cosmo -= tec->cosmo_necesario;
-
+        break;
+    case 1: //Enemigo
+        // Consumir cosmo
+        e = (Enemigo*)entidad;
+        tec = &e->tecnicas[num_tec];
+        danio_final = tec->ataque_tec;
+        e->cosmo -= tec->cosmo_necesario;
+        break;
+    default:
+        break;
+    }
     return danio_final;
 }
 
-void recibeDanio(float danio, Personaje *p, int eleccion)
+float recibeDanio(float danio, float defensaBase, float armadura,int eleccion)
 {
     float defensa;
     if (eleccion == 2)
-        defensa = p->defensa;
+        defensa = defensaBase;
     else
         defensa = 0;
 
-    float danioInfligido = danio - danio * (p->armadura/100) - danio * (defensa/100);
+    float danioInfligido = danio - danio * (armadura/100) - danio * (defensa/100);
 
-    p->vida -= danioInfligido;
+    return danioInfligido;
 }
 
-void Defender(Personaje *p) {
-    // Aumentar la defensa temporalmente (se resetea al final del turno en ejecutar_batalla)
-    p->defensa = p->armadura * 1.5f;  // Aumento del 50% en la defensa
+void Defender(void* entidad, int tipo_entidad) {
+    //Se castea entidad al tipo de dato que es
+    float cosmoRegenerado;
+    Personaje* p;
+    Enemigo* e ;
 
-    // También regenera un pequeño porcentaje de cosmo
-    float cosmoRegenerado = p->cosmoMax * 0.1f;  // 10% del cosmo máximo
-    p->cosmo += cosmoRegenerado;
-    if (p->cosmo > p->cosmoMax) {
-        p->cosmo = p->cosmoMax;
+    switch (tipo_entidad)
+    {
+    case 0: //personaje
+        p = (Personaje *)entidad;
+        p->defensa += p->armadura * 0.5f;
+
+        cosmoRegenerado = p->cosmoMax * 0.1f;  // 10% del cosmo máximo
+
+        printf("\n%s aumentó su defensa!\n",p->nombre);
+
+
+        p->cosmo += cosmoRegenerado;
+        if (p->cosmo > p->cosmoMax)
+            {
+                p->cosmo = p->cosmoMax;
+            }
+            else    printf("Regeneró %.f cosmo\n",cosmoRegenerado);
+
+        break;
+    case 1: //enemigo
+        e = (Enemigo *)entidad;
+        e->defensa += e->defensa  * 0.5f;
+
+        cosmoRegenerado = e->cosmoMax * 0.1f;  // 10% del cosmo máximo
+
+        printf("\n%s aumentó su defensa!\n",e->Nombre);
+
+        e->cosmo += cosmoRegenerado;
+        if (e->cosmo > e->cosmoMax) {
+            e->cosmo = e->cosmoMax;
+        }
+        else    printf("Regeneró %.f cosmo\n",cosmoRegenerado);
+
+        break;
+    default:
+        break;
     }
+    // Aumentar la defensa temporalmente (se resetea al final del turno en ejecutar_batalla)
 
-    printf("%s adopta una postura defensiva! (+%.f defensa, +%.f cosmo)\n",
-           p->nombre, p->armadura * 0.5f, cosmoRegenerado);
 }
+

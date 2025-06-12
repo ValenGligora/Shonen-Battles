@@ -59,31 +59,27 @@ void EjecutarAccionEnemiga(Enemigo *enemigo, Personaje *prota, int accion, int o
     {
     case 1: // Ataque básico
         printf("\n%s ataca con un golpe básico!\n", enemigo->Nombre);
-        EjecutarAccion(1, 0, enemigo, prota, opt_oponente);
+        prota->vida -= recibeDanio(enemigo->ataque, prota->defensa,prota->defensa,opt_oponente);
         break;
 
     case 2: // Defensa
-        printf("\n%s se defiende!\n", enemigo->Nombre);
-        Defender(enemigo);
+        //printf("\n%s se defiende!\n", enemigo->Nombre);
+        Defender(enemigo,1); //el 1 representa el tipo de entidad
         break;
 
-    case 3: {
+    case 3: // Ataque técnica
         if (enemigo->cosmo >= enemigo->tecnicas[opt_tec].cosmo_necesario)
         {
             printf("\n%s usa %s!\n", enemigo->Nombre, enemigo->tecnicas[opt_tec].nombre);
-            float danio = CalcularDanioTecnicaEnemigo(enemigo, opt_tec);
-            recibeDanio(danio, prota, opt_oponente);
+            float danio =  CalcularDanioTecnica(enemigo, opt_tec , 1);
+            prota->vida -= recibeDanio(danio, prota->defensa, prota->armadura, opt_oponente);
         }
         else
         {
             printf("\n%s intentó usar una técnica pero no tenía suficiente cosmo.\n", enemigo->Nombre);
             printf("%s se pone a la defensiva.\n", enemigo->Nombre);
-            Defender(enemigo);
+            Defender(&enemigo,1);
         }
         break;
-            }
     }
-
-
-
 }
