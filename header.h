@@ -115,6 +115,7 @@ void UsarObjeto(Personaje *p, int obj_index);
 float CalcularDanioTecnica(void *entidad, int num_tec, int tipo_entidad);
 float recibeDanio(float danio, float defensaBase, float armadura,int eleccion);
 void Defender(void* entidad, int tipo_entidad);
+void RecibirRecompensa(Personaje *p);
 
 //--Perosnajes.c--
 

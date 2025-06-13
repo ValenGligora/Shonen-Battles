@@ -143,6 +143,7 @@ int ejecutar_batalla(Personaje *prota, Enemigo *enemigo) {
         if (enemigo->vida <= 0) {
             system("cls");
             printf("\n¡%s ha sido derrotado!\n", enemigo->Nombre);
+            RecibirRecompensa(prota);
             return 1;
         }
 
@@ -280,3 +281,38 @@ void Defender(void* entidad, int tipo_entidad) {
 
 }
 
+void RecibirRecompensa(Personaje *p){
+    int i;
+    Inventario invent;
+
+
+    int tipo = rand() % 2;
+
+    switch(tipo){
+        case 0:
+            strcpy(invent.elemento,"Pocion de vida");
+            break;
+        case 1:
+            strcpy(invent.elemento,"Pocion de cosmo");
+    }
+    //ya tiene de ese tipo de objeto, se le adiciona un uso
+    for(i=0;i<5;i++){
+        if(strcmp(p->invent[i].elemento, invent.elemento) == 0){
+            p->invent[i].usos++;
+            printf("\n¡Has recibido un objeto! Se agregó una %s a tu inventario.\n", invent.elemento);
+            return;
+        }
+    }
+
+    //verificar si tiene espacio para otro objeto
+    if(p->cant_item<=5){
+        printf("\nInventario lleno. No puede recibir más objetos");
+        return;
+    }
+
+    invent.usos = 0;
+    p->invent[p->cant_item] = invent;
+    p->cant_item++;
+    printf("\n¡Has recibido un objeto! Se agregó una %s a tu inventario.\n", invent.elemento);
+    return;
+}
