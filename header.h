@@ -51,9 +51,15 @@ typedef struct
     Arma arma;
     Tecnica tecnicas[3];
     int cant_tec;
-    Inventario invent[5];
+    Inventario *invent;
     int cant_item;
+    int max_item;
 } Personaje;
+
+typedef struct {
+    Personaje pj;
+    Inventario invent_copia[10]; // máximo temporal (ajustable)
+} PersonajeSerializado;
 
 typedef struct{
     char Nombre[20];

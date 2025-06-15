@@ -127,12 +127,13 @@ void MostrarInventario(Personaje *p) {
     printf("\nInventario:\n");
     for (int i = 0; i < p->cant_item; i++) {
         if (strlen(p->invent[i].elemento) > 0 && p->invent[i].usos > 0) {
-            printf("%d. %s (%d usos)\n", i+1, p->invent[i].elemento, p->invent[i].usos);
+            printf("%d. %s (%d usos)\n", i + 1, p->invent[i].elemento, p->invent[i].usos);
         } else {
-            printf("%d. ---\n", i+1);
+            printf("%d. ---\n", i + 1);
         }
     }
 }
+
 
 
 int InventarioVacio(Personaje *p) {
@@ -141,7 +142,7 @@ int InventarioVacio(Personaje *p) {
             return 0; // Hay objetos disponibles
         }
     }
-    printf("\n¡Inventario vacio!\n");
+    printf("\n¡Inventario vacío!\n");
     return 1;
 }
 

@@ -187,7 +187,11 @@ void UsarObjeto(Personaje *p, int obj_index) {
     p->invent[obj_index].usos--;
 
     if (p->invent[obj_index].usos <= 0) {
-        memset(p->invent[obj_index].elemento, 0, 30); // Eliminar objeto si no quedan usos
+        printf("El %s se ha agotado.\n", p->invent[obj_index].elemento);
+        for (int i = obj_index; i < p->cant_item - 1; i++) {
+            p->invent[i] = p->invent[i + 1];
+        }
+        p->cant_item--;
     }
 }
 
@@ -304,13 +308,17 @@ void RecibirRecompensa(Personaje *p){
         }
     }
 
-    //verificar si tiene espacio para otro objeto
-    if(p->cant_item<=5){
-        printf("\nInventario lleno. No puede recibir más objetos");
-        return;
+    // Si no existe y hay que agregar
+    if (p->cant_item == p->max_item) {
+        p->max_item += 2; // aumentar capacidad
+        p->invent = realloc(p->invent, sizeof(Inventario) * p->max_item);
+        if (!p->invent) {
+            printf(" Error de memoria al expandir inventario.\n");
+            exit(1);
+        }
     }
 
-    invent.usos = 0;
+    invent.usos = 1;
     p->invent[p->cant_item] = invent;
     p->cant_item++;
     printf("\n¡Has recibido un objeto! Se agregó una %s a tu inventario.\n", invent.elemento);
