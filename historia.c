@@ -165,6 +165,13 @@ void jugar_historia(const char *archivo_historia, DatosPartida *guardado, const 
             // Si ganó la batalla
             if (resultado_batalla == 1)
                 {
+                    //Sincronizar inventario del personaje elegido con su original
+                    for (int i = 0; i < 5; i++) {
+                        if (strcmp(guardado->pj_guardado[i].nombre, personajeBatalla.nombre) == 0) {
+                            ActualizarInventario(&guardado->pj_guardado[i], &personajeBatalla);
+                            break;
+                        }
+                    }
                     posicion_Historia_postBatalla = ftell(fHistoria);
                     guardado->num_batalla++;
                     guardado->posicion_historia = posicion_Historia_postBatalla;

@@ -322,5 +322,26 @@ void RecibirRecompensa(Personaje *p){
     p->invent[p->cant_item] = invent;
     p->cant_item++;
     printf("\n¡Has recibido un objeto! Se agregó una %s a tu inventario.\n", invent.elemento);
-    return;
 }
+
+
+void ActualizarInventario(Personaje *perOriginal, Personaje *perBatalla){
+    int i;
+    if (perBatalla->cant_item > perOriginal->max_item) {
+        perOriginal->max_item = perBatalla->cant_item;
+        perOriginal->invent = realloc(perOriginal->invent, sizeof(Inventario) * perOriginal->max_item);
+
+        if (!perOriginal->invent) {
+            printf("Error de memoria al sincronizar inventario.\n");
+            exit(1);
+        }
+    }
+
+    perOriginal->cant_item = perBatalla->cant_item;
+    for (i = 0; i < perOriginal->cant_item; i++) {
+        perOriginal->invent[i] = perBatalla->invent[i];
+    }
+}
+
+
+
