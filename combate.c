@@ -1,5 +1,64 @@
 #include "header.h"
 
+
+void mostrarEstadoCombatientes(const Personaje* prota,const Enemigo* enemigo)
+{
+    // Mostrar estado de los combatientes hay que fixear las lineas
+    printf("============================================\n");
+    printf("| %-20s VS %-20s |\n", prota->nombre, enemigo->Nombre);
+    //printf("| Vida: %-4.0f/%-4.0f    Vida: %-4.0f/%-4.0f |\n",prota->vida, prota->vidaMax, enemigo->vida, enemigo->vidaMax);
+    printf("| Cosmo: %-3.0f/%-3.0f   Cosmo: %-3.0f/%-3.0f |\n",
+            prota->cosmo, prota->cosmoMax, enemigo->cosmo, enemigo->cosmoMax);
+    printf("============================================\n\n");
+
+    //Barra de vida protagonista
+    int vidapromPersonaje = (prota->vida/prota->vidaMax)*10;
+    int vidapromEnemigo = (enemigo->vida/enemigo->vidaMax)*10;
+
+    printf("Vida de %s\t\tVida de %s\n",prota->nombre,enemigo->Nombre);
+
+    if(vidapromPersonaje > 7)    establecer_color_texto(2);
+    else if(vidapromPersonaje > 3) establecer_color_texto(6);
+    else    establecer_color_texto(4);
+
+    for(int i = 0; i < 10; i++)
+    {
+        if(i<vidapromPersonaje)  printf("█");
+        else    printf(".");
+    }
+
+    establecer_color_texto(7); // Restaurar color
+
+    printf(" %.0f/%.0f",prota->vida, prota->vidaMax);
+    printf("\t");
+
+    if(vidapromEnemigo > 7)    establecer_color_texto(2);
+    else if(vidapromEnemigo > 3) establecer_color_texto(6);
+    else    establecer_color_texto(4);
+
+    for(int i = 0; i < 10; i++)
+    {
+        if(i<vidapromEnemigo)  printf("█");
+        else    printf(".");
+    }
+
+    establecer_color_texto(7); // Restaurar color
+
+    printf(" %.0f/%.0f",enemigo->vida, enemigo->vidaMax);
+    printf("\t");
+}
+int mostrar_menu_acciones(const Personaje *prota)
+{
+        // Menú de opciones
+        printf("1. Atacar con %s\n", prota->arma.nombre);
+        printf("2. Defenderse\n");
+        printf("3. Usar tecnica (%d disponibles)\n", prota->cant_tec);
+        printf("4. Usar objeto\n");
+        printf("5. Huir\n");
+        printf("\nElija opcion (1-5): ");
+        return validarIntRango(1, 5);
+}
+
 int ejecutar_batalla(Personaje *prota, Enemigo *enemigo) {
     int opcion, opt_tec, opt_obj, opt_tec_enemigo, eleccionEnemigo;
 
@@ -8,82 +67,29 @@ int ejecutar_batalla(Personaje *prota, Enemigo *enemigo) {
 		enemigo->defensa = 0;
         system("cls || clear");
 
-        // Mostrar estado de los combatientes hay que fixear las lineas
-        printf("============================================\n");
-        printf("| %-20s VS %-20s |\n", prota->nombre, enemigo->Nombre);
-        //printf("| Vida: %-4.0f/%-4.0f    Vida: %-4.0f/%-4.0f |\n",prota->vida, prota->vidaMax, enemigo->vida, enemigo->vidaMax);
-        printf("| Cosmo: %-3.0f/%-3.0f   Cosmo: %-3.0f/%-3.0f |\n",
-               prota->cosmo, prota->cosmoMax, enemigo->cosmo, enemigo->cosmoMax);
-        printf("============================================\n\n");
-
-        //Barra de vida protagonista
-        int vidapromPersonaje = (prota->vida/prota->vidaMax)*10;
-        int vidapromEnemigo = (enemigo->vida/enemigo->vidaMax)*10;
-
-        printf("Vida de %s\t\tVida de %s\n",prota->nombre,enemigo->Nombre);
-
-        if(vidapromPersonaje > 7)    establecer_color_texto(2);
-        else if(vidapromPersonaje > 3) establecer_color_texto(6);
-        else    establecer_color_texto(4);
-
-        for(int i = 0; i < 10; i++)
-        {
-            if(i<vidapromPersonaje)  printf("█");
-            else    printf(".");
-        }
-
-        establecer_color_texto(7); // Restaurar color
-
-        printf(" %.0f/%.0f",prota->vida, prota->vidaMax);
-        printf("\t");
-
-        if(vidapromEnemigo > 7)    establecer_color_texto(2);
-        else if(vidapromEnemigo > 3) establecer_color_texto(6);
-        else    establecer_color_texto(4);
-
-        for(int i = 0; i < 10; i++)
-        {
-            if(i<vidapromEnemigo)  printf("█");
-            else    printf(".");
-        }
-
-        establecer_color_texto(7); // Restaurar color
-
-        printf(" %.0f/%.0f",enemigo->vida, enemigo->vidaMax);
-        printf("\t");
-
+        mostrarEstadoCombatientes(prota,enemigo);
         putchar('\n');
-        // Menú de opciones
-        printf("1. Atacar con %s\n", prota->arma.nombre);
-        printf("2. Defenderse\n");
-        printf("3. Usar tecnica (%d disponibles)\n", prota->cant_tec);
-        printf("4. Usar objeto\n");
-        printf("5. Huir\n");
-        printf("\nElija opcion (1-5): ");
+        opcion = mostrar_menu_acciones;
 
-        opcion = validarIntRango(1, 5);
+        eleccionEnemigo = EleccionRandomEnemigo(enemigo, &opt_tec_enemigo);
+        if(eleccionEnemigo == 2)
+            EjecutarAccionEnemiga(enemigo, prota, eleccionEnemigo, opt_tec_enemigo,opcion);
 
         // Turno del jugador
         switch(opcion) {
             case 1: // Ataque básico
-
                 printf("\n%s ataca con %s!\n", prota->nombre, prota->arma.nombre);
                 EjecutarAccion(1, 0, prota, enemigo, 0);
                 break;
-
             case 2: // Defensa
-
                 EjecutarAccion(2, 0, prota, enemigo, 0);
                 break;
-
             case 3: // Técnicas
-
                 if (prota->cant_tec == 0) {
                     printf("\nNo tienes tecnicas disponibles!\n");
                     system("pause");
                     continue;
                 }
-
                 printf("\nTecnicas disponibles:\n");
                 for (int i = 0; i < prota->cant_tec; i++) {
                     printf("%d. %s (%.1f ATQ, %d Cosmo)\n",
@@ -95,7 +101,6 @@ int ejecutar_batalla(Personaje *prota, Enemigo *enemigo) {
                 // Agregar opción para volver
                 printf("0. Volver\n");
                 printf("\nElija tecnica (0-%d): ", prota->cant_tec);
-
                 opt_tec = validarIntRango(0, prota->cant_tec) - 1;
 
                 // Si eligió volver
@@ -115,21 +120,18 @@ int ejecutar_batalla(Personaje *prota, Enemigo *enemigo) {
                 EjecutarAccion(3, opt_tec, prota, enemigo, 0);
                 break;
 
-
             case 4: // Objetos
                 MostrarInventario(prota);
                 if (InventarioVacio(prota)) {
                     system("pause");
                     continue;
                 }
-
                 printf("\nElija objeto (1-%d) o 0 para cancelar: ",prota->cant_item);
                 opt_obj = validarIntRango(0, prota->cant_item);
                 if (opt_obj == 0) continue;
 
                 UsarObjeto(prota, opt_obj - 1);
                 break;
-
             case 5: // Huir
                 if (INTENTAR_HUIR()) {
                     printf("\n¡Has escapado de la batalla!\n");
@@ -147,13 +149,12 @@ int ejecutar_batalla(Personaje *prota, Enemigo *enemigo) {
             return 1;
         }
 
-        // Turno del enemigo
-        if(opcion!=4){
+        // Accion enemigo (atacar,tecnica)
+        if(opcion!=4 && eleccionEnemigo != 2){
 
-            eleccionEnemigo = EleccionRandomEnemigo(enemigo, &opt_tec_enemigo);
+            //eleccionEnemigo = EleccionRandomEnemigo(enemigo, &opt_tec_enemigo); lo saco y lo pongo al inicio del turno por si elige defenderse
             EjecutarAccionEnemiga(enemigo, prota, eleccionEnemigo, opt_tec_enemigo,opcion);
         }
-
 
         // Verificar si el jugador fue derrotado
         if (prota->vida <= 0) {
@@ -161,8 +162,6 @@ int ejecutar_batalla(Personaje *prota, Enemigo *enemigo) {
             printf("\n¡Has sido derrotado!\n");
             return 0;
         }
-
-
         system("pause");
     }
 }
