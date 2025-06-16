@@ -174,12 +174,12 @@ void UsarObjeto(Personaje *p, int obj_index) {
 
     // Efectos según tipo de objeto (debes implementar esta lógica)
     if (strstr(p->invent[obj_index].elemento, "Pocion de vida") != NULL) {
-        p->vida += 50;
+        p->vida += 60;
         if (p->vida > p->vidaMax) p->vida = p->vidaMax;
         printf("¡Restaurados 50 puntos de vida!\n");
     }
     else if (strstr(p->invent[obj_index].elemento, "Pocion de cosmo") != NULL) {
-        p->cosmo += 30;
+        p->cosmo += 50;
         if (p->cosmo > p->cosmoMax) p->cosmo = p->cosmoMax;
         printf("¡Restaurados 30 puntos de cosmo!\n");
     }
