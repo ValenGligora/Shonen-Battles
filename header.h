@@ -15,6 +15,10 @@
 #define PAUSA_LINEA 100      // ms entre l�neas
 #define PAUSA_PUNTUACION 250 // ms extra para .!?
 
+#define GANA 1
+#define DERROTADO 0
+#define HUYE -1
+
 #define INTENTAR_HUIR() ((rand() % 100) < 70)
 
 // ------------------------------ ESTRUCTURAS --------------------------- //

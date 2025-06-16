@@ -117,6 +117,7 @@ void jugar_historia(const char *archivo_historia, DatosPartida *guardado, const 
     int opcion_Menu = 1;
     long posicion_Historia_postBatalla;
     Personaje personajeBatalla;
+    int salir;
 
     fseek(fHistoria, guardado->posicion_historia, SEEK_SET);
 
@@ -136,18 +137,15 @@ void jugar_historia(const char *archivo_historia, DatosPartida *guardado, const 
 
                 system("cls");
                 printf("\n>>> ¡BATALLA %d! <<<\n\n", guardado->num_batalla + 1);
-
                 puts(enemigo.Inicio_Batalla);
-
                 putchar('\n');
                 system("pause");
 
-
                 resultado_batalla = ejecutar_batalla(&personajeBatalla, &enemigo);
 
-                if (resultado_batalla == -1) {
+                if (resultado_batalla == HUYE)//-1 
+                {
                     printf("\nHas escapado. ¿Deseás guardar y salir? (1 = Sí, 0 = No): ");
-                    int salir;
                     scanf("%d", &salir);
                     if (salir == 1) {
                         guardar_partida("Guardado/Partida.dat", guardado);
@@ -155,15 +153,16 @@ void jugar_historia(const char *archivo_historia, DatosPartida *guardado, const 
                         return;
                     }
                 }
-                else if (resultado_batalla != 1) {
-                    printf("\n¿Intentar de nuevo? (1 = Sí, -1 = Guardar y salir): ");
+                else if (resultado_batalla == DERROTADO)//0 
+                {
+                    printf("\n¿Intentar de nuevo? (1 = Sí, -1 = Salir): ");
                     scanf("%d", &opcion_Menu);
                 }
 
-            } while (opcion_Menu != -1 && resultado_batalla != 1);
+            }while (opcion_Menu != -1 && resultado_batalla != 1);
 
             // Si ganó la batalla
-            if (resultado_batalla == 1)
+            if (resultado_batalla == GANA)//1
                 {
                     //Sincronizar inventario del personaje elegido con su original
                     for (int i = 0; i < 5; i++) {

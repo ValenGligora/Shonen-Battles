@@ -135,7 +135,7 @@ int ejecutar_batalla(Personaje *prota, Enemigo *enemigo) {
             case 5: // Huir
                 if (INTENTAR_HUIR()) {
                     printf("\n¡Has escapado de la batalla!\n");
-                    return -1;
+                    return HUYE;//-1
                 }
                 printf("\n¡La huida ha fallado!\n");
                 break;
@@ -146,7 +146,7 @@ int ejecutar_batalla(Personaje *prota, Enemigo *enemigo) {
             system("cls");
             printf("\n¡%s ha sido derrotado!\n", enemigo->Nombre);
             RecibirRecompensa(prota);
-            return 1;
+            return GANA;//1
         }
 
         // Accion enemigo (atacar,tecnica)
@@ -161,7 +161,7 @@ int ejecutar_batalla(Personaje *prota, Enemigo *enemigo) {
             system("cls");
             printf("\n¡Has sido derrotado!\n");
             Sleep(500);
-            return 0;
+            return DERROTADO; //0
         }
         system("pause");
     }
