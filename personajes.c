@@ -61,7 +61,7 @@ void InicializarPersonajeVector(Personaje *p_guardado)
         p_guardado[i].invent = malloc(sizeof(Inventario) * p_guardado[i].max_item);
 
         if (!p_guardado[i].invent) {
-            printf("❌ Error al asignar memoria para inventario del personaje %d\n", i);
+            printf("Error al asignar memoria para inventario del personaje %d\n", i);
             exit(1);
         }
 

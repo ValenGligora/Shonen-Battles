@@ -69,7 +69,7 @@ int ejecutar_batalla(Personaje *prota, Enemigo *enemigo) {
 
         mostrarEstadoCombatientes(prota,enemigo);
         putchar('\n');
-        opcion = mostrar_menu_acciones;
+        opcion = mostrar_menu_acciones(prota);
 
         eleccionEnemigo = EleccionRandomEnemigo(enemigo, &opt_tec_enemigo);
         if(eleccionEnemigo == 2)

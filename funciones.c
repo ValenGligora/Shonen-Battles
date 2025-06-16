@@ -205,7 +205,7 @@ void Elegir_Personaje(Personaje* p, Personaje* pParaBatalla){
             while (getchar() != '\n'); // Limpiar buffer
             decision = toupper(decision);
 
-        while(decision !='Y' && decision !='N')
+        while(decision !='Y' && decision !='N' && decision !='y' && decision !='n')
         {
             printf("Decision inválida intente de nuevo (Y/N):");
             scanf("%c", &decision);
@@ -213,7 +213,7 @@ void Elegir_Personaje(Personaje* p, Personaje* pParaBatalla){
             decision = toupper(decision);
         }
 
-        if(decision !='Y')
+        if(decision !='Y' && decision !='y')
             p-=opt_personaje;
     }
     p-=opt_personaje;
