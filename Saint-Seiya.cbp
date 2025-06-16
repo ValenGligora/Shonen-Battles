@@ -31,20 +31,10 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="Texto-historia/0_intro_saga_santuario.txt" />
-		<Unit filename="Texto-historia/10_Casa_Capricornio.txt" />
-		<Unit filename="Texto-historia/11_Casa_Acuario.txt" />
-		<Unit filename="Texto-historia/12_Casa_Piscis.txt" />
-		<Unit filename="Texto-historia/13_BatallaFinal.txt" />
-		<Unit filename="Texto-historia/1_casa_aries.txt" />
-		<Unit filename="Texto-historia/2_casa_tauro.txt" />
-		<Unit filename="Texto-historia/3_Casa_Geminis.txt" />
-		<Unit filename="Texto-historia/4_Casa_Cancer.txt" />
-		<Unit filename="Texto-historia/5_Casa_Leo.txt" />
-		<Unit filename="Texto-historia/6_Casa_virgo.txt" />
-		<Unit filename="Texto-historia/7_Casa_libra.txt" />
-		<Unit filename="Texto-historia/8_Casa_escorpio.txt" />
-		<Unit filename="Texto-historia/9_Casa_Sagitario.txt" />
+		<Unit filename="Datos_iniciales/enemigos.dat" />
+		<Unit filename="Datos_iniciales/personajes.dat" />
+		<Unit filename="Guardado/Partida.dat" />
+		<Unit filename="Texto historia/historia.txt" />
 		<Unit filename="Textos batallas/Batalla Final.txt" />
 		<Unit filename="Textos batallas/Batalla casa Acuario.txt" />
 		<Unit filename="Textos batallas/Batalla casa Aries.txt" />
@@ -59,7 +49,6 @@
 		<Unit filename="Textos batallas/Batalla casa Tauro.txt" />
 		<Unit filename="Textos batallas/Batalla de Virgo.txt" />
 		<Unit filename="Textos batallas/Habilidades personajes.txt" />
-		<Unit filename="Textos batallas/Resumen inicial.txt" />
 		<Unit filename="Textos batallas/STATS INICIALES.txt" />
 		<Unit filename="combate.c">
 			<Option compilerVar="CC" />
@@ -67,7 +56,6 @@
 		<Unit filename="enemigos.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="enemigos_santuario.dat" />
 		<Unit filename="funciones.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -81,7 +69,6 @@
 		<Unit filename="personajes.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="protagonistas_saga.dat" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
