@@ -160,6 +160,7 @@ int ejecutar_batalla(Personaje *prota, Enemigo *enemigo) {
         if (prota->vida <= 0) {
             system("cls");
             printf("\n¡Has sido derrotado!\n");
+            Sleep(500);
             return 0;
         }
         system("pause");
@@ -175,7 +176,7 @@ void UsarObjeto(Personaje *p, int obj_index) {
     if (strstr(p->invent[obj_index].elemento, "Pocion de vida") != NULL) {
         p->vida += 50;
         if (p->vida > p->vidaMax) p->vida = p->vidaMax;
-        printf("¡Restauradas 50 puntos de vida!\n");
+        printf("¡Restaurados 50 puntos de vida!\n");
     }
     else if (strstr(p->invent[obj_index].elemento, "Pocion de cosmo") != NULL) {
         p->cosmo += 30;
@@ -186,7 +187,7 @@ void UsarObjeto(Personaje *p, int obj_index) {
     p->invent[obj_index].usos--;
 
     if (p->invent[obj_index].usos <= 0) {
-        printf("El %s se ha agotado.\n", p->invent[obj_index].elemento);
+        printf("%s se ha agotado.\n", p->invent[obj_index].elemento);
         for (int i = obj_index; i < p->cant_item - 1; i++) {
             p->invent[i] = p->invent[i + 1];
         }
@@ -249,7 +250,7 @@ void Defender(void* entidad, int tipo_entidad) {
         p = (Personaje *)entidad;
         p->defensa += p->armadura * 0.5f;
 
-        cosmoRegenerado = p->cosmoMax * 0.1f;  // 10% del cosmo máximo
+        cosmoRegenerado = p->cosmoMax * 0.20f;  // 20% del cosmo máximo
 
         printf("\n%s aumentó su defensa!\n",p->nombre);
 
