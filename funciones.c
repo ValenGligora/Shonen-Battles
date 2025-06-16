@@ -64,9 +64,22 @@ int menu_principal()
     return opcion;
 }
 
+
+void SerializarPersonajes(Personaje *pj, PersonajeSerializado *serializados, int cantPer) {
+    int i, j;
+    for (i = 0; i < cantPer; i++, pj++, serializados++) {
+        serializados->pj = *pj;
+        for (j = 0; j < pj->cant_item; j++) {
+            serializados->invent_copia[j] = pj->invent[j];
+        }
+    }
+}
+
+
 void cargar_partida(int n, DatosPartida *datos, const char *nombreArchivo)
 {
     FILE *partida;
+    int i, j;
 
     if (n == 1) {
         partida = fopen(nombreArchivo, "rb");
@@ -74,17 +87,61 @@ void cargar_partida(int n, DatosPartida *datos, const char *nombreArchivo)
             puts("No se pudo cargar la partida");
             exit(1);
         }
-        fread(datos, sizeof(DatosPartida), 1, partida);
+
+        DatosPartidaSerializada part_cargada;
+        fread(&part_cargada,sizeof(DatosPartidaSerializada),1,partida);
+
+        datos->posicion_historia = part_cargada.posicion_historia;
+        datos->num_batalla = part_cargada.num_batalla;
+
+
+        PersonajeSerializado *per_base = part_cargada.p_serializados;
+        Personaje *per_destino = datos->pj_guardado;
+
+        for (i=0;i<CANT_PERSONAJES; i++, per_base++, per_destino++) {
+            *per_destino = per_base->pj;
+
+            if (per_destino->cant_item>0){
+                per_destino->max_item = per_destino->cant_item;
+            }
+            else{
+                per_destino->max_item = 1;
+            }
+
+            per_destino->invent = malloc(sizeof(Inventario)*per_destino->max_item);
+            if (!per_destino->invent) {
+                printf("Error de memoria al asignar inventario al cargar.\n");
+                exit(1);
+            }
+
+            for (j=0; j<per_destino->cant_item; j++) {
+                per_destino->invent[j] = per_base->invent_copia[j];
+            }
+        }
+
+        //fread(datos, sizeof(DatosPartida), 1, partida);
         fclose(partida);
+
+
+        //fin if
     }
     //printf("PARTIDA CARGADA");
 }
+
 void guardar_partida(const char *archivo, DatosPartida *save)
 {
     FILE *f = fopen(archivo, "wb");
     if (!f)
         return;
-    fwrite(save, sizeof(DatosPartida), 1, f);
+
+    DatosPartidaSerializada save_final;
+    save_final.posicion_historia = save->posicion_historia;
+    save_final.num_batalla = save->num_batalla;
+
+    SerializarPersonajes(save->pj_guardado,save_final.p_serializados,CANT_PERSONAJES);
+
+    //fwrite(save, sizeof(DatosPartida), 1, f);
+    fwrite(&save_final,sizeof(DatosPartidaSerializada),1,f);
     fclose(f);
 }
 

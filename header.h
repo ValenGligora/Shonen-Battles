@@ -19,6 +19,8 @@
 #define DERROTADO 0
 #define HUYE -1
 
+#define CANT_PERSONAJES 5
+
 #define INTENTAR_HUIR() ((rand() % 100) < 70)
 
 // ------------------------------ ESTRUCTURAS --------------------------- //
@@ -65,6 +67,12 @@ typedef struct {
     Inventario invent_copia[10]; // máximo temporal (ajustable)
 } PersonajeSerializado;
 
+typedef struct {
+    long posicion_historia;
+    int num_batalla;
+    PersonajeSerializado p_serializados[5];
+} DatosPartidaSerializada;
+
 typedef struct{
     char Nombre[20];
     float vida;
@@ -107,6 +115,7 @@ void mostrar_personajes_disponibles(const char*);
 
 void mostrar_menu();
 int menu_principal();
+void SerializarPersonajes(Personaje *pj, PersonajeSerializado *serializados, int cantPer);
 void cargar_partida(int n, DatosPartida *datos, const char *nombreArchivo);
 void guardar_partida(const char*, DatosPartida *save);
 
