@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1750194589 source:c:\users\pc\documents\topicos de programacion\saint-seiya\main.c
+1750197365 source:c:\users\pc\documents\topicos de programacion\saint-seiya\main.c
 	"header.h"
 	<locale.h>
 	<windows.h>
@@ -37,7 +37,7 @@
 	<stdio.h>
 	<stdlib.h>
 
-1750194589 source:c:\users\pc\documents\topicos de programacion\saint-seiya\funciones.c
+1750198811 source:c:\users\pc\documents\topicos de programacion\saint-seiya\funciones.c
 	"header.h"
 
 1748459128 source:c:\users\pc\documents\topicos de programacion\saint-seiya\header.h
@@ -46,7 +46,7 @@
 	<string.h>
 	<time.h>
 
-1750197084 source:c:\users\pc\documents\topicos de programacion\saint-seiya\historia.c
+1750197663 source:c:\users\pc\documents\topicos de programacion\saint-seiya\historia.c
 	"header.h"
 
 1750194589 source:c:\users\pc\documents\topicos de programacion\saint-seiya\enemigos.c

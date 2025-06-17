@@ -29,7 +29,7 @@ int menu_principal()
 
     mostrar_menu();
     scanf("%d", &opcion);
-
+    getchar();
     while (opcion < 1 || opcion > 3)
     {
         establecer_color_texto(12);
@@ -38,6 +38,7 @@ int menu_principal()
         establecer_color_texto(15);
         printf("   Elige una opcion (1-3): ");
         scanf("%d", &opcion);
+        getchar();
     }
     establecer_color_texto(10);
     switch (opcion)

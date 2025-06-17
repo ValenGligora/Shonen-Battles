@@ -64,8 +64,8 @@ void jugar_historia(const char *archivo_historia, DatosPartida *guardado, const 
                 putchar('\n');
                 system("pause");
 
-                //resultado_batalla = ejecutar_batalla(&personajeBatalla, &enemigo);
-                resultado_batalla = GANA;
+                resultado_batalla = ejecutar_batalla(&personajeBatalla, &enemigo);
+
                 if (resultado_batalla == HUYE) {
                     int salir = 0;
                     printf("\nHas escapado. ¿Deseás guardar y salir? (1 = Sí, 0 = No): ");
