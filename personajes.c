@@ -1,36 +1,5 @@
 #include "header.h"
-/*
-void InicializarPersonajeVector(Personaje *p_guardado)
-{
-    PersonajeSerializado temp[5];
-    FILE* fPersonaje = fopen("Datos_iniciales/personajes.dat","rb");
-    if(!fPersonaje)
-    {
-        printf("\nNo se pudo abrir el archivo de personajes");
-        return;
-    }
-    PersonajeSerializado temp[5];
-    for (int i = 0; i < 5; i++) {
-        if (temp[i].pj.cant_item <= 0)
-            temp[i].pj.cant_item = 1;
 
-        p_guardado[i] = temp[i].pj;
-        p_guardado[i].max_item = temp[i].pj.cant_item;
-        p_guardado[i].invent = malloc(sizeof(Inventario) * p_guardado[i].max_item);
-
-        if (!p_guardado[i].invent) {
-            printf("Error al asignar memoria para inventario del personaje %d\n", i);
-            exit(1);
-        }
-
-        for (int j = 0; j < p_guardado[i].cant_item; j++) {
-            p_guardado[i].invent[j] = temp[i].invent_copia[j];
-        }
-    }
-    fread(p_guardado,sizeof(Personaje),5,fPersonaje);
-    fclose(fPersonaje);
-
-}*/
 void InicializarPersonajeVector(Personaje *p_guardado)
 {
     FILE *fPersonaje = fopen("Datos_iniciales/personajes.dat", "rb");
@@ -53,9 +22,14 @@ void InicializarPersonajeVector(Personaje *p_guardado)
     for (int i = 0; i < 5; i++) {
         p_guardado[i] = temp[i].pj;
 
-        if (p_guardado[i].cant_item <= 0) {
-            p_guardado[i].cant_item = 1;
+        // Copiar técnicas correctamente
+        for (int t = 0; t < temp[i].pj.cant_tec; t++) {
+            p_guardado[i].tecnicas[t] = temp[i].tecnicas_copia[t];
         }
+
+        // Asignación segura de inventario
+        if (p_guardado[i].cant_item <= 0)
+            p_guardado[i].cant_item = 1;
 
         p_guardado[i].max_item = p_guardado[i].cant_item;
         p_guardado[i].invent = malloc(sizeof(Inventario) * p_guardado[i].max_item);
@@ -68,7 +42,10 @@ void InicializarPersonajeVector(Personaje *p_guardado)
         for (int j = 0; j < p_guardado[i].cant_item; j++) {
             p_guardado[i].invent[j] = temp[i].invent_copia[j];
         }
-    }
+}
+
+
+
 }
 
 

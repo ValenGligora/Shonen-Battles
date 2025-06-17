@@ -72,6 +72,9 @@ void SerializarPersonajes(Personaje *pj, PersonajeSerializado *serializados, int
         for (j = 0; j < pj->cant_item; j++) {
             serializados->invent_copia[j] = pj->invent[j];
         }
+        for (j = 0; j < pj->cant_tec; j++) {
+            serializados->tecnicas_copia[j] = pj->tecnicas[j];
+        }
     }
 }
 
@@ -203,38 +206,7 @@ int InventarioVacio(Personaje *p) {
     return 1;
 }
 
-// ----------------- //
-/*
-// ***********inicio nuevo****************
-void InicializarPersonajeVector(Personaje *p_guardado) {
-    FILE* fPersonaje = fopen("Datos_iniciales/personajes.dat", "rb");
-    if(!fPersonaje) {
-        printf("\nError: No se pudo abrir personajes.dat\n");
-        exit(EXIT_FAILURE);
-    }
 
-    // Verificar tamaño del archivo
-    fseek(fPersonaje, 0, SEEK_END);
-    long fileSize = ftell(fPersonaje);
-    rewind(fPersonaje);
-
-    if(fileSize < sizeof(Personaje) * 5) {
-        printf("\nError: Archivo personajes.dat corrupto o incompleto\n");
-        fclose(fPersonaje);
-        exit(EXIT_FAILURE);
-    }
-
-    // Leer los 5 personajes
-    size_t read = fread(p_guardado, sizeof(Personaje), 5, fPersonaje);
-    if(read != 5) {
-        printf("\nError: Solo se leyeron %u personajes\n", read);
-        fclose(fPersonaje);
-        exit(EXIT_FAILURE);
-    }
-
-    fclose(fPersonaje);
-}
-*/
 
 void Elegir_Personaje(Personaje* p, Personaje* pParaBatalla){
     int opt_personaje;
