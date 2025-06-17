@@ -65,7 +65,6 @@ typedef struct
 typedef struct {
     Personaje pj;
     Inventario invent_copia[10];
-    Tecnica tecnicas_copia[3];  // ← NUEVO: se agregan técnicas
 } PersonajeSerializado;
 
 typedef struct {

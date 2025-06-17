@@ -57,13 +57,10 @@
 1750116048 source:c:\users\pc\documents\topicos de programacion\saint-seiya\personajes.c
 	"header.h"
 
-1750099438 D
-
-1750107091 source:c:\users\shany\onedrive - universidad nacional de la matanza\escritorio\topicos\tp topicos\shonen-battles\shonen-battles\combate.c
-	"header.h"
+1750130251 source:c:\users\shany\onedrive - universidad nacional de la matanza\escritorio\topicos\tp topicos\shonen-battles\shonen-battles\combate.c
 	"header.h"
 
-1750110289 c:\users\shany\onedrive - universidad nacional de la matanza\escritorio\topicos\tp topicos\shonen-battles\shonen-battles\header.h
+1750124481 c:\users\shany\onedrive - universidad nacional de la matanza\escritorio\topicos\tp topicos\shonen-battles\shonen-battles\header.h
 	<stdlib.h>
 	<stdio.h>
 	<string.h>
@@ -72,31 +69,21 @@
 	<conio.h>
 	<windows.h>
 
-1750099438 d130a9978256066f7b8632d452286acf1c17c
-	<stdlib.h>
-	<stdio.h>
-	<string.h>
-	<time.h>
-	<windows.h>
-	<conio.h>
-	<windows.h>
-	"header.h"
+1750124481 source:c:\users\shany\onedrive - universidad nacional de la matanza\escritorio\topicos\tp topicos\shonen-battles\shonen-battles\enemigos.c
 	"header.h"
 
-1750099438 source:c:\users\shany\onedrive - universidad nacional de la matanza\escritorio\topicos\tp topicos\shonen-battles\shonen-battles\enemigos.c
+1750124481 source:c:\users\shany\onedrive - universidad nacional de la matanza\escritorio\topicos\tp topicos\shonen-battles\shonen-battles\funciones.c
 	"header.h"
 
-1750120052 source:c:\users\shany\onedrive - universidad nacional de la matanza\escritorio\topicos\tp topicos\shonen-battles\shonen-battles\funciones.c
+1750130521 source:c:\users\shany\onedrive - universidad nacional de la matanza\escritorio\topicos\tp topicos\shonen-battles\shonen-battles\historia.c
 	"header.h"
 
-1750100083 source:c:\users\shany\onedrive - universidad nacional de la matanza\escritorio\topicos\tp topicos\shonen-battles\shonen-battles\historia.c
-
-1750099438 source:c:\users\shany\onedrive - universidad nacional de la matanza\escritorio\topicos\tp topicos\shonen-battles\shonen-battles\main.c
+1750124481 source:c:\users\shany\onedrive - universidad nacional de la matanza\escritorio\topicos\tp topicos\shonen-battles\shonen-battles\main.c
 	"header.h"
 	<locale.h>
 	<windows.h>
 
-1750120527 source:c:\users\shany\onedrive - universidad nacional de la matanza\escritorio\topicos\tp topicos\shonen-battles\shonen-battles\personajes.c
+1750130787 source:c:\users\shany\onedrive - universidad nacional de la matanza\escritorio\topicos\tp topicos\shonen-battles\shonen-battles\personajes.c
 	"header.h"
 
 1748793001 source:c:\users\valen\desktop\shonen-battles\combate.c

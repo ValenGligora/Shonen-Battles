@@ -1,7 +1,6 @@
 #include "header.h"
 
-void InicializarPersonajeVector(Personaje *p_guardado)
-{
+void InicializarPersonajeVector(Personaje *p_guardado) {
     FILE *fPersonaje = fopen("Datos_iniciales/personajes.dat", "rb");
     if (!fPersonaje) {
         printf("\nNo se pudo abrir el archivo de personajes.\n");
@@ -10,7 +9,6 @@ void InicializarPersonajeVector(Personaje *p_guardado)
 
     PersonajeSerializado temp[5];
 
-    // Leer correctamente desde archivo
     if (fread(temp, sizeof(PersonajeSerializado), 5, fPersonaje) != 5) {
         printf("\nError al leer los personajes del archivo.\n");
         fclose(fPersonaje);
@@ -20,18 +18,20 @@ void InicializarPersonajeVector(Personaje *p_guardado)
     fclose(fPersonaje);
 
     for (int i = 0; i < 5; i++) {
-        p_guardado[i] = temp[i].pj;
+        p_guardado[i] = temp[i].pj;  // copiar todos los datos básicos
 
-        // Copiar técnicas correctamente
-        for (int t = 0; t < temp[i].pj.cant_tec; t++) {
-            p_guardado[i].tecnicas[t] = temp[i].tecnicas_copia[t];
-        }
+        // Asignar memoria dinámica al inventario
+        if (temp[i].pj.cant_item < 0)
+            temp[i].pj.cant_item = 0;
+        if (temp[i].pj.cant_item > 10)
+            temp[i].pj.cant_item = 10;
 
-        // Asignación segura de inventario
-        if (p_guardado[i].cant_item <= 0)
-            p_guardado[i].cant_item = 1;
+        p_guardado[i].cant_item = temp[i].pj.cant_item;
+        p_guardado[i].max_item = (temp[i].pj.max_item >= p_guardado[i].cant_item)
+                          ? temp[i].pj.max_item
+                          : p_guardado[i].cant_item + 2;
 
-        p_guardado[i].max_item = p_guardado[i].cant_item;
+        p_guardado[i].max_item = p_guardado[i].cant_item+2;
         p_guardado[i].invent = malloc(sizeof(Inventario) * p_guardado[i].max_item);
 
         if (!p_guardado[i].invent) {
@@ -42,10 +42,7 @@ void InicializarPersonajeVector(Personaje *p_guardado)
         for (int j = 0; j < p_guardado[i].cant_item; j++) {
             p_guardado[i].invent[j] = temp[i].invent_copia[j];
         }
-}
-
-
-
+    }
 }
 
 

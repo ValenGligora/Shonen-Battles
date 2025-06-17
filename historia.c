@@ -79,6 +79,8 @@ void jugar_historia(const char *archivo_historia, DatosPartida *guardado, const 
 
             if (resultado_batalla == GANA) {
                 // Actualizar personaje real con el que peleó
+                printf("Hola");
+
                 for (int i = 0; i < 5; i++) {
                     if (strcmp(guardado->pj_guardado[i].nombre, personajeBatalla.nombre) == 0) {
                         ActualizarInventario(&guardado->pj_guardado[i], &personajeBatalla);
