@@ -72,9 +72,6 @@ void SerializarPersonajes(Personaje *pj, PersonajeSerializado *serializados, int
         for (j = 0; j < pj->cant_item; j++) {
             serializados->invent_copia[j] = pj->invent[j];
         }
-        for (j = 0; j < pj->cant_tec; j++) {
-            serializados->tecnicas_copia[j] = pj->tecnicas[j];
-        }
     }
 }
 

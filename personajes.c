@@ -22,11 +22,6 @@ void InicializarPersonajeVector(Personaje *p_guardado)
     for (int i = 0; i < 5; i++) {
         p_guardado[i] = temp[i].pj;
 
-        // Copiar técnicas correctamente
-        for (int t = 0; t < temp[i].pj.cant_tec; t++) {
-            p_guardado[i].tecnicas[t] = temp[i].tecnicas_copia[t];
-        }
-
         // Asignación segura de inventario
         if (p_guardado[i].cant_item <= 0)
             p_guardado[i].cant_item = 1;
