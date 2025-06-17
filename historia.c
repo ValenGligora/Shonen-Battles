@@ -90,7 +90,7 @@ void jugar_historia(const char *archivo_historia, DatosPartida *guardado, const 
                 }
 
                 // Leer línea después del marcador de batalla
-                fgets(linea, sizeof(linea), fHistoria);
+               // fgets(linea, sizeof(linea), fHistoria);
 
                 // Guardar progreso
                 guardado->posicion_historia = ftell(fHistoria);
