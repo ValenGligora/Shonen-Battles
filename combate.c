@@ -325,18 +325,20 @@ void RecibirRecompensa(Personaje *p){
 
     // Verificar si hay espacio, si no, redimensionar
     if (p->cant_item >= p->max_item) {
-        p->max_item += 2;
+        p->max_item ++;
         Inventario *nuevo = realloc(p->invent, sizeof(Inventario) * p->max_item);
         if (!nuevo) {
             printf("Error de memoria al expandir inventario.\n");
             exit(1);
         }
+
         p->invent = nuevo;
+        //memset(&p->invent[p->cant_item], 0, sizeof(Inventario));
     }
 
-    // Agregar nuevo objeto
-    nuevo_item.usos = 1;
-    p->invent[p->cant_item] = nuevo_item;
+    memset(&p->invent[p->cant_item], 0, sizeof(Inventario));
+    strcpy(p->invent[p->cant_item].elemento, nuevo_item.elemento);
+    p->invent[p->cant_item].usos = 1;
     p->cant_item++;
 
     printf("\n¡Has recibido un objeto nuevo! %s agregado al inventario.\n", nuevo_item.elemento);
