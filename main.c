@@ -29,7 +29,6 @@ int main()
 
     // -------------------------INICIO DE MENU DE JUEGO -----------------------//
 
-    //puts("antes de entrar a jugar");
     jugar_historia("Texto historia/historia.txt",&datos_actuales,"Datos_iniciales/enemigos.dat");
 
     //liberar memoria dinamica
