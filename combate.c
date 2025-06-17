@@ -59,114 +59,132 @@ int mostrar_menu_acciones(const Personaje *prota)
         return validarIntRango(1, 5);
 }
 
-int ejecutar_batalla(Personaje *prota, Enemigo *enemigo) {
-    int opcion, opt_tec, opt_obj, opt_tec_enemigo, eleccionEnemigo;
+void procesarTurnoJugador(int opcion, Personaje *prota, Enemigo *enemigo, int *continuarTurno)
+{
+    int opt_tec, opt_obj;
 
-    while (1) {
-		prota->defensa = 0;
-		enemigo->defensa = 0;
+    switch(opcion) {
+        case 1: // Ataque básico
+            printf("\n%s ataca con %s!\n", prota->nombre, prota->arma.nombre);
+            EjecutarAccion(1, 0, prota, enemigo, 0);
+            break;
+        case 2: // Defensa
+            EjecutarAccion(2, 0, prota, enemigo, 0);
+            break;
+        case 3: // Técnicas
+            if (prota->cant_tec == 0) {
+                printf("\n¡No tienes técnicas disponibles!\n");
+                system("pause");
+                *continuarTurno = 0;
+                return;
+            }
+
+            printf("\nTécnicas disponibles:\n");
+            for (int i = 0; i < prota->cant_tec; i++) {
+                printf("%d. %s (%.1f ATQ, %d Cosmo)\n",
+                       i + 1, prota->tecnicas[i].nombre,
+                       prota->tecnicas[i].ataque_tec,
+                       prota->tecnicas[i].cosmo_necesario);
+            }
+
+            printf("0. Volver\n");
+            printf("\nElija técnica (0-%d): ", prota->cant_tec);
+            opt_tec = validarIntRango(0, prota->cant_tec) - 1;
+
+            if (opt_tec == -1) {
+                printf("\nVolviendo al menú...\n");
+                system("pause");
+                *continuarTurno = 0;
+                return;
+            }
+
+            if (prota->cosmo < prota->tecnicas[opt_tec].cosmo_necesario) {
+                printf("\n¡Cosmo insuficiente! Necesitas %d\n", prota->tecnicas[opt_tec].cosmo_necesario);
+                system("pause");
+                *continuarTurno = 0;
+                return;
+            }
+
+            printf("\n%s usa %s!\n", prota->nombre, prota->tecnicas[opt_tec].nombre);
+            EjecutarAccion(3, opt_tec, prota, enemigo, 0);
+            break;
+
+        case 4: // Objetos
+            MostrarInventario(prota);
+            if (InventarioVacio(prota)) {
+                system("pause");
+                *continuarTurno = 0;
+                return;
+            }
+            printf("\nElija objeto (1-%d) o 0 para cancelar: ", prota->cant_item);
+            opt_obj = validarIntRango(0, prota->cant_item);
+            if (opt_obj == 0) {
+                *continuarTurno = 0;
+                return;
+            }
+
+            UsarObjeto(prota, opt_obj - 1);
+            break;
+
+        case 5: // Huir
+            if (INTENTAR_HUIR()) {
+                printf("\n¡Has escapado de la batalla!\n");
+                *continuarTurno = HUYE;
+                return;
+            }
+            printf("\n¡La huida ha fallado!\n");
+            break;
+    }
+
+    *continuarTurno = 1;
+}
+int ejecutar_batalla(Personaje *prota, Enemigo *enemigo)
+{
+    int opcion, opt_tec_enemigo, eleccionEnemigo;
+    int continuarTurno;
+    int batallaEnCurso = 1;
+
+    while (batallaEnCurso) {
+        prota->defensa = 0;
+        enemigo->defensa = 0;
         system("cls || clear");
 
-        mostrarEstadoCombatientes(prota,enemigo);
+        mostrarEstadoCombatientes(prota, enemigo);
         putchar('\n');
         opcion = mostrar_menu_acciones(prota);
 
         eleccionEnemigo = EleccionRandomEnemigo(enemigo, &opt_tec_enemigo);
-        if(eleccionEnemigo == 2)
-            EjecutarAccionEnemiga(enemigo, prota, eleccionEnemigo, opt_tec_enemigo,opcion);
-
-        // Turno del jugador
-        switch(opcion) {
-            case 1: // Ataque básico
-                printf("\n%s ataca con %s!\n", prota->nombre, prota->arma.nombre);
-                EjecutarAccion(1, 0, prota, enemigo, 0);
-                break;
-            case 2: // Defensa
-                EjecutarAccion(2, 0, prota, enemigo, 0);
-                break;
-            case 3: // Técnicas
-                if (prota->cant_tec == 0) {
-                    printf("\nNo tienes tecnicas disponibles!\n");
-                    system("pause");
-                    continue;
-                }
-                printf("\nTecnicas disponibles:\n");
-                for (int i = 0; i < prota->cant_tec; i++) {
-                    printf("%d. %s (%.1f ATQ, %d Cosmo)\n",
-                          i + 1, prota->tecnicas[i].nombre,
-                          prota->tecnicas[i].ataque_tec,
-                          prota->tecnicas[i].cosmo_necesario);
-                }
-
-                // Agregar opción para volver
-                printf("0. Volver\n");
-                printf("\nElija tecnica (0-%d): ", prota->cant_tec);
-                opt_tec = validarIntRango(0, prota->cant_tec) - 1;
-
-                // Si eligió volver
-                if (opt_tec == -1) {
-                    printf("\nVolviendo al menú...\n");
-                    system("pause");
-                    continue;
-                }
-
-                if (prota->cosmo < prota->tecnicas[opt_tec].cosmo_necesario) {
-                    printf("\n¡Cosmo insuficiente! Necesitas %d\n", prota->tecnicas[opt_tec].cosmo_necesario);
-                    system("pause");
-                    continue;
-                }
-
-                printf("\n%s usa %s!\n", prota->nombre, prota->tecnicas[opt_tec].nombre);
-                EjecutarAccion(3, opt_tec, prota, enemigo, 0);
-                break;
-
-            case 4: // Objetos
-                MostrarInventario(prota);
-                if (InventarioVacio(prota)) {
-                    system("pause");
-                    continue;
-                }
-                printf("\nElija objeto (1-%d) o 0 para cancelar: ",prota->cant_item);
-                opt_obj = validarIntRango(0, prota->cant_item);
-                if (opt_obj == 0) continue;
-
-                UsarObjeto(prota, opt_obj - 1);
-                break;
-            case 5: // Huir
-                if (INTENTAR_HUIR()) {
-                    printf("\n¡Has escapado de la batalla!\n");
-                    return HUYE;//-1
-                }
-                printf("\n¡La huida ha fallado!\n");
-                break;
+        if (eleccionEnemigo == 2 && opcion != 3 && opcion != 4) {
+            EjecutarAccionEnemiga(enemigo, prota, eleccionEnemigo, opt_tec_enemigo, opcion);
         }
 
-        // Verificar si el enemigo fue derrotado
+        continuarTurno = 1;
+        procesarTurnoJugador(opcion, prota, enemigo, &continuarTurno);
+
+        if (continuarTurno == 0) continue; // Saltea al siguiente turno
+        if (continuarTurno == HUYE) return HUYE;
+
         if (enemigo->vida <= 0) {
             system("cls");
             printf("\n¡%s ha sido derrotado!\n", enemigo->Nombre);
-
-           RecibirRecompensa(prota);
-
-            return GANA;//1
+            RecibirRecompensa(prota);
+            batallaEnCurso = 0;
+            return GANA;
         }
 
-        // Accion enemigo (atacar,tecnica)
-        if(opcion!=4 && eleccionEnemigo != 2){
+        if (opcion != 4 && eleccionEnemigo != 2)
+            EjecutarAccionEnemiga(enemigo, prota, eleccionEnemigo, opt_tec_enemigo, opcion);
 
-            //eleccionEnemigo = EleccionRandomEnemigo(enemigo, &opt_tec_enemigo); lo saco y lo pongo al inicio del turno por si elige defenderse
-            EjecutarAccionEnemiga(enemigo, prota, eleccionEnemigo, opt_tec_enemigo,opcion);
-        }
-
-        // Verificar si el jugador fue derrotado
         if (prota->vida <= 0) {
             system("cls");
             printf("\n¡Has sido derrotado!\n");
-            Sleep(500);
-            return DERROTADO; //0
+            Sleep(5000);
+            batallaEnCurso = 0;
+            return DERROTADO;
         }
         system("pause");
     }
+    return 0; //Por si se sale del bucle por algun error interno
 }
 
 void UsarObjeto(Personaje *p, int obj_index) {

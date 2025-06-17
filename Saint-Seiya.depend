@@ -4,7 +4,7 @@
 	<locale.h>
 	<windows.h>
 
-1750116048 c:\users\pc\documents\topicos de programacion\saint-seiya\header.h
+1750189661 c:\users\pc\documents\topicos de programacion\saint-seiya\header.h
 	<stdlib.h>
 	<stdio.h>
 	<string.h>
@@ -12,6 +12,7 @@
 	<windows.h>
 	<conio.h>
 	<windows.h>
+	<ctype.h>
 
 1746459568 source:c:\users\diego\documents\github-proyect\shonen-battles\controlturnos-diego-desarrollando.c
 
@@ -36,7 +37,7 @@
 	<stdio.h>
 	<stdlib.h>
 
-1750116048 source:c:\users\pc\documents\topicos de programacion\saint-seiya\funciones.c
+1750162595 source:c:\users\pc\documents\topicos de programacion\saint-seiya\funciones.c
 	"header.h"
 
 1748459128 source:c:\users\pc\documents\topicos de programacion\saint-seiya\header.h
@@ -45,16 +46,16 @@
 	<string.h>
 	<time.h>
 
-1750116048 source:c:\users\pc\documents\topicos de programacion\saint-seiya\historia.c
+1750182713 source:c:\users\pc\documents\topicos de programacion\saint-seiya\historia.c
 	"header.h"
 
 1749683878 source:c:\users\pc\documents\topicos de programacion\saint-seiya\enemigos.c
 	"header.h"
 
-1750116048 source:c:\users\pc\documents\topicos de programacion\saint-seiya\combate.c
+1750162595 source:c:\users\pc\documents\topicos de programacion\saint-seiya\combate.c
 	"header.h"
 
-1750116048 source:c:\users\pc\documents\topicos de programacion\saint-seiya\personajes.c
+1750162595 source:c:\users\pc\documents\topicos de programacion\saint-seiya\personajes.c
 	"header.h"
 
 1750130251 source:c:\users\shany\onedrive - universidad nacional de la matanza\escritorio\topicos\tp topicos\shonen-battles\shonen-battles\combate.c

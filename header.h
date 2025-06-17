@@ -8,6 +8,7 @@
 #include <windows.h> // Para system() y SetConsoleTextAttribute()
 #include <conio.h> // para _getch() y kbhit SOLO FUNCIONA EN WINDOWS
 #include <windows.h>
+#include <ctype.h>
 
 #define NO_SE_ENCONTRO_PARTIDA 2
 
@@ -131,6 +132,7 @@ void establecer_color_texto(int color);
 //--Comabte.c--
 void mostrarEstadoCombatientes(const Personaje* prota,const Enemigo* enemigo);
 int mostrar_menu_acciones(const Personaje *prota);
+void procesarTurnoJugador(int opcion, Personaje *prota, Enemigo *enemigo, int *continuarTurno);
 int ejecutar_batalla(Personaje *prota, Enemigo *enemigo);
 void UsarObjeto(Personaje *p, int obj_index);
 float CalcularDanioTecnica(void *entidad, int num_tec, int tipo_entidad);
