@@ -300,7 +300,7 @@ void RecibirRecompensa(Personaje *p){
             strcpy(invent.elemento,"Pocion de cosmo");
     }
     //ya tiene de ese tipo de objeto, se le adiciona un uso
-    for(i=0;i<5;i++){
+    for(i=0;i<p->cant_item;i++){
         if(strcmp(p->invent[i].elemento, invent.elemento) == 0){
             p->invent[i].usos++;
             printf("\n¡Has recibido un objeto! Se agregó una %s a tu inventario.\n", invent.elemento);
