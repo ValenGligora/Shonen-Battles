@@ -118,7 +118,7 @@
 1749852287 source:c:\users\feder\shonen-battles\enemigos.c
 	"header.h"
 
-1750084268 c:\users\feder\shonen-battles\header.h
+1750123781 c:\users\feder\shonen-battles\header.h
 	<stdlib.h>
 	<stdio.h>
 	<string.h>
@@ -127,7 +127,7 @@
 	<conio.h>
 	<windows.h>
 
-1750085337 source:c:\users\feder\shonen-battles\funciones.c
+1750123781 source:c:\users\feder\shonen-battles\funciones.c
 	"header.h"
 
 1750036894 source:c:\users\feder\shonen-battles\main.c
@@ -135,12 +135,12 @@
 	<locale.h>
 	<windows.h>
 
-1750082317 source:c:\users\feder\shonen-battles\personajes.c
+1750124862 source:c:\users\feder\shonen-battles\personajes.c
 	"header.h"
 
-1750081632 source:c:\users\feder\shonen-battles\combate.c
+1750123781 source:c:\users\feder\shonen-battles\combate.c
 	"header.h"
 
-1750081310 source:c:\users\feder\shonen-battles\historia.c
+1750123781 source:c:\users\feder\shonen-battles\historia.c
 	"header.h"
 

@@ -76,11 +76,16 @@ void InicializarPersonajeVector(Personaje *p_guardado)
         for (int j = 0; j < p_guardado[i].cant_item; j++) {
             p_guardado[i].invent[j] = temp[i].invent_copia[j];
         }
+<<<<<<< HEAD
 }
 
 
 
 }*/
+=======
+    }
+}
+>>>>>>> f8b8a08 (16/6)
 
 
 void mostrarPersonaje(Personaje p)
