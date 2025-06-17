@@ -1,10 +1,10 @@
 # depslib dependency file v1.0
-1749686466 source:c:\users\pc\documents\topicos de programacion\saint-seiya\main.c
+1750116048 source:c:\users\pc\documents\topicos de programacion\saint-seiya\main.c
 	"header.h"
 	<locale.h>
 	<windows.h>
 
-1749683878 c:\users\pc\documents\topicos de programacion\saint-seiya\header.h
+1750116048 c:\users\pc\documents\topicos de programacion\saint-seiya\header.h
 	<stdlib.h>
 	<stdio.h>
 	<string.h>
@@ -36,7 +36,7 @@
 	<stdio.h>
 	<stdlib.h>
 
-1749685329 source:c:\users\pc\documents\topicos de programacion\saint-seiya\funciones.c
+1750116048 source:c:\users\pc\documents\topicos de programacion\saint-seiya\funciones.c
 	"header.h"
 
 1748459128 source:c:\users\pc\documents\topicos de programacion\saint-seiya\header.h
@@ -45,16 +45,16 @@
 	<string.h>
 	<time.h>
 
-1749686392 source:c:\users\pc\documents\topicos de programacion\saint-seiya\historia.c
+1750116048 source:c:\users\pc\documents\topicos de programacion\saint-seiya\historia.c
 	"header.h"
 
 1749683878 source:c:\users\pc\documents\topicos de programacion\saint-seiya\enemigos.c
 	"header.h"
 
-1749685087 source:c:\users\pc\documents\topicos de programacion\saint-seiya\combate.c
+1750116048 source:c:\users\pc\documents\topicos de programacion\saint-seiya\combate.c
 	"header.h"
 
-1749683878 source:c:\users\pc\documents\topicos de programacion\saint-seiya\personajes.c
+1750116048 source:c:\users\pc\documents\topicos de programacion\saint-seiya\personajes.c
 	"header.h"
 
 1750107091 source:c:\users\shany\onedrive - universidad nacional de la matanza\escritorio\topicos\tp topicos\shonen-battles\shonen-battles\combate.c
