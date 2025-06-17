@@ -21,10 +21,17 @@ void InicializarPersonajeVector(Personaje *p_guardado) {
         p_guardado[i] = temp[i].pj;  // copiar todos los datos básicos
 
         // Asignar memoria dinámica al inventario
-        if (p_guardado[i].cant_item <= 0)
-            p_guardado[i].cant_item = 1;
+        if (temp[i].pj.cant_item < 0)
+            temp[i].pj.cant_item = 0;
+        if (temp[i].pj.cant_item > 10)
+            temp[i].pj.cant_item = 10;
 
-        p_guardado[i].max_item = p_guardado[i].cant_item;
+        p_guardado[i].cant_item = temp[i].pj.cant_item;
+        p_guardado[i].max_item = (temp[i].pj.max_item >= p_guardado[i].cant_item)
+                          ? temp[i].pj.max_item
+                          : p_guardado[i].cant_item + 2;
+
+        p_guardado[i].max_item = p_guardado[i].cant_item+2;
         p_guardado[i].invent = malloc(sizeof(Inventario) * p_guardado[i].max_item);
 
         if (!p_guardado[i].invent) {
@@ -37,55 +44,6 @@ void InicializarPersonajeVector(Personaje *p_guardado) {
         }
     }
 }
-
-/*
-void InicializarPersonajeVector(Personaje *p_guardado)
-{
-    FILE *fPersonaje = fopen("Datos_iniciales/personajes.dat", "rb");
-    if (!fPersonaje) {
-        printf("\nNo se pudo abrir el archivo de personajes.\n");
-        exit(1);
-    }
-
-    PersonajeSerializado temp[5];
-
-    // Leer correctamente desde archivo
-    if (fread(temp, sizeof(PersonajeSerializado), 5, fPersonaje) != 5) {
-        printf("\nError al leer los personajes del archivo.\n");
-        fclose(fPersonaje);
-        exit(1);
-    }
-
-    fclose(fPersonaje);
-
-    for (int i = 0; i < 5; i++) {
-        p_guardado[i] = temp[i].pj;
-
-        // Asignación segura de inventario
-        if (p_guardado[i].cant_item <= 0)
-            p_guardado[i].cant_item = 1;
-
-        p_guardado[i].max_item = p_guardado[i].cant_item;
-        p_guardado[i].invent = malloc(sizeof(Inventario) * p_guardado[i].max_item);
-
-        if (!p_guardado[i].invent) {
-            printf("Error al asignar memoria para inventario del personaje %d\n", i);
-            exit(1);
-        }
-
-        for (int j = 0; j < p_guardado[i].cant_item; j++) {
-            p_guardado[i].invent[j] = temp[i].invent_copia[j];
-        }
-<<<<<<< HEAD
-}
-
-
-
-}*/
-=======
-    }
-}
->>>>>>> f8b8a08 (16/6)
 
 
 void mostrarPersonaje(Personaje p)

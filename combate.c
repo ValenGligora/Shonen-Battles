@@ -145,7 +145,9 @@ int ejecutar_batalla(Personaje *prota, Enemigo *enemigo) {
         if (enemigo->vida <= 0) {
             system("cls");
             printf("\n¡%s ha sido derrotado!\n", enemigo->Nombre);
-            RecibirRecompensa(prota);
+
+           RecibirRecompensa(prota);
+
             return GANA;//1
         }
 
@@ -287,54 +289,61 @@ void Defender(void* entidad, int tipo_entidad) {
 
 void RecibirRecompensa(Personaje *p){
     int i;
-    Inventario invent;
-
+    Inventario nuevo_item;
 
     int tipo = rand() % 2;
+    if (tipo == 0)
+        strcpy(nuevo_item.elemento,"Pocion de vida");
+    else
+        strcpy(nuevo_item.elemento,"Pocion de cosmo");
 
-    switch(tipo){
-        case 0:
-            strcpy(invent.elemento,"Pocion de vida");
-            break;
-        case 1:
-            strcpy(invent.elemento,"Pocion de cosmo");
-    }
-    //ya tiene de ese tipo de objeto, se le adiciona un uso
-    for(i=0;i<p->cant_item;i++){
-        if(strcmp(p->invent[i].elemento, invent.elemento) == 0){
+    // Si ya tiene ese objeto, aumentar usos
+    for(i = 0; i < p->cant_item; i++) {
+        if(strcmp(p->invent[i].elemento, nuevo_item.elemento) == 0) {
             p->invent[i].usos++;
-            printf("\n¡Has recibido un objeto! Se agregó una %s a tu inventario.\n", invent.elemento);
+            printf("\n¡Has recibido un objeto! Se agregó una %s al inventario (uso +1).\n", nuevo_item.elemento);
             return;
         }
     }
 
-    // Si no existe y hay que agregar
-    if (p->cant_item == p->max_item) {
-        p->max_item += 2; // aumentar capacidad
-        p->invent = realloc(p->invent, sizeof(Inventario) * p->max_item);
-        if (!p->invent) {
-            printf(" Error de memoria al expandir inventario.\n");
+    // Verificar si hay espacio, si no, redimensionar
+    if (p->cant_item >= p->max_item) {
+        p->max_item += 2;
+        Inventario *nuevo = realloc(p->invent, sizeof(Inventario) * p->max_item);
+        if (!nuevo) {
+            printf("Error de memoria al expandir inventario.\n");
             exit(1);
         }
+        p->invent = nuevo;
     }
 
-    invent.usos = 1;
-    p->invent[p->cant_item] = invent;
+    // Agregar nuevo objeto
+    nuevo_item.usos = 1;
+    p->invent[p->cant_item] = nuevo_item;
     p->cant_item++;
-    printf("\n¡Has recibido un objeto! Se agregó una %s a tu inventario.\n", invent.elemento);
+
+    printf("\n¡Has recibido un objeto nuevo! %s agregado al inventario.\n", nuevo_item.elemento);
 }
 
 
-void ActualizarInventario(Personaje *perOriginal, Personaje *perBatalla){
+void ActualizarInventario(Personaje *perOriginal, Personaje *perBatalla) {
     int i;
-    if (perBatalla->cant_item > perOriginal->max_item) {
-        perOriginal->max_item = perBatalla->cant_item;
-        perOriginal->invent = realloc(perOriginal->invent, sizeof(Inventario) * perOriginal->max_item);
 
+    if (!perOriginal->invent) {
+        perOriginal->max_item = perBatalla->cant_item;
+        perOriginal->invent = malloc(sizeof(Inventario) * perOriginal->max_item);
         if (!perOriginal->invent) {
-            printf("Error de memoria al sincronizar inventario.\n");
+            printf(" Error de memoria al inicializar inventario en ActualizarInventario.\n");
             exit(1);
         }
+    } else if (perBatalla->cant_item > perOriginal->max_item) {
+        perOriginal->max_item = perBatalla->cant_item;
+        Inventario *nuevo = realloc(perOriginal->invent, sizeof(Inventario) * perOriginal->max_item);
+        if (!nuevo) {
+            printf(" Error al expandir inventario en ActualizarInventario.\n");
+            exit(1);
+        }
+        perOriginal->invent = nuevo;
     }
 
     perOriginal->cant_item = perBatalla->cant_item;
@@ -342,6 +351,7 @@ void ActualizarInventario(Personaje *perOriginal, Personaje *perBatalla){
         perOriginal->invent[i] = perBatalla->invent[i];
     }
 }
+
 
 
 
