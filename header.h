@@ -14,7 +14,6 @@
 
 #define VELOCIDAD_TIPO 40   // ms entre caracteres
 #define PAUSA_LINEA 100      // ms entre l�neas
-#define PAUSA_PUNTUACION 250 // ms extra para .!?
 
 #define GANA 1
 #define DERROTADO 0
@@ -97,16 +96,8 @@ typedef struct
 
 // -------------------------ENCABEZADO FUNCIONES -----------------------//
 
-//--FUNCIONES NO IMPLEMENTADAS--
-void crear_archivo_historia();
-void batalla(FILE, Personaje);  // Se desarrolla cada batalla la batalla habria que hacerla con memoria dinamica que es parte de la consigna
-int sigue_con_vida(Personaje);  // Consulta si sigue con vida
-void mostrar_estado(Personaje); // Mostrar vida, acciones disponibles, etc
-// void crear_archivo_Personajes_Principales();
-
-
 //--Historia.c--
-
+void leer_historia(FILE *archivo, char *buffer, size_t tam_buffer);
 void jugar_historia(const char *archivo_historia, DatosPartida *save, const char *archivo_enemigos);
 int efecto_typing(const char* texto,int skip);
 

@@ -1,21 +1,17 @@
 #include "header.h"
 
-
 void mostrarEstadoCombatientes(const Personaje* prota,const Enemigo* enemigo)
 {
     // Mostrar estado de los combatientes hay que fixear las lineas
     printf("============================================\n");
-    printf("| %-20s VS %-20s |\n", prota->nombre, enemigo->Nombre);
+    printf("%-20s   %-20s \n", prota->nombre, enemigo->Nombre);
     //printf("| Vida: %-4.0f/%-4.0f    Vida: %-4.0f/%-4.0f |\n",prota->vida, prota->vidaMax, enemigo->vida, enemigo->vidaMax);
-    printf("| Cosmo: %-3.0f/%-3.0f   Cosmo: %-3.0f/%-3.0f |\n",
-            prota->cosmo, prota->cosmoMax, enemigo->cosmo, enemigo->cosmoMax);
-    printf("============================================\n\n");
 
     //Barra de vida protagonista
     int vidapromPersonaje = (prota->vida/prota->vidaMax)*10;
     int vidapromEnemigo = (enemigo->vida/enemigo->vidaMax)*10;
 
-    printf("Vida de %s\t\tVida de %s\n",prota->nombre,enemigo->Nombre);
+    //printf("Vida de %s\t\tVida de %s\n",prota->nombre,enemigo->Nombre);
 
     if(vidapromPersonaje > 7)    establecer_color_texto(2);
     else if(vidapromPersonaje > 3) establecer_color_texto(6);
@@ -29,8 +25,8 @@ void mostrarEstadoCombatientes(const Personaje* prota,const Enemigo* enemigo)
 
     establecer_color_texto(7); // Restaurar color
 
-    printf(" %.0f/%.0f",prota->vida, prota->vidaMax);
-    printf("\t");
+    printf(" %3.0f/%3.0f",prota->vida, prota->vidaMax);
+    printf("     ");
 
     if(vidapromEnemigo > 7)    establecer_color_texto(2);
     else if(vidapromEnemigo > 3) establecer_color_texto(6);
@@ -44,9 +40,11 @@ void mostrarEstadoCombatientes(const Personaje* prota,const Enemigo* enemigo)
 
     establecer_color_texto(7); // Restaurar color
 
-    printf(" %.0f/%.0f",enemigo->vida, enemigo->vidaMax);
-    printf("\t");
+    printf(" %3.0f/%3.0f",enemigo->vida, enemigo->vidaMax);
+    printf("\nCosmo:    %3.0f/%-3.0f      Cosmo:     %3.0f/%3.0f ",prota->cosmo, prota->cosmoMax, enemigo->cosmo, enemigo->cosmoMax);
+    printf("\n============================================\n\n");
 }
+
 int mostrar_menu_acciones(const Personaje *prota)
 {
         // Menú de opciones
@@ -138,6 +136,7 @@ void procesarTurnoJugador(int opcion, Personaje *prota, Enemigo *enemigo, int *c
 
     *continuarTurno = 1;
 }
+
 int ejecutar_batalla(Personaje *prota, Enemigo *enemigo)
 {
     int opcion, opt_tec_enemigo, eleccionEnemigo;
@@ -369,7 +368,3 @@ void ActualizarInventario(Personaje *perOriginal, Personaje *perBatalla) {
         perOriginal->invent[i] = perBatalla->invent[i];
     }
 }
-
-
-
-

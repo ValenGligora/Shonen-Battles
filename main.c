@@ -6,7 +6,8 @@ int main()
     srand((unsigned int)time(NULL)); // Solo una vez al comienzo del juego
 
     SetConsoleOutputCP(CP_UTF8);
-    setlocale(LC_ALL, "es_ES.UTF-8");
+    //setlocale(LC_ALL, "es_ES.UTF-8");
+    system("chcp 65001 > nul");
 
     int selec;
     DatosPartida datos_actuales; //SI HAY PARTIDA SON LOS DATOS DE PROGRESO, SI NO HAY PARTIDA SE TIENEN LOS DATOS INICIALES Y SE GUARDA HASTA DONDE SE LLEGO
@@ -35,7 +36,5 @@ int main()
     for (int i = 0; i < 5; i++) {
     free(datos_actuales.pj_guardado[i].invent);
 }
-
-    // fclose(historia);
     return 0;
 }

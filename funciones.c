@@ -1,9 +1,5 @@
 #include "header.h"
 
-#define VELOCIDAD_TIPO 40   // ms entre caracteres
-#define PAUSA_LINEA 100      // ms entre líneas
-#define PAUSA_PUNTUACION 250 // ms extra para .!?
-
 void mostrar_menu()
 {
     system("cls"); // Limpiar pantalla
@@ -75,7 +71,6 @@ void SerializarPersonajes(Personaje *pj, PersonajeSerializado *serializados, int
     }
 }
 
-
 void cargar_partida(int n, DatosPartida *datos, const char *nombreArchivo)
 {
     FILE *partida;
@@ -119,13 +114,8 @@ void cargar_partida(int n, DatosPartida *datos, const char *nombreArchivo)
             }
         }
 
-        //fread(datos, sizeof(DatosPartida), 1, partida);
         fclose(partida);
-
-
-        //fin if
     }
-    //printf("PARTIDA CARGADA");
 }
 
 void guardar_partida(const char *archivo, DatosPartida *save)
@@ -140,7 +130,6 @@ void guardar_partida(const char *archivo, DatosPartida *save)
 
     SerializarPersonajes(save->pj_guardado,save_final.p_serializados,CANT_PERSONAJES);
 
-    //fwrite(save, sizeof(DatosPartida), 1, f);
     fwrite(&save_final,sizeof(DatosPartidaSerializada),1,f);
     fclose(f);
 }

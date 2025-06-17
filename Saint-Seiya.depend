@@ -1,10 +1,10 @@
 # depslib dependency file v1.0
-1750116048 source:c:\users\pc\documents\topicos de programacion\saint-seiya\main.c
+1750194589 source:c:\users\pc\documents\topicos de programacion\saint-seiya\main.c
 	"header.h"
 	<locale.h>
 	<windows.h>
 
-1750189661 c:\users\pc\documents\topicos de programacion\saint-seiya\header.h
+1750194589 c:\users\pc\documents\topicos de programacion\saint-seiya\header.h
 	<stdlib.h>
 	<stdio.h>
 	<string.h>
@@ -37,7 +37,7 @@
 	<stdio.h>
 	<stdlib.h>
 
-1750162595 source:c:\users\pc\documents\topicos de programacion\saint-seiya\funciones.c
+1750194589 source:c:\users\pc\documents\topicos de programacion\saint-seiya\funciones.c
 	"header.h"
 
 1748459128 source:c:\users\pc\documents\topicos de programacion\saint-seiya\header.h
@@ -46,13 +46,13 @@
 	<string.h>
 	<time.h>
 
-1750182713 source:c:\users\pc\documents\topicos de programacion\saint-seiya\historia.c
+1750194938 source:c:\users\pc\documents\topicos de programacion\saint-seiya\historia.c
 	"header.h"
 
-1749683878 source:c:\users\pc\documents\topicos de programacion\saint-seiya\enemigos.c
+1750194589 source:c:\users\pc\documents\topicos de programacion\saint-seiya\enemigos.c
 	"header.h"
 
-1750162595 source:c:\users\pc\documents\topicos de programacion\saint-seiya\combate.c
+1750196205 source:c:\users\pc\documents\topicos de programacion\saint-seiya\combate.c
 	"header.h"
 
 1750162595 source:c:\users\pc\documents\topicos de programacion\saint-seiya\personajes.c

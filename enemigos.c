@@ -1,5 +1,3 @@
-
-
 #include "header.h"
 
 Enemigo cargar_enemigo_n(int n, const char *archivo)
